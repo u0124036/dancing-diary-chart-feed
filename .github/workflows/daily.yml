@@ -1,0 +1,28 @@
+name: 每日更新熱門舞曲
+on:
+  schedule:
+    - cron: "0 22 * * *"   # 台北時間每天 06:00
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: daily-feed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 產生 feed.json
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python build_feed.py
+      - name: 有變更才提交
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add feed.json
+          git diff --cached --quiet || git commit -m "chore: 更新熱門舞曲 feed $(date -u +%F)"
+          git push
