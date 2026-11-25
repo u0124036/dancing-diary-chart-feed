@@ -6,7 +6,7 @@
   每次搜尋 100 單位，最多查 MAX_QUERIES 首，避免超過每日 10,000 單位。
 格式與 App 的 DanceChartSnapshot 相同（見 DancingDiary docs/dance-chart-feed.md）。
 """
-import datetime as dt, json, os, sys, urllib.parse, urllib.request
+import datetime as dt, json, os, sys, time, urllib.error, urllib.parse, urllib.request
 
 FEEDS = [("tw", 100), ("kr", 50)]
 STREAMING_SOURCE = "Apple Music 台灣"
@@ -16,15 +16,23 @@ MAX_QUERIES = 90
 OUT = os.environ.get("FEED_OUT", "feed.json")
 
 
-def get_json(url, headers=None):
-    req = urllib.request.Request(url, headers=headers or {"User-Agent": "chart-feed-bot"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)
+def get_json(url, headers=None, attempts=1):
+    """attempts > 1 時，逾時、連線錯誤或 5xx 會等待後重試（GitHub runner 連 Apple RSS 偶爾逾時）。"""
+    req = urllib.request.Request(url, headers=headers or {"User-Agent": "chart-feed-bot", "Accept": "application/json"})
+    for i in range(attempts):
+        try:
+            with urllib.request.urlopen(req, timeout=45) as r:
+                return json.load(r)
+        except (OSError, ValueError) as exc:  # URLError、TimeoutError 皆為 OSError
+            if i == attempts - 1 or (isinstance(exc, urllib.error.HTTPError) and exc.code < 500):
+                raise
+            print(f"重試 {i + 1}/{attempts - 1}：{url.split('?')[0]}：{exc}", file=sys.stderr)
+            time.sleep(10 * (i + 1))
 
 
 def apple(storefront, limit):
     url = f"https://rss.marketingtools.apple.com/api/v2/{storefront}/music/most-played/{limit}/songs.json"
-    return get_json(url)["feed"]["results"]
+    return get_json(url, attempts=4)["feed"]["results"]
 
 
 def norm(s):
@@ -97,7 +105,8 @@ def main():
         if entry["twRank"]:
             signals.append({"kind": "streaming", "source": STREAMING_SOURCE, "rank": entry["twRank"]})
         if it["id"] in dance_rank:
-            sig = {"kind": "dance", "source": YOUTUBE_SOURCE, "rank": dance_rank[it["id"]]}
+            sig = {"kind": "dance", "source": YOUTUBE_SOURCE, "rank": dance_rank[it["id"]],
+                   "videoCount": counts[it["id"]]}
             if sid in prev:
                 sig["previousRank"] = prev[sid]
             signals.append(sig)
