@@ -411,7 +411,7 @@ def search_artist_name(artist: str) -> str:
     return ARTIST_SEARCH_ALIASES.get(base, base)
 
 
-def build_youtube_query(title: str, artist: str) -> str:
+def build_youtube_query(title: str, artist: str, alt_titles=(), alt_artists=()) -> str:
     """組合精確 YouTube 查詢：每個 OR 分支都帶引號包住的曲名與演出者，避免裸關鍵字造成 totalResults 暴增。"""
     q_title = clean_title(title).replace('"', "").replace("|", " ").strip()
     q_artist = search_artist_name(artist).replace('"', "").replace("|", " ").strip()
@@ -421,12 +421,20 @@ def build_youtube_query(title: str, artist: str) -> str:
         q_artist = artist.replace('"', "").strip()
 
     branches = [f'"{q_title}" "{q_artist}" {kw}' for kw in ("dance", "challenge", "舞蹈", "練習室")]
-    query = "|".join(branches)
-    if len(query) > 240:
-        query = f'"{q_title}" "{q_artist}" dance|"{q_title}" "{q_artist}" 舞蹈'
-    if len(query) > 240:
-        query = f'"{q_title}" "{q_artist}" dance'
-    return query
+    # 韓文店面名稱可找回只寫韓文的練習室與挑戰片，仍在同一次查詢內。
+    titles = title_variants(title, *(alt_titles or ()))
+    artists = _artist_match_candidates(artist, alt_artists or [])
+    kr_title = next((v for v in titles if re.search("[가-힣]", v)), q_title)
+    kr_artist = q_artist
+    if kr_title != q_title:
+        kr_artist = next((v for v in artists if re.search("[가-힣]", v)), q_artist)
+    korean_pair = ' '.join('"' + v.replace('"', '').replace('|', ' ') + '"' for v in (kr_title, kr_artist))
+    branches[2:2] = [f"{korean_pair} 챌린지", f"{korean_pair} 안무"]
+    selected = [branches[0]]
+    for branch in branches[1:]:
+        if len("|".join([*selected, branch])) <= 240:
+            selected.append(branch)
+    return "|".join(selected)
 
 
 def _is_short_or_common_title(norm_title: str) -> bool:
@@ -531,6 +539,11 @@ def evaluate_youtube_items(
         if (p := _compile_phrase_pattern(an, allow_spaceless=True)) is not None
     ]
 
+    # 舞者常把歌名和 challenge 連成單一 hashtag。只接受完整標籤。
+    challenge_tags = {
+        "#" + re.sub(r"[^\w]+", "", tv) + suffix
+        for tv in t_variants for suffix in ("challenge", "챌린지")
+    }
     seven_days_ago = now - dt.timedelta(days=7)
     seen_videos = set()
     channel_counts: dict[str, int] = {}
@@ -554,7 +567,8 @@ def evaluate_youtube_items(
         norm_desc = norm(v_desc[:300])
 
         # 1. 曲名必須出現在影片標題（不看 description，避免「Please subscribe」「with me」誤命中）
-        if not any(p.search(norm_title) for p in title_patterns):
+        tagged_challenge = bool(challenge_tags.intersection(re.findall(r"#[\w]+", norm_title)))
+        if not tagged_challenge and not any(p.search(norm_title) for p in title_patterns):
             continue
 
         # 2. 演出者需出現在標題或頻道；非常見／短曲名才允許退回簡介前段
@@ -565,7 +579,7 @@ def evaluate_youtube_items(
             continue
 
         # 3. 必須具舞蹈意圖
-        if not matches_dance_intent(v_title, v_desc):
+        if NON_DANCE_RE.search(v_title) or not (tagged_challenge or matches_dance_intent(v_title, v_desc)):
             continue
 
         matched_raw += 1
@@ -599,7 +613,7 @@ def evaluate_youtube_items(
 
 def dance_signal(entry: dict, key: str, since: str, now: dt.datetime) -> dict:
     it = entry["item"]
-    query = build_youtube_query(it["name"], it["artistName"])
+    query = build_youtube_query(it["name"], it["artistName"], entry.get("altTitles"), entry.get("altArtists"))
     q = urllib.parse.urlencode(
         {
             "part": "snippet",
@@ -627,17 +641,17 @@ def dance_signal(entry: dict, key: str, since: str, now: dt.datetime) -> dict:
     return stats
 
 
-def previous_dance_ranks() -> dict[str, int]:
+def previous_dance_signals() -> dict[str, dict]:
     try:
         with open(OUT, encoding="utf-8") as f:
             old = json.load(f)
     except (OSError, ValueError):
         return {}
     return {
-        s["id"]: sig["rank"]
+        s["id"]: sig
         for s in old.get("songs", [])
         for sig in s.get("signals", [])
-        if sig.get("source") == YOUTUBE_SOURCE
+        if sig.get("kind") == "dance" and sig.get("source") == YOUTUBE_SOURCE
     }
 
 
@@ -647,7 +661,8 @@ def main():
     pool = candidates()
     key = os.environ.get("YOUTUBE_API_KEY", "").strip()
     stats_by_id: dict[str, dict] = {}
-    queried, errors = 0, 0
+    failed_ids = set()
+    queried = 0
 
     if key:
         since = (now - dt.timedelta(days=14)).isoformat().replace("+00:00", "Z")
@@ -665,9 +680,12 @@ def main():
                     flush=True,
                 )
             except Exception as exc:  # 單首失敗不中斷整份
-                errors += 1
+                failed_ids.add(it["id"])
                 print(f"YouTube 查詢失敗：{it['name']}：{exc}", file=sys.stderr)
             queried += 1
+
+    if queried and len(failed_ids) * 100 > queried * 30:
+        sys.exit(f"YouTube 查詢失敗 {len(failed_ids)}/{queried}，超過 30%，保留上一份 feed")
 
     ordered = sorted(
         ((st, tid) for tid, st in stats_by_id.items() if st["verified"] >= MIN_DANCE_VIDEOS),
@@ -680,7 +698,7 @@ def main():
         ),
     )
     dance_rank = {tid: r + 1 for r, (_, tid) in enumerate(ordered)}
-    prev = previous_dance_ranks()
+    prev = previous_dance_signals()
 
     songs = []
     for entry in pool:
@@ -698,8 +716,10 @@ def main():
                 "videoCount": stats_by_id[tid]["verified"],
             }
             if sid in prev:
-                sig["previousRank"] = prev[sid]
+                sig["previousRank"] = prev[sid]["rank"]
             signals.append(sig)
+        elif tid in failed_ids and sid in prev:
+            signals.append(prev[sid])
         if not signals:
             continue
         art = (it.get("artworkUrl100") or "").replace("100x100bb", "600x600bb")
@@ -720,8 +740,6 @@ def main():
             song["artwork"] = art
         songs.append(song)
 
-    if key and queried and errors == queried:
-        sys.exit("YouTube 全部查詢失敗，保留上一份 feed")
     feed = {"updatedAt": now.isoformat().replace("+00:00", "Z"), "songs": songs}
     data = json.dumps(feed, ensure_ascii=False, indent=1)
     if len(data.encode()) > 1_000_000:
@@ -729,8 +747,8 @@ def main():
     with open(OUT, "w", encoding="utf-8") as f:
         f.write(data + "\n")
     print(
-        f"候選 {len(pool)} 首；YouTube 查詢 {queried} 次（失敗 {errors}）；"
-        f"有舞蹈訊號 {len(dance_rank)} 首；輸出 {len(songs)} 首"
+        f"候選 {len(pool)} 首；YouTube 查詢 {queried} 次（失敗 {len(failed_ids)}）；"
+        f"新測得舞蹈訊號 {len(dance_rank)} 首；輸出 {len(songs)} 首"
     )
 
 

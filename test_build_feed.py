@@ -2,7 +2,11 @@
 from __future__ import annotations
 
 import datetime as dt
+import json
+import tempfile
 import unittest
+from pathlib import Path
+from unittest.mock import patch
 
 import build_feed as bf
 
@@ -215,6 +219,62 @@ class CommonTitleCalibrationTests(unittest.TestCase):
         self.assertEqual(st["matchedRaw"], 10)
         self.assertEqual(st["verified"], bf.MAX_PER_CHANNEL)
         self.assertLess(st["verified"], bf.MIN_DANCE_VIDEOS)
+
+
+class CalibrationAndFailureTests(unittest.TestCase):
+    def test_korean_queries_keep_song_and_artist(self):
+        query = bf.build_youtube_query("You’re Under Arrest", "ILLIT", ["체포하겠어"], ["아일릿"])
+        self.assertIn('"체포하겠어" "아일릿" 챌린지', query.split("|"))
+        self.assertIn('"You\'re Under Arrest" "ILLIT" dance', query.split("|"))
+
+    def test_compact_challenge_tags_still_require_artist_and_exclude_reactions(self):
+        titles = ["IVE #LooksCanKillChallenge", "IVE #LooksCanKillChallengeArchive",
+                  "Crew #LooksCanKillChallenge", "IVE #LooksCanKillChallenge reaction",
+                  "IVE Looks Can Kill Dance Practice Reaction"]
+        items = [_yt_item(str(i), title) for i, title in enumerate(titles)]
+        result = bf.evaluate_youtube_items("Looks Can Kill", "IVE", items, dt.datetime.now(dt.timezone.utc))
+        self.assertEqual(result["verified"], 1)
+
+    def setUp(self):
+        self.folder = tempfile.TemporaryDirectory()
+        self.addCleanup(self.folder.cleanup)
+        self.out = Path(self.folder.name) / "feed.json"
+        self.old = {"kind": "dance", "source": bf.YOUTUBE_SOURCE, "rank": 6, "videoCount": 12}
+        self.out.write_text(json.dumps({"songs": [
+            {"id": f"am:{i}", "signals": [self.old]} for i in (0, 2, 3, 4, 10)
+        ]}))
+        self.pool = [{"item": _apple_item(i, f"Song {i}", "Crew"), "twRank": i + 1} for i in range(11)]
+
+    def run_feed(self, failures):
+        def query(entry, *args):
+            tid = int(entry["item"]["id"])
+            if tid in failures:
+                raise OSError("HTTP 429")
+            count = 7 if tid == 3 else 0
+            return dict(rawTotal=count, fetched=count, verified=count, uniqueChannels=count,
+                        recent7d=count, matchedRaw=count, precision=float(bool(count)))
+
+        with patch.object(bf, "OUT", self.out), patch.object(bf, "candidates", return_value=self.pool), \
+             patch.dict(bf.os.environ, {"YOUTUBE_API_KEY": "fixture", "MAX_QUERIES": "10"}), \
+             patch.object(bf, "dance_signal", side_effect=query):
+            bf.main()
+
+    def test_exactly_thirty_percent_carries_only_failed_ids_with_old_signals(self):
+        self.run_feed({0, 1, 2})
+        songs = json.loads(self.out.read_text())["songs"]
+        signals = {song["id"]: [s for s in song["signals"] if s["kind"] == "dance"] for song in songs}
+        self.assertEqual(signals["am:0"], [self.old])
+        self.assertEqual(signals["am:1"], [])
+        self.assertEqual(signals["am:2"], [self.old])
+        self.assertEqual(signals["am:3"], [{**self.old, "rank": 1, "videoCount": 7, "previousRank": 6}])
+        self.assertEqual(signals["am:4"], [])  # 成功查到零支
+        self.assertEqual(signals["am:10"], [])  # 未列入當日查詢
+
+    def test_above_thirty_percent_preserves_entire_file(self):
+        old = self.out.read_bytes()
+        with self.assertRaisesRegex(SystemExit, "4/10"):
+            self.run_feed({0, 1, 2, 3})
+        self.assertEqual(self.out.read_bytes(), old)
 
 
 if __name__ == "__main__":
