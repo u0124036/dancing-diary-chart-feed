@@ -113,25 +113,27 @@ class CommonTitleCalibrationTests(unittest.TestCase):
     def setUp(self):
         self.now = dt.datetime(2026, 11, 25, 3, 0, 0, tzinfo=dt.timezone.utc)
 
-    def test_query_quotes_title_and_artist_in_every_or_branch(self):
+    def test_query_uses_single_clean_branch_without_or_or_quotes(self):
+        # 修正 #05 驗證退回：YouTube search.list 多分支 OR 與雙引號鎖死會嚴重稀釋召回，改採單分支乾淨查詢。
         q = bf.build_youtube_query("IDOL", "防彈少年團")
-        branches = q.split("|")
-        self.assertGreaterEqual(len(branches), 2)
-        for b in branches:
-            self.assertIn('"IDOL"', b)
-            self.assertIn('"BTS"', b)
+        self.assertEqual(q, "IDOL BTS dance")
+        self.assertNotIn("|", q)
+        self.assertNotIn('"', q)
 
-    def test_query_strips_feat_and_single_version(self):
+    def test_query_strips_feat_single_version_and_subtitles(self):
         q = bf.build_youtube_query("Last Christmas (Single Version)", "Wham!")
-        self.assertIn('"Last Christmas"', q)
+        self.assertEqual(q, "Last Christmas Wham! dance")
         self.assertNotIn("Single Version", q)
+        self.assertNotIn("|", q)
         q2 = bf.build_youtube_query("seesaw (feat. IU)", "Crush")
-        self.assertIn('"seesaw"', q2)
+        self.assertEqual(q2, "seesaw Crush dance")
         self.assertNotIn("feat.", q2)
         q3 = bf.build_youtube_query("Boy With Luv (feat. Halsey)", "防彈少年團")
-        self.assertIn('"Boy With Luv"', q3)
-        self.assertIn('"BTS"', q3)
+        self.assertEqual(q3, "Boy With Luv BTS dance")
         self.assertNotIn("Halsey", q3)
+        q4 = bf.build_youtube_query("沒有人像我一樣 (影集《欠妳的那場婚禮》主題曲)", "宇宙人")
+        self.assertEqual(q4, "沒有人像我一樣 宇宙人 dance")
+        self.assertNotIn("主題曲", q4)
 
     def test_common_title_idol_rejects_non_bts_and_counts_real_covers(self):
         items = [
@@ -222,10 +224,65 @@ class CommonTitleCalibrationTests(unittest.TestCase):
 
 
 class CalibrationAndFailureTests(unittest.TestCase):
-    def test_korean_queries_keep_song_and_artist(self):
-        query = bf.build_youtube_query("You’re Under Arrest", "ILLIT", ["체포하겠어"], ["아일릿"])
-        self.assertIn('"체포하겠어" "아일릿" 챌린지', query.split("|"))
-        self.assertIn('"You\'re Under Arrest" "ILLIT" dance', query.split("|"))
+    def test_regression_youre_under_arrest_and_neon_not_diluted_by_multibranch_query(self):
+        # 重現 run 45572759481 退步：混入韓文多分支與雙引號導致 You're Under Arrest（19->4）與 NEON（6->3）跌破門檻。
+        now = dt.datetime(2026, 11, 25, 8, 0, 0, tzinfo=dt.timezone.utc)
+
+        q_yua = bf.build_youtube_query("You’re Under Arrest", "ILLIT", ["체포하겠어"], ["아일릿"])
+        self.assertEqual(q_yua, "You're Under Arrest ILLIT dance")
+        self.assertNotIn("|", q_yua)
+        self.assertNotIn("체포하겠어", q_yua)
+
+        yua_items = [
+            _yt_item("y1", "ILLIT 'You're Under Arrest' Dance Practice", channel="ILLIT", channel_id="c1"),
+            _yt_item("y2", "ILLIT Youre Under Arrest #kpopdancecover", channel="CrewA", channel_id="c2"),
+            _yt_item("y3", "ILLIT #YoureUnderArrestChallenge", channel="CrewB", channel_id="c3"),
+            _yt_item("y4", "아일릿 체포하겠어 챌린지", channel="CrewC", channel_id="c4"),
+            _yt_item("y5", "아일릿 'You're Under Arrest' 안무 鏡面翻跳", channel="CrewD", channel_id="c5"),
+            _yt_item("y6", "ILLIT You're Under Arrest Dance Reaction", channel="ReactTV", channel_id="c6"),
+            _yt_item("y7", "ILLIT You're Under Arrest Lyrics", channel="LyricTV", channel_id="c7"),
+        ]
+        yua_stats = bf.evaluate_youtube_items(
+            "You’re Under Arrest", "ILLIT", yua_items, now=now,
+            alt_titles=["체포하겠어"], alt_artists=["아일릿"],
+        )
+        self.assertEqual(yua_stats["verified"], 5)
+        self.assertGreaterEqual(yua_stats["verified"], bf.MIN_DANCE_VIDEOS)
+
+        q_neon = bf.build_youtube_query("NEON", "A2O & A2O LITE")
+        self.assertEqual(q_neon, "NEON A2O dance")
+        self.assertNotIn("|", q_neon)
+
+        neon_items = [
+            _yt_item("n1", "A2O LITE 'NEON' Dance Challenge", channel="A2O Official", channel_id="c1"),
+            _yt_item("n2", "A2O NEON #kpopdance Cover", channel="Dancer1", channel_id="c2"),
+            _yt_item("n3", "A2O LITE #NEONdance", channel="Dancer2", channel_id="c3"),
+            _yt_item("n4", "A2O & A2O LITE NEON 舞蹈翻跳", channel="Dancer3", channel_id="c4"),
+            _yt_item("n5", "A2O NEON Choreography Tutorial", channel="Dancer4", channel_id="c5"),
+            _yt_item("n6", "NEON Dance Challenge in Tokyo", channel="Random", channel_id="c6"),  # 缺演出者
+            _yt_item("n7", "A2O NEON Vocal Cover", channel="Singer", channel_id="c7"),  # 非舞蹈
+        ]
+        neon_stats = bf.evaluate_youtube_items("NEON", "A2O & A2O LITE", neon_items, now=now)
+        self.assertEqual(neon_stats["verified"], 5)
+        self.assertGreaterEqual(neon_stats["verified"], bf.MIN_DANCE_VIDEOS)
+
+    def test_subtitle_punctuation_and_dance_word_boundary_safety(self):
+        now = dt.datetime(2026, 11, 25, 8, 0, 0, tzinfo=dt.timezone.utc)
+        self.assertEqual(bf.build_youtube_query("404 (New Era)", "KiiiKiii"), "404 KiiiKiii dance")
+        self.assertEqual(bf.build_youtube_query("RUDE!", "Hearts2Hearts"), "RUDE Hearts2Hearts dance")
+        self.assertEqual(
+            bf.build_youtube_query("The First Snow", "EXO", ["첫 눈"], ["엑소"]),
+            "The First Snow EXO dance",
+        )
+
+        items = [
+            _yt_item("k1", "KiiiKiii 404 Dance Challenge", channel="C1", channel_id="c1"),
+            _yt_item("k2", "키키 404 댄스 커버", channel="C2", channel_id="c2"),
+            _yt_item("k3", "HTTP 404 Dance Error", channel="DevTV", channel_id="c3"),  # 缺演出者
+            _yt_item("k4", "KiiiKiii 404 Abundance of Joy", channel="FanTV", channel_id="c4"),  # abundance 非 dance
+        ]
+        st = bf.evaluate_youtube_items("404 (New Era)", "KiiiKiii", items, now=now, alt_artists=["키키"])
+        self.assertEqual(st["verified"], 2)
 
     def test_compact_challenge_tags_still_require_artist_and_exclude_reactions(self):
         titles = ["IVE #LooksCanKillChallenge", "IVE #LooksCanKillChallengeArchive",
@@ -234,6 +291,40 @@ class CalibrationAndFailureTests(unittest.TestCase):
         items = [_yt_item(str(i), title) for i, title in enumerate(titles)]
         result = bf.evaluate_youtube_items("Looks Can Kill", "IVE", items, dt.datetime.now(dt.timezone.utc))
         self.assertEqual(result["verified"], 1)
+
+    def test_symbol_only_title_does_not_generate_bare_challenge_tag(self):
+        now = dt.datetime(2026, 11, 25, 8, 0, 0, tzinfo=dt.timezone.utc)
+        items = [
+            _yt_item("s1", "Crew #challenge #dance", channel="Crew", channel_id="c1"),
+            _yt_item("s2", "Crew #챌린지", channel="Crew", channel_id="c2"),
+        ]
+        st = bf.evaluate_youtube_items("!!!", "Crew", items, now=now)
+        self.assertEqual(st["verified"], 0)
+
+        underscore_items = [
+            _yt_item("u1", "IVE #Looks_Can_Kill_Challenge", channel="C1", channel_id="c1"),
+            _yt_item("u2", "IVE #Looks_Can_Kill_ChallengeArchive", channel="C2", channel_id="c2"),
+        ]
+        st2 = bf.evaluate_youtube_items("Looks Can Kill", "IVE", underscore_items, now=now)
+        self.assertEqual(st2["verified"], 1)
+
+    def test_select_query_entries_caps_first_pass_per_artist_and_backfills(self):
+        pool = [
+            {"item": _apple_item(f"b{i}", f"BTS Song {i}", "防彈少年團"), "twRank": i + 1}
+            for i in range(6)
+        ] + [
+            {"item": _apple_item("bm1", "DESERVE", "BABYMONSTER"), "twRank": 7},
+            {"item": _apple_item("ae1", "Whiplash", "aespa"), "twRank": 8},
+        ]
+        selected_five = bf.select_query_entries(pool, max_queries=5, first_pass_per_artist=3)
+        ids_five = [e["item"]["id"] for e in selected_five]
+        # 第一輪防彈只先查前 3 首，讓後段 BABYMONSTER 與 aespa 優先進入前 5 次配額
+        self.assertEqual(ids_five, ["b0", "b1", "b2", "bm1", "ae1"])
+
+        selected_all = bf.select_query_entries(pool, max_queries=8, first_pass_per_artist=3)
+        ids_all = [e["item"]["id"] for e in selected_all]
+        # 配額尚有餘裕時，剩餘的 BTS 曲目依序遞補
+        self.assertEqual(ids_all, ["b0", "b1", "b2", "bm1", "ae1", "b3", "b4", "b5"])
 
     def setUp(self):
         self.folder = tempfile.TemporaryDirectory()
@@ -245,7 +336,7 @@ class CalibrationAndFailureTests(unittest.TestCase):
         ]}))
         self.pool = [{"item": _apple_item(i, f"Song {i}", "Crew"), "twRank": i + 1} for i in range(11)]
 
-    def run_feed(self, failures):
+    def run_feed(self, failures, raw_cache_out=""):
         def query(entry, *args):
             tid = int(entry["item"]["id"])
             if tid in failures:
@@ -254,10 +345,11 @@ class CalibrationAndFailureTests(unittest.TestCase):
             return dict(rawTotal=count, fetched=count, verified=count, uniqueChannels=count,
                         recent7d=count, matchedRaw=count, precision=float(bool(count)))
 
+        env = {"YOUTUBE_API_KEY": "secret-fixture-key", "MAX_QUERIES": "10", "RAW_CACHE_OUT": raw_cache_out}
         with patch.object(bf, "OUT", self.out), patch.object(bf, "candidates", return_value=self.pool), \
-             patch.dict(bf.os.environ, {"YOUTUBE_API_KEY": "fixture", "MAX_QUERIES": "10"}), \
+             patch.dict(bf.os.environ, env), \
              patch.object(bf, "dance_signal", side_effect=query):
-            bf.main()
+            bf.main([])
 
     def test_exactly_thirty_percent_carries_only_failed_ids_with_old_signals(self):
         self.run_feed({0, 1, 2})
@@ -272,9 +364,82 @@ class CalibrationAndFailureTests(unittest.TestCase):
 
     def test_above_thirty_percent_preserves_entire_file(self):
         old = self.out.read_bytes()
+        raw_path = Path(self.folder.name) / "raw.json"
         with self.assertRaisesRegex(SystemExit, "4/10"):
-            self.run_feed({0, 1, 2, 3})
+            self.run_feed({0, 1, 2, 3}, raw_cache_out=str(raw_path))
         self.assertEqual(self.out.read_bytes(), old)
+        # 即使超過 30% 失敗保留舊 feed，仍應先存下原始查詢快取供離線排錯，且絕不含 API 金鑰
+        self.assertTrue(raw_path.exists())
+        raw_text = raw_path.read_text(encoding="utf-8")
+        self.assertNotIn("secret-fixture-key", raw_text)
+        raw_doc = json.loads(raw_text)
+        self.assertEqual(raw_doc["queried"], 10)
+        self.assertEqual(raw_doc["failed"], 4)
+
+    def test_raw_cache_saved_and_offline_replay_reproduces_feed_without_network(self):
+        raw_path = Path(self.folder.name) / "youtube-raw-results.json"
+        replay_out = Path(self.folder.name) / "replay-feed.json"
+        now = dt.datetime(2026, 11, 25, 8, 0, 0, tzinfo=dt.timezone.utc)
+        pool = [
+            {
+                "item": _apple_item("6818511627", "You’re Under Arrest", "ILLIT", "1734551937", "tw"),
+                "storefront": "tw",
+                "twRank": 1,
+                "altTitles": ["체포하겠어", "You’re Under Arrest"],
+                "altArtists": ["아일릿", "ILLIT"],
+            },
+            {
+                "item": _apple_item("6820428730", "NEON", "A2O & A2O LITE", "999", "tw"),
+                "storefront": "tw",
+                "twRank": 2,
+                "altTitles": ["NEON"],
+                "altArtists": ["A2O & A2O LITE"],
+            },
+        ]
+
+        def fake_get_json(url, *args, **kwargs):
+            if "You%27re+Under+Arrest" in url or "You're+Under+Arrest" in url:
+                return {
+                    "pageInfo": {"totalResults": 12},
+                    "items": [
+                        _yt_item(f"v{i}", f"ILLIT You're Under Arrest Dance Cover #{i}",
+                                 channel=f"Ch{i}", channel_id=f"ch{i}", published_at="2026-11-24T10:00:00Z")
+                        for i in range(6)
+                    ],
+                }
+            return {
+                "pageInfo": {"totalResults": 2},
+                "items": [
+                    _yt_item("m1", "A2O NEON Dance Challenge", channel="C1", channel_id="c1", published_at="2026-11-24T10:00:00Z"),
+                ],
+            }
+
+        with patch.object(bf, "OUT", self.out), patch.object(bf, "candidates", return_value=pool), \
+             patch.object(bf, "get_json", side_effect=fake_get_json), \
+             patch.dict(bf.os.environ, {"YOUTUBE_API_KEY": "top-secret-token", "MAX_QUERIES": "5", "RAW_CACHE_OUT": str(raw_path)}):
+            bf.main([])
+
+        raw_text = raw_path.read_text(encoding="utf-8")
+        self.assertNotIn("top-secret-token", raw_text)
+        raw_doc = json.loads(raw_text)
+        self.assertEqual(len(raw_doc["entries"]), 2)
+        self.assertEqual(raw_doc["entries"][0]["query"], "You're Under Arrest ILLIT dance")
+        self.assertEqual(len(raw_doc["entries"][0]["items"]), 6)
+        self.assertEqual(raw_doc["entries"][0]["stats"]["verified"], 6)
+
+        # 離線重播模式不得呼叫 candidates 或 get_json，仍可產出相同舞蹈訊號
+        with patch.object(bf, "OUT", replay_out), \
+             patch.object(bf, "candidates", side_effect=AssertionError("offline replay must not hit Apple RSS")), \
+             patch.object(bf, "get_json", side_effect=AssertionError("offline replay must not hit YouTube API")):
+            bf.main(["--replay", str(raw_path)])
+
+        live_feed = json.loads(self.out.read_text(encoding="utf-8"))
+        replay_feed = json.loads(replay_out.read_text(encoding="utf-8"))
+        self.assertEqual(replay_feed["songs"], live_feed["songs"])
+        yua_song = next(s for s in replay_feed["songs"] if s["id"] == "am:6818511627")
+        dance_sigs = [s for s in yua_song["signals"] if s["kind"] == "dance"]
+        self.assertEqual(len(dance_sigs), 1)
+        self.assertEqual(dance_sigs[0]["videoCount"], 6)
 
 
 if __name__ == "__main__":

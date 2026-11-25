@@ -5,9 +5,12 @@
   透過 Apple 歌曲 ID、跨店面 artistId＋正規化曲名與 iTunes Lookup 台灣店面名稱合併同曲，
   統一使用台灣店面顯示名稱與連結，避免韓／英文重複上榜或繞過同演出者上限。
 - 舞蹈：YouTube Data API search.list（part=snippet, maxResults=50），近 14 天、地區 TW。
-  以引號精確查詢（歌名＋演出者＋舞蹈關鍵字）並對回傳影片標題／頻道逐筆驗證
-  「曲名＋演出者＋舞蹈意圖」，排除常見字造成的 totalResults 膨脹與單頻道洗版，
-  單首仍維持 1 次 search.list（100 單位），最多查 MAX_QUERIES 首，避免超過每日 10,000 單位。
+  以乾淨單分支查詢（歌名＋演出者＋dance，避免多分支 OR 與雙引號鎖死稀釋召回）搭配
+  每演出者第一輪查詢上限分散配額，並對回傳影片標題／頻道逐筆驗證
+  「曲名＋演出者＋舞蹈意圖」，排除常見字造成的誤判與單頻道洗版，
+  單首維持 1 次 search.list（100 單位），最多查 MAX_QUERIES 首，避免超過每日 10,000 單位。
+- 快取與離線調參：設定 RAW_CACHE_OUT 可輸出每首歌原始搜尋結果（查詢字串、影片標題、頻道、計數），
+  不含 API 金鑰；設定 OFFLINE_RAW_INPUT 或傳入 --replay <檔路徑> 可離線重算驗證結果與門檻。
 格式與 App 的 DanceChartSnapshot 相同（見 DancingDiary docs/dance-chart-feed.md）。
 """
 from __future__ import annotations
@@ -30,7 +33,13 @@ YOUTUBE_SOURCE = "YouTube 舞蹈影片"
 MIN_DANCE_VIDEOS = 5
 MAX_PER_CHANNEL = 3
 DEFAULT_MAX_QUERIES = 90
+FIRST_PASS_PER_ARTIST = 3
+QUERY_WINDOW_DAYS = 14
+QUERY_REGION_CODE = "TW"
+QUERY_MAX_RESULTS = 50
 OUT = os.environ.get("FEED_OUT", "feed.json")
+RAW_CACHE_OUT = os.environ.get("RAW_CACHE_OUT", "").strip()
+OFFLINE_RAW_INPUT = os.environ.get("OFFLINE_RAW_INPUT", "").strip()
 
 # 跨店面／跨語言演出者別名表（iTunes Lookup 失敗或無 artistId 時的備援，並用於 YouTube 搜尋與標題比對）。
 # 每組的第一個值為台灣常用／國際識別名稱；YouTube 搜尋會優先使用 ARTIST_SEARCH_ALIASES。
@@ -75,6 +84,13 @@ ARTIST_ALIAS_GROUPS = [
     ("ROSÉ", "ROSE", "로제"),
     ("LISA", "리사"),
     ("JISOO", "지수"),
+    ("SOYEON", "소연", "전소연"),
+    ("GOT7", "갓세븐"),
+    ("A2O", "A2O LITE", "A2O MAY"),
+    ("ALLDAY PROJECT", "올데이프로젝트"),
+    ("HUNTR/X", "HUNTRX"),
+    ("MEOVV", "미야오"),
+    ("izna", "이즈나"),
     ("The Black Skirts", "검정치마"),
     ("back number", "백 넘버"),
 ]
@@ -94,7 +110,8 @@ COLLAB_RE = re.compile(
 TITLE_SUFFIX_RE = re.compile(
     r"\s*(?:"
     r"[\(\[\（]\s*(?:feat\.|ft\.|(?:feat|ft|featuring|with)\b)[^)\]\）]*[\)\]\）]"
-    r"|[\(\[\（]\s*single\s+version\s*[\)\]\）]"
+    r"|[\(\[\（]\s*(?:single|radio|album|korean|japanese|english|chinese)\s*(?:version|ver\.?|edit)\s*[\)\]\）]"
+    r"|[\(\[\（][^)\]\）]*(?:影集|電影|電視劇|劇集|主題曲|片尾曲|片頭曲|插曲|original\s+soundtrack|\bost\b)[^)\]\）]*[\)\]\）]"
     r"|-\s*single\s*$"
     r")",
     re.IGNORECASE,
@@ -111,13 +128,12 @@ COMMON_TITLES = {
     "idol", "please", "with", "bad", "normal", "it's me", "its me", "body to body",
     "love", "home", "stay", "run", "fire", "time", "life", "dream", "light", "night",
     "baby", "sorry", "hello", "forever", "everything", "heroine", "swim", "neon",
-    "crash", "aliens", "butter", "2.0", "fya", "rude", "like animals",
+    "crash", "aliens", "butter", "2.0", "fya", "rude", "like animals", "404",
 }
 
 STRONG_DANCE_RE = re.compile(
-    r"(?:(?<![a-z0-9])(?:dance|dancing|dancer|dancers|choreo|choreography|footwork)(?![a-z0-9])"
-    r"|dance\s*(?:cover|practice|challenge|tutorial|mirror|ver|version|break)"
-    r"|dancecover|dancepractice|dancechallenge|dancetutorial"
+    r"(?:(?<![a-z0-9])(?:(?:kpop|idol|shorts?|yt)?dance(?:cover|practice|challenge|tutorial|video|reel|reels|shorts|break|performance|ver|version)?|dancing|dancer|dancers|(?:kpop|dance)?choreo(?:graphy|video)?|footwork)(?![a-z0-9])"
+    r"|dance\s*(?:cover|practice|challenge|tutorial|mirror|ver|version|break|performance|video)"
     r"|mirrored?\s*(?:dance|ver|version)"
     r"|舞蹈|練舞|練習室|翻跳|鏡面|編舞|排舞|跳舞|學舞|宅舞|街舞|舞室"
     r"|안무|댄스|커버댄스|춤"
@@ -188,8 +204,8 @@ def _has_ascii_letter(s: str) -> bool:
     return any("a" <= ch.lower() <= "z" for ch in s)
 
 
-def title_variants(*titles: str) -> list[str]:
-    """回傳用於跨榜去重與標題比對的正規化曲名變體（含雙語括號拆解）。"""
+def title_variants(*titles: str, include_subtitle_head: bool = False) -> list[str]:
+    """回傳用於跨榜去重與標題比對的正規化曲名變體（含雙語括號拆解；標題比對可選拆出括號前主名）。"""
     out = []
     seen = set()
 
@@ -209,7 +225,7 @@ def title_variants(*titles: str) -> list[str]:
         if m:
             outside, inside = m.group(1).strip(), m.group(2).strip()
             if not GENERIC_PAREN_TAG_RE.match(inside):
-                # 僅在括號內外屬不同文字系統（如 韓文 (English)）時拆解，避免一般副標誤併
+                # 僅在括號內外屬不同文字系統（如 韓文 (English)）時做跨榜去重拆解，避免一般副標誤併
                 if (_has_non_ascii_letter(outside) and _has_ascii_letter(inside)) or (
                     _has_ascii_letter(outside) and _has_non_ascii_letter(inside)
                 ):
@@ -217,6 +233,10 @@ def title_variants(*titles: str) -> list[str]:
                         add(outside)
                     if len(re.sub(r"\W+", "", inside)) >= 3:
                         add(inside)
+                elif include_subtitle_head:
+                    # 標題驗證時接受副標前的主曲名（如 404 (New Era) -> 404）；短詞會自動套用嚴格演出者檢查
+                    if len(re.sub(r"\W+", "", outside)) >= 3:
+                        add(outside)
     return out
 
 
@@ -408,33 +428,57 @@ def candidates() -> list[dict]:
 
 def search_artist_name(artist: str) -> str:
     base = primary_artist(artist)
-    return ARTIST_SEARCH_ALIASES.get(base, base)
+    canon = ARTIST_CANONICAL_TW.get(norm(base), base)
+    return ARTIST_SEARCH_ALIASES.get(canon, canon)
+
+
+def query_title(title: str) -> str:
+    """清理供 YouTube 搜尋使用的曲名：移除 feat／版本／OST 括號與孤立尾端標點，保留核心曲名。"""
+    cleaned = clean_title(title)
+    m = BILINGUAL_PAREN_RE.match(cleaned)
+    if m:
+        outside = m.group(1).strip()
+        if len(re.sub(r"\W+", "", outside)) >= 3:
+            cleaned = outside
+    cleaned = cleaned.replace('"', "").replace("|", " ").strip()
+    stripped = cleaned.strip("!?！？")
+    cleaned = stripped or cleaned
+    cleaned = " ".join(cleaned.split())
+    if not cleaned:
+        cleaned = " ".join((title or "").replace('"', "").replace("|", " ").split())
+    return cleaned
 
 
 def build_youtube_query(title: str, artist: str, alt_titles=(), alt_artists=()) -> str:
-    """組合精確 YouTube 查詢：每個 OR 分支都帶引號包住的曲名與演出者，避免裸關鍵字造成 totalResults 暴增。"""
-    q_title = clean_title(title).replace('"', "").replace("|", " ").strip()
-    q_artist = search_artist_name(artist).replace('"', "").replace("|", " ").strip()
-    if not q_title:
-        q_title = title.replace('"', "").strip()
+    """組合乾淨單分支 YouTube 查詢：避免多分支 OR 與雙引號鎖死稀釋召回，由 evaluate_youtube_items() 嚴格把關精準度。"""
+    q_title = query_title(title)
+    q_artist = " ".join(search_artist_name(artist).replace('"', "").replace("|", " ").split())
     if not q_artist:
-        q_artist = artist.replace('"', "").strip()
+        q_artist = " ".join((artist or "").replace('"', "").replace("|", " ").split())
+    parts = [p for p in (q_title, q_artist, "dance") if p]
+    return " ".join(parts)
 
-    branches = [f'"{q_title}" "{q_artist}" {kw}' for kw in ("dance", "challenge", "舞蹈", "練習室")]
-    # 韓文店面名稱可找回只寫韓文的練習室與挑戰片，仍在同一次查詢內。
-    titles = title_variants(title, *(alt_titles or ()))
-    artists = _artist_match_candidates(artist, alt_artists or [])
-    kr_title = next((v for v in titles if re.search("[가-힣]", v)), q_title)
-    kr_artist = q_artist
-    if kr_title != q_title:
-        kr_artist = next((v for v in artists if re.search("[가-힣]", v)), q_artist)
-    korean_pair = ' '.join('"' + v.replace('"', '').replace('|', ' ') + '"' for v in (kr_title, kr_artist))
-    branches[2:2] = [f"{korean_pair} 챌린지", f"{korean_pair} 안무"]
-    selected = [branches[0]]
-    for branch in branches[1:]:
-        if len("|".join([*selected, branch])) <= 240:
-            selected.append(branch)
-    return "|".join(selected)
+
+def select_query_entries(
+    pool: list[dict],
+    max_queries: int,
+    first_pass_per_artist: int = FIRST_PASS_PER_ARTIST,
+) -> list[dict]:
+    """分散單演出者查詢配額：第一輪每演出者先取前 N 首，避免單團屠榜擠掉後段其他舞曲，剩餘配額再依序遞補。"""
+    if max_queries <= 0:
+        return []
+    primary: list[dict] = []
+    overflow: list[dict] = []
+    counts: dict[str, int] = {}
+    for entry in pool:
+        akey = canonical_artist_key(entry["item"].get("artistName", ""))
+        if not akey or first_pass_per_artist <= 0 or counts.get(akey, 0) < first_pass_per_artist:
+            primary.append(entry)
+            if akey:
+                counts[akey] = counts.get(akey, 0) + 1
+        else:
+            overflow.append(entry)
+    return (primary + overflow)[:max_queries]
 
 
 def _is_short_or_common_title(norm_title: str) -> bool:
@@ -461,11 +505,8 @@ def _compile_phrase_pattern(phrase: str, allow_spaceless: bool = False) -> re.Pa
         parts.append(escaped)
     if not parts:
         return None
-    # CJK/韓文多字詞組允許略過空白（如 첫 눈 / 첫눈）
-    sep = r"\s*" if _has_non_ascii_letter(text) else r"[\s\-_]*\s+"
-    # 針對一般英文多字短語改用寬鬆分隔（空白、連字號、底線）
-    if not _has_non_ascii_letter(text):
-        sep = r"[\s\-_]+"
+    # CJK/韓文多字詞組允許略過空白（如 첫 눈 / 첫눈）；英文多字短語允許空白、連字號、底線分隔
+    sep = r"\s*" if _has_non_ascii_letter(text) else r"[\s\-_]+"
     body = sep.join(parts)
     prefix = r"(?<![a-z0-9])" if text[0].isascii() and text[0].isalnum() else ""
     suffix = r"(?![a-z0-9])" if text[-1].isascii() and text[-1].isalnum() else ""
@@ -524,7 +565,7 @@ def evaluate_youtube_items(
     alt_artists: list[str] | None = None,
 ) -> dict:
     """逐筆驗證 search.list 回傳影片是否真的屬於該首歌的舞蹈影片，並依頻道上限節流。"""
-    t_variants = title_variants(title, *(alt_titles or []))
+    t_variants = title_variants(title, *(alt_titles or []), include_subtitle_head=True)
     strict_title = any(_is_short_or_common_title(tv) for tv in t_variants)
     title_patterns = [
         p
@@ -539,11 +580,14 @@ def evaluate_youtube_items(
         if (p := _compile_phrase_pattern(an, allow_spaceless=True)) is not None
     ]
 
-    # 舞者常把歌名和 challenge 連成單一 hashtag。只接受完整標籤。
-    challenge_tags = {
-        "#" + re.sub(r"[^\w]+", "", tv) + suffix
-        for tv in t_variants for suffix in ("challenge", "챌린지")
-    }
+    # 舞者常把歌名和 challenge/dance 連成單一 hashtag。只接受完整標籤，並避免純符號曲名產生裸 #challenge。
+    compact_dance_tags = set()
+    for tv in t_variants:
+        slug = re.sub(r"[^\w]+", "", tv).replace("_", "")
+        if len(slug) >= 2:
+            for suffix in ("challenge", "챌린지", "dance", "dancecover", "dancechallenge", "dancepractice"):
+                compact_dance_tags.add("#" + slug + suffix)
+
     seven_days_ago = now - dt.timedelta(days=7)
     seen_videos = set()
     channel_counts: dict[str, int] = {}
@@ -567,8 +611,9 @@ def evaluate_youtube_items(
         norm_desc = norm(v_desc[:300])
 
         # 1. 曲名必須出現在影片標題（不看 description，避免「Please subscribe」「with me」誤命中）
-        tagged_challenge = bool(challenge_tags.intersection(re.findall(r"#[\w]+", norm_title)))
-        if not tagged_challenge and not any(p.search(norm_title) for p in title_patterns):
+        title_hashtags = {"#" + tag[1:].replace("_", "") for tag in re.findall(r"#[\w]+", norm_title)}
+        tagged_dance = bool(compact_dance_tags.intersection(title_hashtags))
+        if not tagged_dance and not any(p.search(norm_title) for p in title_patterns):
             continue
 
         # 2. 演出者需出現在標題或頻道；非常見／短曲名才允許退回簡介前段
@@ -579,7 +624,7 @@ def evaluate_youtube_items(
             continue
 
         # 3. 必須具舞蹈意圖
-        if NON_DANCE_RE.search(v_title) or not (tagged_challenge or matches_dance_intent(v_title, v_desc)):
+        if NON_DANCE_RE.search(v_title) or not (tagged_dance or matches_dance_intent(v_title, v_desc)):
             continue
 
         matched_raw += 1
@@ -611,20 +656,38 @@ def evaluate_youtube_items(
     }
 
 
+def compact_youtube_items(items: list[dict]) -> list[dict]:
+    """精簡保存 search.list 原始回傳影片，供離線調參重播（與 evaluate_youtube_items 格式相容）。"""
+    compacted = []
+    for item in items:
+        snippet = item.get("snippet") or {}
+        compacted.append(
+            {
+                "id": {"videoId": (item.get("id") or {}).get("videoId") or ""},
+                "snippet": {
+                    "title": html.unescape(snippet.get("title") or ""),
+                    "channelTitle": html.unescape(snippet.get("channelTitle") or ""),
+                    "channelId": snippet.get("channelId") or "",
+                    "publishedAt": snippet.get("publishedAt") or "",
+                    "description": html.unescape(snippet.get("description") or "")[:400],
+                },
+            }
+        )
+    return compacted
+
+
 def dance_signal(entry: dict, key: str, since: str, now: dt.datetime) -> dict:
     it = entry["item"]
     query = build_youtube_query(it["name"], it["artistName"], entry.get("altTitles"), entry.get("altArtists"))
-    q = urllib.parse.urlencode(
-        {
-            "part": "snippet",
-            "type": "video",
-            "maxResults": "50",
-            "regionCode": "TW",
-            "publishedAfter": since,
-            "q": query,
-            "key": key,
-        }
-    )
+    params = {
+        "part": "snippet",
+        "type": "video",
+        "maxResults": str(QUERY_MAX_RESULTS),
+        "regionCode": QUERY_REGION_CODE,
+        "publishedAfter": since,
+        "q": query,
+    }
+    q = urllib.parse.urlencode({**params, "key": key})
     resp = get_json("https://www.googleapis.com/youtube/v3/search?" + q)
     items = resp.get("items", [])
     raw_total = int((resp.get("pageInfo") or {}).get("totalResults", 0) or 0)
@@ -638,7 +701,114 @@ def dance_signal(entry: dict, key: str, since: str, now: dt.datetime) -> dict:
     )
     stats["rawTotal"] = raw_total
     stats["query"] = query
+    stats["items"] = compact_youtube_items(items)
+    stats["params"] = {k: params[k] for k in ("regionCode", "publishedAfter", "maxResults")}
     return stats
+
+
+def _stat_summary(st: dict) -> dict:
+    return {
+        k: st[k]
+        for k in ("verified", "matchedRaw", "fetched", "uniqueChannels", "recent7d", "precision", "strictTitle")
+        if k in st
+    }
+
+
+def write_raw_cache(
+    path: str | os.PathLike,
+    *,
+    now: dt.datetime,
+    max_queries: int,
+    pool_size: int,
+    queried: int,
+    failed: int,
+    since: str,
+    records: list[dict],
+) -> None:
+    """輸出每首歌原始搜尋結果快取（絕不含 API 金鑰），供 Actions artifact 下載與離線調參。"""
+    parent = os.path.dirname(os.fspath(path))
+    if parent:
+        os.makedirs(parent, exist_ok=True)
+    payload = {
+        "generatedAt": now.isoformat().replace("+00:00", "Z"),
+        "params": {
+            "maxQueries": max_queries,
+            "firstPassPerArtist": FIRST_PASS_PER_ARTIST,
+            "windowDays": QUERY_WINDOW_DAYS,
+            "regionCode": QUERY_REGION_CODE,
+            "maxResults": QUERY_MAX_RESULTS,
+            "publishedAfter": since,
+            "minDanceVideos": MIN_DANCE_VIDEOS,
+            "maxPerChannel": MAX_PER_CHANNEL,
+        },
+        "poolSize": pool_size,
+        "queried": queried,
+        "failed": failed,
+        "entries": records,
+    }
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=1)
+        f.write("\n")
+
+
+def replay_raw_cache(path: str | os.PathLike) -> tuple[dt.datetime, list[dict], dict[str, dict], set[str], int]:
+    """從原始搜尋快取檔離線重算每首驗證統計（零網路與 YouTube 額度消耗）。"""
+    with open(path, encoding="utf-8") as f:
+        raw = json.load(f)
+    gen_at = raw.get("generatedAt") or ""
+    try:
+        now = dt.datetime.fromisoformat(gen_at.replace("Z", "+00:00"))
+    except ValueError:
+        now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
+
+    pool: list[dict] = []
+    stats_by_id: dict[str, dict] = {}
+    failed_ids: set[str] = set()
+    queried = 0
+
+    for rec in raw.get("entries", []):
+        tid = str(rec["id"])
+        item = {
+            "id": tid,
+            "name": rec["title"],
+            "artistName": rec["artist"],
+            "url": rec.get("url") or f"https://music.apple.com/tw/song/{tid}",
+            "artworkUrl100": rec.get("artworkUrl100") or "",
+        }
+        entry = {
+            "item": item,
+            "storefront": rec.get("storefront") or "tw",
+            "twRank": rec.get("twRank"),
+            "altTitles": rec.get("altTitles") or [rec["title"]],
+            "altArtists": rec.get("altArtists") or [rec["artist"]],
+        }
+        pool.append(entry)
+        queried += 1
+        if rec.get("error"):
+            failed_ids.add(tid)
+            continue
+        items = rec.get("items") or []
+        st = evaluate_youtube_items(
+            item["name"],
+            item["artistName"],
+            items,
+            now=now,
+            alt_titles=entry["altTitles"],
+            alt_artists=entry["altArtists"],
+        )
+        st["rawTotal"] = int(rec.get("rawTotal") or 0)
+        st["query"] = rec.get("query") or ""
+        stats_by_id[tid] = st
+        print(
+            f"YT(replay) | {item['name']} — {item['artistName']} | "
+            f"rawTotal={st['rawTotal']} fetched={st['fetched']} "
+            f"matched={st['matchedRaw']} verified={st['verified']} "
+            f"ch={st['uniqueChannels']} r7d={st['recent7d']} "
+            f"prec={st['precision']:.0%}",
+            flush=True,
+        )
+
+    return now, pool, stats_by_id, failed_ids, queried
 
 
 def previous_dance_signals() -> dict[str, dict]:
@@ -655,34 +825,92 @@ def previous_dance_signals() -> dict[str, dict]:
     }
 
 
-def main():
-    max_queries = int(os.environ.get("MAX_QUERIES") or str(DEFAULT_MAX_QUERIES))
-    now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
-    pool = candidates()
-    key = os.environ.get("YOUTUBE_API_KEY", "").strip()
-    stats_by_id: dict[str, dict] = {}
-    failed_ids = set()
-    queried = 0
+def _resolve_replay_path(argv: list[str] | None = None) -> str:
+    args = list(sys.argv[1:] if argv is None else argv)
+    for idx, arg in enumerate(args):
+        if arg == "--replay" and idx + 1 < len(args):
+            return args[idx + 1].strip()
+        if arg.startswith("--replay="):
+            return arg.split("=", 1)[1].strip()
+    return os.environ.get("OFFLINE_RAW_INPUT", OFFLINE_RAW_INPUT).strip()
 
-    if key:
-        since = (now - dt.timedelta(days=14)).isoformat().replace("+00:00", "Z")
-        for entry in pool[:max_queries]:
-            it = entry["item"]
-            try:
-                st = dance_signal(entry, key, since, now)
-                stats_by_id[it["id"]] = st
-                print(
-                    f"YT | {it['name']} — {it['artistName']} | "
-                    f"rawTotal={st['rawTotal']} fetched={st['fetched']} "
-                    f"matched={st['matchedRaw']} verified={st['verified']} "
-                    f"ch={st['uniqueChannels']} r7d={st['recent7d']} "
-                    f"prec={st['precision']:.0%}",
-                    flush=True,
+
+def main(argv: list[str] | None = None):
+    replay_path = _resolve_replay_path(argv)
+    if replay_path:
+        now, pool, stats_by_id, failed_ids, queried = replay_raw_cache(replay_path)
+    else:
+        max_queries = int(os.environ.get("MAX_QUERIES") or str(DEFAULT_MAX_QUERIES))
+        now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
+        pool = candidates()
+        key = os.environ.get("YOUTUBE_API_KEY", "").strip()
+        raw_cache_out = os.environ.get("RAW_CACHE_OUT", RAW_CACHE_OUT).strip()
+        stats_by_id = {}
+        failed_ids = set()
+        raw_records: list[dict] = []
+        queried = 0
+        since = (now - dt.timedelta(days=QUERY_WINDOW_DAYS)).isoformat().replace("+00:00", "Z")
+
+        if key:
+            for entry in select_query_entries(pool, max_queries):
+                it = entry["item"]
+                q_preview = build_youtube_query(
+                    it["name"], it["artistName"], entry.get("altTitles"), entry.get("altArtists")
                 )
-            except Exception as exc:  # 單首失敗不中斷整份
-                failed_ids.add(it["id"])
-                print(f"YouTube 查詢失敗：{it['name']}：{exc}", file=sys.stderr)
-            queried += 1
+                rec = {
+                    "id": str(it["id"]),
+                    "title": it["name"],
+                    "artist": it["artistName"],
+                    "storefront": entry.get("storefront"),
+                    "twRank": entry.get("twRank"),
+                    "url": it.get("url") or "",
+                    "artworkUrl100": it.get("artworkUrl100") or "",
+                    "altTitles": entry.get("altTitles") or [it["name"]],
+                    "altArtists": entry.get("altArtists") or [it["artistName"]],
+                    "query": q_preview,
+                    "params": {
+                        "regionCode": QUERY_REGION_CODE,
+                        "publishedAfter": since,
+                        "maxResults": str(QUERY_MAX_RESULTS),
+                    },
+                    "error": None,
+                    "rawTotal": 0,
+                    "stats": None,
+                    "items": [],
+                }
+                try:
+                    st = dance_signal(entry, key, since, now)
+                    stats_by_id[it["id"]] = st
+                    rec["query"] = st.get("query") or q_preview
+                    rec["rawTotal"] = int(st.get("rawTotal") or 0)
+                    rec["stats"] = _stat_summary(st)
+                    rec["items"] = st.get("items") or []
+                    print(
+                        f"YT | {it['name']} — {it['artistName']} | "
+                        f"rawTotal={st['rawTotal']} fetched={st['fetched']} "
+                        f"matched={st['matchedRaw']} verified={st['verified']} "
+                        f"ch={st['uniqueChannels']} r7d={st['recent7d']} "
+                        f"prec={st['precision']:.0%}",
+                        flush=True,
+                    )
+                except Exception as exc:  # 單首失敗不中斷整份
+                    failed_ids.add(it["id"])
+                    rec["error"] = str(exc)
+                    print(f"YouTube 查詢失敗：{it['name']}：{exc}", file=sys.stderr)
+                raw_records.append(rec)
+                queried += 1
+
+        if raw_cache_out:
+            write_raw_cache(
+                raw_cache_out,
+                now=now,
+                max_queries=max_queries,
+                pool_size=len(pool),
+                queried=queried,
+                failed=len(failed_ids),
+                since=since,
+                records=raw_records,
+            )
 
     if queried and len(failed_ids) * 100 > queried * 30:
         sys.exit(f"YouTube 查詢失敗 {len(failed_ids)}/{queried}，超過 30%，保留上一份 feed")

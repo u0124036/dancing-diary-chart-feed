@@ -31,7 +31,18 @@ jobs:
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           MAX_QUERIES: ${{ inputs.max_queries }}
+          RAW_CACHE_OUT: youtube-raw-results.json
         run: python build_feed.py
+      - name: 上傳原始搜尋結果與 feed artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chart-feed-run-${{ github.run_id }}
+          path: |
+            feed.json
+            youtube-raw-results.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: 有變更才提交
         if: github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.commit_feed != false)
         run: |
