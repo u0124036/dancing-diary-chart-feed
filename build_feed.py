@@ -418,36 +418,43 @@ def _localize_item(sf: str, it: dict, tw_artist_by_id: dict, tw_track_lookup: di
     return localized, alt_titles, alt_artists
 
 
-def _dedup_keys(item: dict, alt_titles: list[str], *, for_lookup: bool = False) -> list[tuple]:
+def _dedup_keys(
+    item: dict, alt_titles: list[str], alt_artists=(), *, for_lookup: bool = False
+) -> list[tuple]:
     """跨榜同曲辨識鍵。同歌名只在「同 Apple artistId」或「同（正規化）演出者」時合併，不同歌手的同名歌不併。
 
     〔D13〕合作曲掛名順序或主唱不同時：掛名集合完全相同（`ROSÉ & Bruno Mars`／`Bruno Mars & ROSÉ`）一律視為同曲；
     「一方的主要演出者＝另一方的合作掛名者」（`A feat. B`／`B`）也視為同曲，但常見／短曲名（Love、With、BAD…）不套用，避免誤併。
     for_lookup=False 回傳要登記的鍵；True 回傳要查詢的鍵（主要演出者對照對方的合作掛名，反之亦然）。
+    店面在地化後的掛名可能只剩主唱（如韓榜 `Bruno Mars & ROSÉ` 經台灣店面查詢只回 `Bruno Mars`），
+    因此原掛名（alt_artists）也一併產生鍵，避免同曲被拆成兩筆。
     """
     tid = str(item["id"])
     aid = str(item.get("artistId") or "")
-    members = artist_member_keys(item["artistName"])
-    artist_key = members[0] if members else ""
-    featured = members[1:]
+    member_sets: list[list[str]] = []
+    for name in dict.fromkeys([item["artistName"], *(a for a in alt_artists if a)]):
+        members = artist_member_keys(name)
+        if members and members not in member_sets:
+            member_sets.append(members)
     keys: list[tuple] = [("id", tid)]
     for tv in title_variants(item["name"], *alt_titles):
         if aid:
             keys.append(("aid_title", aid, tv))
-        if artist_key:
+        for members in member_sets:
+            artist_key = members[0]
+            featured = members[1:]
             keys.append(("artist_title", artist_key, tv))
-        if len(members) >= 2:
-            # 掛名演出者集合完全相同（只是順序不同）時，短曲名也視為同曲（如 APT.）
-            keys.append(("members_title", tuple(sorted(members)), tv))
-        if _is_short_or_common_title(tv):
-            continue
-        if for_lookup:
-            if artist_key:
+            if len(members) >= 2:
+                # 掛名演出者集合完全相同（只是順序不同）時，短曲名也視為同曲（如 APT.）
+                keys.append(("members_title", tuple(sorted(members)), tv))
+            if _is_short_or_common_title(tv):
+                continue
+            if for_lookup:
                 keys.append(("member_title", artist_key, tv))
-            keys.extend(("artist_title", m, tv) for m in featured)
-        else:
-            keys.extend(("member_title", m, tv) for m in featured)
-    return keys
+                keys.extend(("artist_title", m, tv) for m in featured)
+            else:
+                keys.extend(("member_title", m, tv) for m in featured)
+    return list(dict.fromkeys(keys))
 
 
 def _genre_names(item: dict) -> list[str]:
@@ -486,8 +493,8 @@ def merge_candidates(lists: dict[str, list[dict]], lookup_fn=itunes_lookup) -> l
             loc_item, alt_titles, alt_artists = _localize_item(
                 sf, raw, tw_artist_by_id, tw_track_lookup, tw_artist_lookup
             )
-            keys = _dedup_keys(loc_item, alt_titles)
-            lookup = _dedup_keys(loc_item, alt_titles, for_lookup=True)
+            keys = _dedup_keys(loc_item, alt_titles, alt_artists)
+            lookup = _dedup_keys(loc_item, alt_titles, alt_artists, for_lookup=True)
             existing = next((seen[k] for k in lookup if k in seen), None)
 
             if existing is not None:
@@ -787,7 +794,7 @@ def enrich_pool_with_youtube_popular(
 
     seen: dict[tuple, dict] = {}
     for entry in pool:
-        for k in _dedup_keys(entry["item"], entry.get("altTitles") or []):
+        for k in _dedup_keys(entry["item"], entry.get("altTitles") or [], entry.get("altArtists") or []):
             seen[k] = entry
 
     new_entries: list[dict] = []
@@ -1358,10 +1365,13 @@ def dance_rank_weight(entry: dict) -> float:
 # ---- App 排名預演（與 DancingDiary DanceChartSnapshot.rankedEntries 同規則；docs/dance-chart-feed.md「排名規則」）----
 
 def _distinct_by_source(signals: list[dict]) -> list[dict]:
+    """與 App `distinctBySource` 一致：先依名次排序，再依來源（不分大小寫）各取名次最佳的一筆。
+    串流參考分數取前兩筆時因此依訊號名次而非寫入順序。"""
     seen, out = set(), []
-    for sig in signals:
-        if sig["source"] not in seen:
-            seen.add(sig["source"])
+    for sig in sorted(signals, key=lambda s: s["rank"]):
+        source = str(sig["source"]).lower()
+        if source not in seen:
+            seen.add(source)
             out.append(sig)
     return out
 

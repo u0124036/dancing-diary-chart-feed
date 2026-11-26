@@ -168,6 +168,32 @@ class SeasonalAndLanguageWeightTests(unittest.TestCase):
 class AppRankPreviewTests(unittest.TestCase):
     """App DanceChartSnapshot.rankedEntries 的 Python 預演須與 docs/dance-chart-feed.md 排名規則一致。"""
 
+    def test_streaming_score_uses_two_best_ranked_signals_like_app(self):
+        # 複驗反例（x-vchart10）：App 先依名次排序再取前兩筆串流訊號，與寫入順序無關。
+        def streaming(sid, title, artist, *ranks):
+            sources = [bf.STREAMING_SOURCE, "Apple Music 韓國", "YouTube 台灣熱門"]
+            return {"id": sid, "title": title, "artist": artist, "officialDance": [],
+                    "signals": [{"kind": "streaming", "source": src, "rank": r} for src, r in zip(sources, ranks)]}
+        santa = streaming("season-two", "Santa Tell Me", "Ariana Grande", 100, 50, 1)  # 1/√1 + 1/√50
+        last = streaming("season-one", "Last Christmas", "Wham!", 1)  # 1/√1
+        regular = streaming("regular", "Regular Song", "Regular Artist", 4)
+        dance = [_song(f"d{i}", f"Crew {i}", dance_rank=i + 1, video_count=5) for i in range(13)]
+        preview = bf.app_rank_preview(dance + [last, regular, santa])
+        self.assertEqual([s["id"] for s, tier in preview if tier == "backfill"], ["season-two", "season-one"])
+        kept, removed = bf.enforce_seasonal_cap(dance + [last, regular, santa], {"season-one", "season-two"})
+        self.assertEqual([s["id"] for s in removed], ["season-one"])
+        self.assertEqual([s["id"] for s, tier in bf.app_rank_preview(kept) if tier == "backfill"],
+                         ["season-two", "regular"])
+
+    def test_signal_dedup_by_source_keeps_best_rank_case_insensitive(self):
+        song = {"id": "x", "title": "x", "artist": "X", "officialDance": [], "signals": [
+            {"kind": "streaming", "source": "Apple Music 台灣", "rank": 40},
+            {"kind": "streaming", "source": "apple music 台灣", "rank": 1},
+            {"kind": "streaming", "source": "Apple Music 韓國", "rank": 4},
+        ]}
+        _, _, streaming_score = bf._app_song_scores(song)
+        self.assertAlmostEqual(streaming_score, 1 + 0.5)
+
     def test_two_tiers_artist_cap_and_limit(self):
         songs = [_song(f"a{i}", "IVE", dance_rank=i + 1, video_count=20) for i in range(4)]
         songs += [_song(f"b{i}", f"Crew {i}", dance_rank=10 + i, video_count=10) for i in range(14)]
@@ -228,6 +254,39 @@ class SameTitleDifferentArtistTests(unittest.TestCase):
             [_apple_item("40", "Takedown", "EJAE, HUNTR/X & AUDREY NUNA", "400", "kr")],
         )
         self.assertEqual(len(merged), 1)
+
+    def test_collab_order_swap_merges_after_storefront_localization_drops_featured(self):
+        # 複驗反例（x-vchart10）：韓榜原掛名 Bruno Mars & ROSÉ，台灣店面 Lookup 只回 Bruno Mars；
+        # 原掛名留在 altArtists，仍須與台灣榜 ROSÉ & Bruno Mars 併成 1 筆。
+        def lookup(ids, country):
+            if "2" in ids:
+                return [{"trackId": "2", "trackName": "APT.", "artistName": "Bruno Mars",
+                         "trackViewUrl": "https://music.apple.com/tw/song/2"}]
+            return []
+        merged = bf.merge_candidates({
+            "tw": [_apple_item("1", "APT.", "ROSÉ & Bruno Mars", "100")],
+            "kr": [_apple_item("2", "APT.", "Bruno Mars & ROSÉ", "200", "kr")],
+        }, lookup_fn=lookup)
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]["krRank"], 1)
+        self.assertEqual(merged[0]["item"]["artistName"], "ROSÉ & Bruno Mars")
+        self.assertIn("Bruno Mars & ROSÉ", merged[0]["altArtists"])
+        # 韓榜先出現（台灣榜在後）時亦同
+        merged = bf.merge_candidates({
+            "kr": [_apple_item("2", "APT.", "Bruno Mars & ROSÉ", "200", "kr")],
+            "tw": [_apple_item("9", "Filler", "Someone", "900"), _apple_item("1", "APT.", "ROSÉ & Bruno Mars", "100")],
+        }, lookup_fn=lookup)
+        self.assertEqual(sum(1 for e in merged if e["item"]["name"] == "APT."), 1)
+
+    def test_localized_alt_artist_does_not_merge_different_artists_same_title(self):
+        def lookup(ids, country):
+            return [{"trackId": "4", "trackName": "Love", "artistName": "Artist B",
+                     "trackViewUrl": "https://music.apple.com/tw/song/4"}] if "4" in ids else []
+        merged = bf.merge_candidates({
+            "tw": [_apple_item("3", "Love", "Artist A", "33")],
+            "kr": [_apple_item("4", "Love", "Artist B & Artist C", "44", "kr")],
+        }, lookup_fn=lookup)
+        self.assertEqual(len(merged), 2)
 
     def test_featured_artist_credit_merges_only_for_distinct_titles(self):
         # 主唱 A 的合作曲＝合作者 C 掛主唱的同名版本（非常見曲名）→ 同一首
