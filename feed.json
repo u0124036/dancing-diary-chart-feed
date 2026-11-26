@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-25T02:36:03Z",
+ "updatedAt": "2026-11-26T03:51:50Z",
  "songs": [
   {
    "id": "am:913803072",
@@ -28,8 +28,9 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 12,
-     "videoCount": 112540
+     "rank": 7,
+     "videoCount": 131645,
+     "previousRank": 12
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/3d/d6/3f/3dd63f74-ceba-a540-cb38-7de3f26f3628/KM0002907-_-0829.jpg/600x600bb.jpg"
@@ -56,11 +57,46 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 10,
-     "videoCount": 151663
+     "rank": 9,
+     "videoCount": 99451,
+     "previousRank": 10
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b9/40/bf/b940bf84-9f10-15e6-423f-3cdca2bbdd21/823375411949_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6820428730",
+   "title": "NEON",
+   "artist": "A2O & A2O LITE",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/neon/6820428726?i=6820428730"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=NEON+A2O+%26+A2O+LITE+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 2
+    },
+    {
+     "kind": "dance",
+     "source": "YouTube 舞蹈影片",
+     "rank": 5,
+     "videoCount": 140715,
+     "previousRank": 9
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/47/9c/af/479caf36-9941-3b8e-51f5-98e761463502/888272190403_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1868862384",
@@ -84,49 +120,17 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 2
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 24,
-     "videoCount": 37275
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6820428730",
-   "title": "NEON",
-   "artist": "A2O & A2O LITE",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/neon/6820428726?i=6820428730"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=NEON+A2O+%26+A2O+LITE+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
      "rank": 3
     },
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 9,
-     "videoCount": 157527
+     "rank": 13,
+     "videoCount": 43949,
+     "previousRank": 24
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/47/9c/af/479caf36-9941-3b8e-51f5-98e761463502/888272190403_Cover.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:6828335406",
@@ -150,8 +154,9 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 7,
-     "videoCount": 189039
+     "rank": 3,
+     "videoCount": 302156,
+     "previousRank": 7
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/df/b7/b3dfb7ba-715f-1f5a-5528-eb82acd5225a/888272191394_Cover.jpg/600x600bb.jpg"
@@ -205,72 +210,12 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 12,
-     "videoCount": 112540
+     "rank": 7,
+     "videoCount": 131645,
+     "previousRank": 12
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/3d/d6/3f/3dd63f74-ceba-a540-cb38-7de3f26f3628/KM0002907-_-0829.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1598660938",
-   "title": "FAKE LOVE",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/fake-love/1598660934?i=1598660938"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=FAKE+LOVE+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 5
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 17,
-     "videoCount": 56036
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/02/c5/18/02c518f5-ac06-3321-622e-08d9429fd968/192562556672_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6822679368",
-   "title": "삐그덕 (feat. 아이유)",
-   "artist": "Crush",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%EC%82%90%EA%B7%B8%EB%8D%95-feat-%EC%95%84%EC%9D%B4%EC%9C%A0/6822679187?i=6822679368"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%EC%82%90%EA%B7%B8%EB%8D%95+%28feat.+%EC%95%84%EC%9D%B4%EC%9C%A0%29+Crush+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 56,
-     "videoCount": 14
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/88/be/eb/88beebd5-76f0-1845-91ad-6f80764488af/191953587608.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1868862387",
@@ -294,16 +239,51 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
+     "rank": 5
+    },
+    {
+     "kind": "dance",
+     "source": "YouTube 舞蹈影片",
+     "rank": 4,
+     "videoCount": 219341,
+     "previousRank": 8
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1598660938",
+   "title": "FAKE LOVE",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/fake-love/1598660934?i=1598660938"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=FAKE+LOVE+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
      "rank": 6
     },
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
      "rank": 8,
-     "videoCount": 169466
+     "videoCount": 103650,
+     "previousRank": 17
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/02/c5/18/02c518f5-ac06-3321-622e-08d9429fd968/192562556672_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:6828335411",
@@ -327,72 +307,12 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 34,
-     "videoCount": 12377
+     "rank": 18,
+     "videoCount": 14560,
+     "previousRank": 34
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/df/b7/b3dfb7ba-715f-1f5a-5528-eb82acd5225a/888272191394_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862377",
-   "title": "Hooligan",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/hooligan/1868862375?i=1868862377"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Hooligan+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 7
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 28,
-     "videoCount": 24038
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6781521710",
-   "title": "꿈꾸던 어른이 되었나요?",
-   "artist": "머무르",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%EA%BF%88%EA%BE%B8%EB%8D%98-%EC%96%B4%EB%A5%B8%EC%9D%B4-%EB%90%98%EC%97%88%EB%82%98%EC%9A%94/6781521706?i=6781521710"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%EA%BF%88%EA%BE%B8%EB%8D%98+%EC%96%B4%EB%A5%B8%EC%9D%B4+%EB%90%98%EC%97%88%EB%82%98%EC%9A%94%3F+%EB%A8%B8%EB%AC%B4%EB%A5%B4+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 52,
-     "videoCount": 31
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/04/26/86/04268661-4972-f0fa-5699-7ce96d9a4e6b/8800362305407.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1596532400",
@@ -416,44 +336,17 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 8
+     "rank": 7
     },
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 18,
-     "videoCount": 54900
+     "rank": 10,
+     "videoCount": 62310,
+     "previousRank": 18
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/22/f3/8f/22f38fb9-1690-326a-d891-7aa946c2b06f/195497623273_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6815062086",
-   "title": "Angel Bite",
-   "artist": "투모로우바이투게더",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/angel-bite/6815062084?i=6815062086"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Angel+Bite+%ED%88%AC%EB%AA%A8%EB%A1%9C%EC%9A%B0%EB%B0%94%EC%9D%B4%ED%88%AC%EA%B2%8C%EB%8D%94+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 23,
-     "videoCount": 38398
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a7/8b/7c/a78b7c36-7152-5541-6f0f-5f3182eb7bc1/823375408819_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:536115199",
@@ -477,10 +370,66 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 9
+     "rank": 8
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/29/c1/2d/29c12de6-54b4-f549-9d9f-07d8a04221ea/JAY.jpg/100x111bb.jpg"
+  },
+  {
+   "id": "am:6815062086",
+   "title": "Angel Bite",
+   "artist": "투모로우바이투게더",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/kr/album/angel-bite/6815062084?i=6815062086"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Angel+Bite+%ED%88%AC%EB%AA%A8%EB%A1%9C%EC%9A%B0%EB%B0%94%EC%9D%B4%ED%88%AC%EA%B2%8C%EB%8D%94+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "dance",
+     "source": "YouTube 舞蹈影片",
+     "rank": 12,
+     "videoCount": 48550,
+     "previousRank": 23
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a7/8b/7c/a78b7c36-7152-5541-6f0f-5f3182eb7bc1/823375408819_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1868862377",
+   "title": "Hooligan",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/hooligan/1868862375?i=1868862377"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Hooligan+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 9
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1887671067",
@@ -504,8 +453,9 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 31,
-     "videoCount": 19445
+     "rank": 17,
+     "videoCount": 26842,
+     "previousRank": 31
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9b/5f/47/9b5f4711-dc78-2dea-6721-d06709ea5121/198704992810_Cover.jpg/600x600bb.jpg"
@@ -537,166 +487,12 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 10,
-     "videoCount": 151663
+     "rank": 9,
+     "videoCount": 99451,
+     "previousRank": 10
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b9/40/bf/b940bf84-9f10-15e6-423f-3cdca2bbdd21/823375411949_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1764485170",
-   "title": "LOVE ATTACK",
-   "artist": "리센느",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/love-attack/1764485168?i=1764485170"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=LOVE+ATTACK+%EB%A6%AC%EC%84%BC%EB%8A%90+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 35,
-     "videoCount": 10420
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/43/0b/4c/430b4c8e-3cb8-da27-648f-435ec3b391a6/8804775334160.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862376",
-   "title": "Body to Body",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/body-to-body/1868862375?i=1868862376"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Body+to+Body+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 11
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 5,
-     "videoCount": 340609
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6834436963",
-   "title": "기립 (GiiiRIP)",
-   "artist": "BIGBANG",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%EA%B8%B0%EB%A6%BD-giiirip/6834436962?i=6834436963"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%EA%B8%B0%EB%A6%BD+%28GiiiRIP%29+BIGBANG+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 38,
-     "videoCount": 6280
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/13/29/40/132940f6-6b2d-7625-46be-2f22590c0bb3/8809519881573_cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862380",
-   "title": "2.0",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/2-0/1868862375?i=1868862380"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=2.0+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 12
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 11,
-     "videoCount": 119423
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1875146815",
-   "title": "RUDE!",
-   "artist": "Hearts2Hearts",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/rude/1875146814?i=1875146815"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=RUDE%21+Hearts2Hearts+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 72
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 19,
-     "videoCount": 53058
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/78/b9/fb/78b9fb30-169a-eab0-38e9-8df725f8f2d6/888735954603.png/600x600bb.jpg"
   },
   {
    "id": "am:1118757873",
@@ -720,10 +516,118 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 13
+     "rank": 11
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/58/28/f4/5828f491-62ab-61b6-25b4-23838e4f1dcf/dj.sxbqzong.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1843518968",
+   "title": "Good Goodbye",
+   "artist": "HWASA",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/good-goodbye/1843518967?i=1843518968"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Good+Goodbye+HWASA+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 12
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7c/bd/f4/7cbdf4a9-50e6-ec52-7e54-644c80e6b86d/cover_KM0023526_1.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1875146815",
+   "title": "RUDE!",
+   "artist": "Hearts2Hearts",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/kr/album/rude/1875146814?i=1875146815"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=RUDE%21+Hearts2Hearts+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 69
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/78/b9/fb/78b9fb30-169a-eab0-38e9-8df725f8f2d6/888735954603.png/600x600bb.jpg"
+  },
+  {
+   "id": "am:536115195",
+   "title": "七里香",
+   "artist": "周杰倫",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E4%B8%83%E9%87%8C%E9%A6%99/536114662?i=536115195"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E4%B8%83%E9%87%8C%E9%A6%99+%E5%91%A8%E6%9D%B0%E5%80%AB+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 13
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/29/c1/2d/29c12de6-54b4-f549-9d9f-07d8a04221ea/JAY.jpg/100x111bb.jpg"
+  },
+  {
+   "id": "am:1868862376",
+   "title": "Body to Body",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/body-to-body/1868862375?i=1868862376"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Body+to+Body+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 14
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:6820422075",
@@ -747,8 +651,9 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 26,
-     "videoCount": 26850
+     "rank": 16,
+     "videoCount": 27950,
+     "previousRank": 26
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/60/e4/60/60e46075-77f3-3a9f-af82-6f114e0f6cea/FrontCoverImage_1.jpg/600x600bb.jpg"
@@ -775,77 +680,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 14
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 1,
-     "videoCount": 895233
+     "rank": 15
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/ff/00/2c/ff002c29-6da9-1a26-16b3-282a73180366/192562871591_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6795782855",
-   "title": "SUN KISS",
-   "artist": "튜이드",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/sun-kiss/6795782851?i=6795782855"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=SUN+KISS+%ED%8A%9C%EC%9D%B4%EB%93%9C+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 37,
-     "videoCount": 9344
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/f2/a0/02/f2a00270-a846-b0aa-65b3-91bc94442e10/823375310600_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1843518968",
-   "title": "Good Goodbye",
-   "artist": "HWASA",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/good-goodbye/1843518967?i=1843518968"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Good+Goodbye+HWASA+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 15
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 42,
-     "videoCount": 2805
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7c/bd/f4/7cbdf4a9-50e6-ec52-7e54-644c80e6b86d/cover_KM0023526_1.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1887194026",
@@ -869,160 +707,12 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 3,
-     "videoCount": 431597
+     "rank": 1,
+     "videoCount": 522767,
+     "previousRank": 3
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/db/56/04/db5604ab-c7f4-b982-8c76-98ee766ac294/823375069195_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1598666350",
-   "title": "Butter",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/butter/1598666015?i=1598666350"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Butter+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 16
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 16,
-     "videoCount": 56403
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/66/28/6c/66286c9f-6bea-4f99-ec15-507b0c95dc04/196006991739_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:585972803",
-   "title": "All I Want for Christmas Is You",
-   "artist": "Mariah Carey",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/all-i-want-for-christmas-is-you/585972750?i=585972803"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=All+I+Want+for+Christmas+Is+You+Mariah+Carey+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 25,
-     "videoCount": 27758
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c6/b7/27/c6b727f7-3a32-6b43-cee2-05bb71daf1cf/dj.itfmdeif.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:536115195",
-   "title": "七里香",
-   "artist": "周杰倫",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E4%B8%83%E9%87%8C%E9%A6%99/536114662?i=536115195"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E4%B8%83%E9%87%8C%E9%A6%99+%E5%91%A8%E6%9D%B0%E5%80%AB+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 17
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/29/c1/2d/29c12de6-54b4-f549-9d9f-07d8a04221ea/JAY.jpg/100x111bb.jpg"
-  },
-  {
-   "id": "am:942517540",
-   "title": "하지하지마",
-   "artist": "GOT7",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%ED%95%98%EC%A7%80%ED%95%98%EC%A7%80%EB%A7%88/942517529?i=942517540"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%ED%95%98%EC%A7%80%ED%95%98%EC%A7%80%EB%A7%88+GOT7+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 49,
-     "videoCount": 128
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music5/v4/ca/fc/0b/cafc0bf0-b560-7b43-2c07-6706625e683f/GOT7-web-cover_itunes.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6829122414",
-   "title": "Hong Kong (feat. 王菲季候風)",
-   "artist": "The Weeknd",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/hong-kong-feat-%E7%8E%8B%E8%8F%B2%E5%AD%A3%E5%80%99%E9%A2%A8/6829122413?i=6829122414"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Hong+Kong+%28feat.+%E7%8E%8B%E8%8F%B2%E5%AD%A3%E5%80%99%E9%A2%A8%29+The+Weeknd+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 18
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 54,
-     "videoCount": 20
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0b/b2/81/0bb281a4-14af-a403-4af4-c39aa3f0d872/ticket.kusbehtm.jpg/600x600bb.jpg"
   },
   {
    "id": "am:6834436963",
@@ -1046,77 +736,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 19
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 38,
-     "videoCount": 6280
+     "rank": 16
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/13/29/40/132940f6-6b2d-7625-46be-2f22590c0bb3/8809519881573_cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1599172208",
-   "title": "Boy With Luv (feat. Halsey)",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/boy-with-luv-feat-halsey/1599171924?i=1599172208"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Boy+With+Luv+%28feat.+Halsey%29+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 20
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 53,
-     "videoCount": 25
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/40/d4/93/40d493e3-ac9e-1746-8d4c-f380f27c97cb/193483706238_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6770401926",
-   "title": "BAD",
-   "artist": "에이티즈",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/bad/6770401924?i=6770401926"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=BAD+%EC%97%90%EC%9D%B4%ED%8B%B0%EC%A6%88+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 4,
-     "videoCount": 394688
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/15/5e/a0/155ea070-3f0d-84ae-7883-128ecd9ed5bf/196874257944.jpg/600x600bb.jpg"
   },
   {
    "id": "am:535824738",
@@ -1140,32 +763,26 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 21
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 46,
-     "videoCount": 444
+     "rank": 17
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/45/8a/e4/458ae484-dc8b-5683-ce04-8d2948346462/JAY.jpg/100x109bb.jpg"
   },
   {
-   "id": "am:854908536",
-   "title": "첫 눈",
-   "artist": "EXO",
+   "id": "am:585972803",
+   "title": "All I Want for Christmas Is You",
+   "artist": "Mariah Carey",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%EC%B2%AB-%EB%88%88/854908527?i=854908536"
+     "url": "https://music.apple.com/kr/album/all-i-want-for-christmas-is-you/585972750?i=585972803"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%EC%B2%AB+%EB%88%88+EXO+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=All+I+Want+for+Christmas+Is+You+Mariah+Carey+dance+practice"
     }
    ],
    "credits": [],
@@ -1173,11 +790,129 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 51,
-     "videoCount": 49
+     "rank": 14,
+     "videoCount": 31715,
+     "previousRank": 25
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/ae/ae/5b/aeae5b60-57e1-a742-084c-06e4fcbc6707/asset.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c6/b7/27/c6b727f7-3a32-6b43-cee2-05bb71daf1cf/dj.itfmdeif.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1598666350",
+   "title": "Butter",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/butter/1598666015?i=1598666350"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Butter+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 18
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/66/28/6c/66286c9f-6bea-4f99-ec15-507b0c95dc04/196006991739_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1868862380",
+   "title": "2.0",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/2-0/1868862375?i=1868862380"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=2.0+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 19
+    },
+    {
+     "kind": "dance",
+     "source": "YouTube 舞蹈影片",
+     "rank": 6,
+     "videoCount": 139230,
+     "previousRank": 11
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6829122414",
+   "title": "Hong Kong (feat. 王菲季候風)",
+   "artist": "The Weeknd",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/hong-kong-feat-%E7%8E%8B%E8%8F%B2%E5%AD%A3%E5%80%99%E9%A2%A8/6829122413?i=6829122414"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Hong+Kong+%28feat.+%E7%8E%8B%E8%8F%B2%E5%AD%A3%E5%80%99%E9%A2%A8%29+The+Weeknd+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 20
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0b/b2/81/0bb281a4-14af-a403-4af4-c39aa3f0d872/ticket.kusbehtm.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6770401926",
+   "title": "BAD",
+   "artist": "에이티즈",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/kr/album/bad/6770401924?i=6770401926"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=BAD+%EC%97%90%EC%9D%B4%ED%8B%B0%EC%A6%88+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "dance",
+     "source": "YouTube 舞蹈影片",
+     "rank": 2,
+     "videoCount": 503188,
+     "previousRank": 4
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/15/5e/a0/155ea070-3f0d-84ae-7883-128ecd9ed5bf/196874257944.jpg/600x600bb.jpg"
   },
   {
    "id": "am:255921025",
@@ -1201,16 +936,37 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 22
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 58,
-     "videoCount": 10
+     "rank": 21
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/24/fc/1d/24fc1d3e-b37f-968f-3d21-880edc8f8d79/mzi.ybwydvjn.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1599172208",
+   "title": "Boy With Luv (feat. Halsey)",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/boy-with-luv-feat-halsey/1599171924?i=1599172208"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Boy+With+Luv+%28feat.+Halsey%29+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 22
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/40/d4/93/40d493e3-ac9e-1746-8d4c-f380f27c97cb/193483706238_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:6770401926",
@@ -1239,39 +995,12 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 4,
-     "videoCount": 394688
+     "rank": 2,
+     "videoCount": 503188,
+     "previousRank": 4
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/15/5e/a0/155ea070-3f0d-84ae-7883-128ecd9ed5bf/196874257944.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1717383449",
-   "title": "생각을 멈추다 보면",
-   "artist": "최유리",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%EC%83%9D%EA%B0%81%EC%9D%84-%EB%A9%88%EC%B6%94%EB%8B%A4-%EB%B3%B4%EB%A9%B4/1717383448?i=1717383449"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%EC%83%9D%EA%B0%81%EC%9D%84+%EB%A9%88%EC%B6%94%EB%8B%A4+%EB%B3%B4%EB%A9%B4+%EC%B5%9C%EC%9C%A0%EB%A6%AC+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 62,
-     "videoCount": 5
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/32/97/bc/3297bccf-d292-f9de-04ef-58d346cde6cf/191953315522.jpg/600x600bb.jpg"
   },
   {
    "id": "am:944321451",
@@ -1296,43 +1025,9 @@
      "kind": "streaming",
      "source": "Apple Music 台灣",
      "rank": 24
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 61,
-     "videoCount": 6
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/16/db/ff/16dbff09-0750-29b0-07b7-3fa44f8a556e/dj.nzqvfsza.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1822439986",
-   "title": "Deja Vu",
-   "artist": "리센느",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/deja-vu/1822439985?i=1822439986"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Deja+Vu+%EB%A6%AC%EC%84%BC%EB%8A%90+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 44,
-     "videoCount": 1648
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e3/4e/e4/e34ee4d9-47a3-8b51-b6cc-4d991508f0b5/cover_KM0023041_1.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1624001324",
@@ -1362,20 +1057,20 @@
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/1b/63/9e/1b639e5b-f8ca-a6e1-8612-6396bc9ff0eb/4711448407424.jpg/100x134bb.jpg"
   },
   {
-   "id": "am:1734500896",
-   "title": "Magnetic",
-   "artist": "아일릿",
+   "id": "am:1822439986",
+   "title": "Deja Vu",
+   "artist": "리센느",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/magnetic/1734500886?i=1734500896"
+     "url": "https://music.apple.com/kr/album/deja-vu/1822439985?i=1822439986"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Magnetic+%EC%95%84%EC%9D%BC%EB%A6%BF+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=Deja+Vu+%EB%A6%AC%EC%84%BC%EB%8A%90+dance+practice"
     }
    ],
    "credits": [],
@@ -1383,44 +1078,12 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 27,
-     "videoCount": 25197
+     "rank": 20,
+     "videoCount": 1648,
+     "previousRank": 44
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/3e/49/1e/3e491e43-4961-21ab-2abe-37fb1c0feb40/196922879227_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862388",
-   "title": "Like Animals",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/like-animals/1868862375?i=1868862388"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Like+Animals+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 26
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 14,
-     "videoCount": 66057
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e3/4e/e4/e34ee4d9-47a3-8b51-b6cc-4d991508f0b5/cover_KM0023041_1.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1839368232",
@@ -1444,99 +1107,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 27
+     "rank": 26
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ee/85/8f/ee858f39-7c88-5390-4061-6f2de8c43279/4711508138732.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6805367598",
-   "title": "노스탈지아",
-   "artist": "BIG Naughty",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%EB%85%B8%EC%8A%A4%ED%83%88%EC%A7%80%EC%95%84/6805367597?i=6805367598"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%EB%85%B8%EC%8A%A4%ED%83%88%EC%A7%80%EC%95%84+BIG+Naughty+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 50,
-     "videoCount": 83
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d9/e1/62/d9e162a7-7125-6cd0-2df5-a4a3c909c285/cover_KM0025140_1.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862378",
-   "title": "Aliens",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/aliens/1868862375?i=1868862378"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Aliens+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 28
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 13,
-     "videoCount": 66820
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6813395915",
-   "title": "CRASH",
-   "artist": "ALLDAY PROJECT",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/crash/6813395912?i=6813395915"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=CRASH+ALLDAY+PROJECT+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 36,
-     "videoCount": 10000
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ca/6c/4e/ca6c4e31-23b8-4ce9-da0a-ecb0581074c7/8800388635953_cover.png/600x600bb.jpg"
   },
   {
    "id": "am:1692508528",
@@ -1560,99 +1134,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 29
+     "rank": 27
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/45/7d/82/457d82fa-8193-6c46-f01f-28d7adf4cd48/150006421.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6779521286",
-   "title": "Lemon Tang",
-   "artist": "Hearts2Hearts",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/lemon-tang/6779521284?i=6779521286"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Lemon+Tang+Hearts2Hearts+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 32,
-     "videoCount": 18509
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/00/a4/c1/00a4c1fb-c2c9-83c9-af2e-44cb5da80bc4/888735956140.png/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862379",
-   "title": "FYA",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/fya/1868862375?i=1868862379"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=FYA+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 30
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 33,
-     "videoCount": 18184
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1608281417",
-   "title": "사랑한 만큼",
-   "artist": "팀",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%EC%82%AC%EB%9E%91%ED%95%9C-%EB%A7%8C%ED%81%BC/1608281009?i=1608281417"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%EC%82%AC%EB%9E%91%ED%95%9C+%EB%A7%8C%ED%81%BC+%ED%8C%80+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 48,
-     "videoCount": 206
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/a1/20/25/a120258f-237f-1e41-f0df-995487a0ecf4/8809856761217.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1321295662",
@@ -1676,26 +1161,26 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 31
+     "rank": 28
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/e9/7f/5c/e97f5cd3-b170-62d8-5695-57054dcafe54/886446853208.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:1596529073",
-   "title": "MIC Drop",
+   "id": "am:1868862388",
+   "title": "Like Animals",
    "artist": "防彈少年團",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/mic-drop/1596529064?i=1596529073"
+     "url": "https://music.apple.com/tw/album/like-animals/1868862375?i=1868862388"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=MIC+Drop+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=Like+Animals+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
     }
    ],
    "credits": [],
@@ -1703,49 +1188,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 32
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 22,
-     "videoCount": 39814
+     "rank": 29
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/34/a5/93/34a59372-3ebd-ae5f-269d-4c9506864d3f/8804775083280_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6792884088",
-   "title": "Nicole Kidman",
-   "artist": "ADÉLA",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/nicole-kidman/6792883860?i=6792884088"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Nicole+Kidman+AD%C3%89LA+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 54
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 30,
-     "videoCount": 23000
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5d/77/7b/5d777b87-e796-0b3e-cef6-d37d993dd8fe/26UMGIM82371.rgb.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1624000715",
@@ -1769,143 +1215,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 33
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 55,
-     "videoCount": 17
+     "rank": 30
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/1b/63/9e/1b639e5b-f8ca-a6e1-8612-6396bc9ff0eb/4711448407424.jpg/100x134bb.jpg"
-  },
-  {
-   "id": "am:1543850904",
-   "title": "거리에서",
-   "artist": "성시경",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%EA%B1%B0%EB%A6%AC%EC%97%90%EC%84%9C/1543850903?i=1543850904"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%EA%B1%B0%EB%A6%AC%EC%97%90%EC%84%9C+%EC%84%B1%EC%8B%9C%EA%B2%BD+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 59,
-     "videoCount": 8
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/21/7c/88/217c88ed-80bf-adfa-7cdf-a5c219daf9f7/8809784722939.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862389",
-   "title": "they don’t know ’bout us",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/they-dont-know-bout-us/1868862375?i=1868862389"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=they+don%E2%80%99t+know+%E2%80%99bout+us+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 34
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 20,
-     "videoCount": 51928
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862606",
-   "title": "Into the Sun",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/into-the-sun/1868862375?i=1868862606"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Into+the+Sun+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 35
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 6,
-     "videoCount": 334295
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1893599773",
-   "title": "LEMONADE",
-   "artist": "aespa",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/lemonade/1893599771?i=1893599773"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=LEMONADE+aespa+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 64
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 21,
-     "videoCount": 41054
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/00/1d/e6/001de64e-c2f1-fd4b-3604-3d2e16641968/888735955211.png/600x600bb.jpg"
   },
   {
    "id": "am:1443352465",
@@ -1929,54 +1242,26 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 36
+     "rank": 31
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/27/cb/d6/27cbd6b4-c991-cd95-49e3-b6019462ff97/00602517338845.rgb.jpg/100x91bb.jpg"
   },
   {
-   "id": "am:202117984",
-   "title": "Last Christmas (Single Version)",
-   "artist": "Wham!",
+   "id": "am:6828335406",
+   "title": "With",
+   "artist": "RESCENE",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/last-christmas-single-version/202117886?i=202117984"
+     "url": "https://music.apple.com/tw/album/with/6828335122?i=6828335406"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Last+Christmas+%28Single+Version%29+Wham%21+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 41,
-     "videoCount": 2853
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/eb/4a/f9/eb4af984-fc68-56ab-7b89-1d070c04e1dd/5099765318524.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862386",
-   "title": "Merry Go Round",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/merry-go-round/1868862375?i=1868862386"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Merry+Go+Round+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=With+RESCENE+dance+practice"
     }
    ],
    "credits": [],
@@ -1984,13 +1269,190 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 37
+     "rank": 32
     },
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 43,
-     "videoCount": 2671
+     "rank": 3,
+     "videoCount": 302156,
+     "previousRank": 7
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/df/b7/b3dfb7ba-715f-1f5a-5528-eb82acd5225a/888272191394_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1868862379",
+   "title": "FYA",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/fya/1868862375?i=1868862379"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=FYA+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 33
+    },
+    {
+     "kind": "dance",
+     "source": "YouTube 舞蹈影片",
+     "rank": 15,
+     "videoCount": 31038,
+     "previousRank": 33
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6792884088",
+   "title": "Nicole Kidman",
+   "artist": "ADÉLA",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/kr/album/nicole-kidman/6792883860?i=6792884088"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Nicole+Kidman+AD%C3%89LA+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 49
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5d/77/7b/5d777b87-e796-0b3e-cef6-d37d993dd8fe/26UMGIM82371.rgb.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1596529073",
+   "title": "MIC Drop",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/mic-drop/1596529064?i=1596529073"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=MIC+Drop+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 34
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/34/a5/93/34a59372-3ebd-ae5f-269d-4c9506864d3f/8804775083280_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1118757877",
+   "title": "告白氣球",
+   "artist": "周杰倫",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E5%91%8A%E7%99%BD%E6%B0%A3%E7%90%83/1118757859?i=1118757877"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E5%91%8A%E7%99%BD%E6%B0%A3%E7%90%83+%E5%91%A8%E6%9D%B0%E5%80%AB+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 35
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/58/28/f4/5828f491-62ab-61b6-25b4-23838e4f1dcf/dj.sxbqzong.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1893599773",
+   "title": "LEMONADE",
+   "artist": "aespa",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/kr/album/lemonade/1893599771?i=1893599773"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=LEMONADE+aespa+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 60
+    },
+    {
+     "kind": "dance",
+     "source": "YouTube 舞蹈影片",
+     "rank": 11,
+     "videoCount": 52025,
+     "previousRank": 21
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/00/1d/e6/001de64e-c2f1-fd4b-3604-3d2e16641968/888735955211.png/600x600bb.jpg"
+  },
+  {
+   "id": "am:1868862378",
+   "title": "Aliens",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/aliens/1868862375?i=1868862378"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Aliens+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 36
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
@@ -2017,27 +1479,55 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 39,
-     "videoCount": 5884
+     "rank": 19,
+     "videoCount": 10547,
+     "previousRank": 39
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/78/84/f3/7884f392-c186-f234-fc2a-7a7b5edeb9ba/cover_KM0025032_1.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:6828335406",
-   "title": "With",
-   "artist": "RESCENE",
+   "id": "am:1868862606",
+   "title": "Into the Sun",
+   "artist": "防彈少年團",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/with/6828335122?i=6828335406"
+     "url": "https://music.apple.com/tw/album/into-the-sun/1868862375?i=1868862606"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=With+RESCENE+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=Into+the+Sun+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 37
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1887194026",
+   "title": "It's Me",
+   "artist": "ILLIT",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/its-me/1887194024?i=1887194026"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=It%27s+Me+ILLIT+dance+practice"
     }
    ],
    "credits": [],
@@ -2050,27 +1540,28 @@
     {
      "kind": "dance",
      "source": "YouTube 舞蹈影片",
-     "rank": 7,
-     "videoCount": 189039
+     "rank": 1,
+     "videoCount": 522767,
+     "previousRank": 3
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/df/b7/b3dfb7ba-715f-1f5a-5528-eb82acd5225a/888272191394_Cover.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/db/56/04/db5604ab-c7f4-b982-8c76-98ee766ac294/823375069195_Cover.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:1118757877",
-   "title": "告白氣球",
-   "artist": "周杰倫",
+   "id": "am:1868862389",
+   "title": "they don’t know ’bout us",
+   "artist": "防彈少年團",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E5%91%8A%E7%99%BD%E6%B0%A3%E7%90%83/1118757859?i=1118757877"
+     "url": "https://music.apple.com/tw/album/they-dont-know-bout-us/1868862375?i=1868862389"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E5%91%8A%E7%99%BD%E6%B0%A3%E7%90%83+%E5%91%A8%E6%9D%B0%E5%80%AB+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=they+don%E2%80%99t+know+%E2%80%99bout+us+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
     }
    ],
    "credits": [],
@@ -2081,23 +1572,23 @@
      "rank": 39
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/58/28/f4/5828f491-62ab-61b6-25b4-23838e4f1dcf/dj.sxbqzong.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:6769327013",
-   "title": "玻璃",
-   "artist": "Gareth.T",
+   "id": "am:1596529381",
+   "title": "Spring Day",
+   "artist": "防彈少年團",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E7%8E%BB%E7%92%83/6769327003?i=6769327013"
+     "url": "https://music.apple.com/tw/album/spring-day/1596528839?i=1596529381"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E7%8E%BB%E7%92%83+Gareth.T+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=Spring+Day+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
     }
    ],
    "credits": [],
@@ -2108,35 +1599,7 @@
      "rank": 40
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1c/1a/be/1c1abe3a-2eb6-216c-9040-797bb98464d1/827568024145.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1703196825",
-   "title": "사랑하게 될 거야",
-   "artist": "한로로",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/%EC%82%AC%EB%9E%91%ED%95%98%EA%B2%8C-%EB%90%A0-%EA%B1%B0%EC%95%BC/1703196819?i=1703196825"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%EC%82%AC%EB%9E%91%ED%95%98%EA%B2%8C+%EB%90%A0+%EA%B1%B0%EC%95%BC+%ED%95%9C%EB%A1%9C%EB%A1%9C+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 60,
-     "videoCount": 6
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/c2/ef/87/c2ef8779-f3bb-5a1c-ef6f-c27185e62446/8809936067307.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ce/fb/eb/cefbebd4-d53b-8d6c-33cf-2ee55408bd79/8804775077494_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:6822369089",
@@ -2161,31 +1624,25 @@
      "kind": "streaming",
      "source": "Apple Music 台灣",
      "rank": 41
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 15,
-     "videoCount": 57390
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/01/2f/77/012f77a7-f38e-6799-5e8b-16d0756df44d/885288585919.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:1887194026",
-   "title": "It's Me",
-   "artist": "ILLIT",
+   "id": "am:6769327013",
+   "title": "玻璃",
+   "artist": "Gareth.T",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/its-me/1887194024?i=1887194026"
+     "url": "https://music.apple.com/tw/album/%E7%8E%BB%E7%92%83/6769327003?i=6769327013"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=It%27s+Me+ILLIT+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=%E7%8E%BB%E7%92%83+Gareth.T+dance+practice"
     }
    ],
    "credits": [],
@@ -2194,165 +1651,9 @@
      "kind": "streaming",
      "source": "Apple Music 台灣",
      "rank": 42
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 3,
-     "videoCount": 431597
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/db/56/04/db5604ab-c7f4-b982-8c76-98ee766ac294/823375069195_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1444319982",
-   "title": "Santa Tell Me",
-   "artist": "Ariana Grande",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/santa-tell-me/1444319981?i=1444319982"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Santa+Tell+Me+Ariana+Grande+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 40,
-     "videoCount": 5329
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/60/c8/2b/60c82b22-cd58-cdcd-5b51-6fad7a8b7055/14UMGIM55455.rgb.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1596529381",
-   "title": "Spring Day",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/spring-day/1596528839?i=1596529381"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Spring+Day+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 43
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 29,
-     "videoCount": 23866
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ce/fb/eb/cefbebd4-d53b-8d6c-33cf-2ee55408bd79/8804775077494_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868617347",
-   "title": "404 (New Era)",
-   "artist": "키키",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/404-new-era/1868617345?i=1868617347"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=404+%28New+Era%29+%ED%82%A4%ED%82%A4+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 45,
-     "videoCount": 1030
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1b/43/f5/1b43f5d0-0a3b-d1e1-bc0a-e572e92e0455/199806885123.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1868862601",
-   "title": "Please",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/please/1868862375?i=1868862601"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Please+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 44
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 2,
-     "videoCount": 654444
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1451566361",
-   "title": "Heroine",
-   "artist": "백 넘버",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/heroine/1451566360?i=1451566361"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Heroine+%EB%B0%B1+%EB%84%98%EB%B2%84+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 47,
-     "videoCount": 282
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/5d/d1/f0/5dd1f0aa-4b50-e6b1-73b1-fb740989afba/00602577303906.rgb.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1c/1a/be/1c1abe3a-2eb6-216c-9040-797bb98464d1/827568024145.jpg/600x600bb.jpg"
   },
   {
    "id": "am:905226305",
@@ -2376,38 +1677,37 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 45
+     "rank": 43
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/39/8e/7d/398e7d64-1877-03ab-17cb-460943429bc0/825646246939.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:1242155576",
-   "title": "EVERYTHING",
-   "artist": "검정치마",
+   "id": "am:1871400637",
+   "title": "不為誰而作的歌",
+   "artist": "林俊傑",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/kr/album/everything/1242154383?i=1242155576"
+     "url": "https://music.apple.com/tw/album/%E4%B8%8D%E7%82%BA%E8%AA%B0%E8%80%8C%E4%BD%9C%E7%9A%84%E6%AD%8C/1871400633?i=1871400637"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=EVERYTHING+%EA%B2%80%EC%A0%95%EC%B9%98%EB%A7%88+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=%E4%B8%8D%E7%82%BA%E8%AA%B0%E8%80%8C%E4%BD%9C%E7%9A%84%E6%AD%8C+%E6%9E%97%E4%BF%8A%E5%82%91+dance+practice"
     }
    ],
    "credits": [],
    "signals": [
     {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 57,
-     "videoCount": 10
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 44
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/be/ce/5c/bece5cff-2caf-6d8a-9c21-3035537d2a4d/Album_cover_1400X1400.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3d/d8/71/3dd8711e-41ec-29ee-72b6-0a2a480031d0/4711720281483.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1336404847",
@@ -2431,7 +1731,7 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 46
+     "rank": 45
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/85/a5/52/85a55237-6d96-a656-21cf-715b72be15a9/cover.jpg/600x600bb.jpg"
@@ -2458,64 +1758,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 47
+     "rank": 46
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/69/64/e4/6964e483-c02c-e389-14f4-c426e8c65f2c/196874840146.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1596529383",
-   "title": "Not Today",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/not-today/1596528839?i=1596529383"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Not+Today+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 48
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ce/fb/eb/cefbebd4-d53b-8d6c-33cf-2ee55408bd79/8804775077494_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1598662129",
-   "title": "Burning Up (FIRE)",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/burning-up-fire/1598661880?i=1598662129"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Burning+Up+%28FIRE%29+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 49
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4c/97/6f/4c976f5c-5196-1221-8517-ddfcb0ba514c/8804775070341_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:6804744599",
@@ -2539,145 +1785,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 50
+     "rank": 47
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ea/cf/ad/eacfadf8-14ab-07e4-d69b-b4c0c3897235/8804775411847.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1480229675",
-   "title": "說好不哭",
-   "artist": "周杰倫 & 五月天 阿信",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E8%AA%AA%E5%A5%BD%E4%B8%8D%E5%93%AD/1480229674?i=1480229675"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E8%AA%AA%E5%A5%BD%E4%B8%8D%E5%93%AD+%E5%91%A8%E6%9D%B0%E5%80%AB+%26+%E4%BA%94%E6%9C%88%E5%A4%A9+%E9%98%BF%E4%BF%A1+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 51
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/73/8c/2a/738c2a6b-a042-b475-04f0-56dff035c292/4711448407219.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1871400637",
-   "title": "不為誰而作的歌",
-   "artist": "林俊傑",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E4%B8%8D%E7%82%BA%E8%AA%B0%E8%80%8C%E4%BD%9C%E7%9A%84%E6%AD%8C/1871400633?i=1871400637"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E4%B8%8D%E7%82%BA%E8%AA%B0%E8%80%8C%E4%BD%9C%E7%9A%84%E6%AD%8C+%E6%9E%97%E4%BF%8A%E5%82%91+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 52
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3d/d8/71/3dd8711e-41ec-29ee-72b6-0a2a480031d0/4711720281483.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6780772534",
-   "title": "沒有人像我一樣 (影集《欠妳的那場婚禮》主題曲)",
-   "artist": "宇宙人",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E6%B2%92%E6%9C%89%E4%BA%BA%E5%83%8F%E6%88%91%E4%B8%80%E6%A8%A3-%E5%BD%B1%E9%9B%86-%E6%AC%A0%E5%A6%B3%E7%9A%84%E9%82%A3%E5%A0%B4%E5%A9%9A%E7%A6%AE-%E4%B8%BB%E9%A1%8C%E6%9B%B2/6780772532?i=6780772534"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E6%B2%92%E6%9C%89%E4%BA%BA%E5%83%8F%E6%88%91%E4%B8%80%E6%A8%A3+%28%E5%BD%B1%E9%9B%86%E3%80%8A%E6%AC%A0%E5%A6%B3%E7%9A%84%E9%82%A3%E5%A0%B4%E5%A9%9A%E7%A6%AE%E3%80%8B%E4%B8%BB%E9%A1%8C%E6%9B%B2%29+%E5%AE%87%E5%AE%99%E4%BA%BA+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 53
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/96/4a/7e/964a7eeb-a490-c146-2776-6fb3de4eab5c/1.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6777857413",
-   "title": "Come Over",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/come-over/6777857411?i=6777857413"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Come+Over+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 55
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b4/a3/50/b4a350d5-4197-6928-eebf-e7e53ae4c2b6/823375205715_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1717034230",
-   "title": "唯一",
-   "artist": "鄧紫棋",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E5%94%AF%E4%B8%80/1717034215?i=1717034230"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E5%94%AF%E4%B8%80+%E9%84%A7%E7%B4%AB%E6%A3%8B+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 56
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/81/62/cb/8162cbd8-5089-39ee-430b-b7e354a0e957/196871644518.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1687085293",
@@ -2701,10 +1812,226 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 57
+     "rank": 48
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/cd/fd/91/cdfd9186-7873-4575-c953-f8186af24a24/5054197684074.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1480229675",
+   "title": "說好不哭",
+   "artist": "周杰倫 & 五月天 阿信",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E8%AA%AA%E5%A5%BD%E4%B8%8D%E5%93%AD/1480229674?i=1480229675"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E8%AA%AA%E5%A5%BD%E4%B8%8D%E5%93%AD+%E5%91%A8%E6%9D%B0%E5%80%AB+%26+%E4%BA%94%E6%9C%88%E5%A4%A9+%E9%98%BF%E4%BF%A1+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 50
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/73/8c/2a/738c2a6b-a042-b475-04f0-56dff035c292/4711448407219.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6780772534",
+   "title": "沒有人像我一樣 (影集《欠妳的那場婚禮》主題曲)",
+   "artist": "宇宙人",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E6%B2%92%E6%9C%89%E4%BA%BA%E5%83%8F%E6%88%91%E4%B8%80%E6%A8%A3-%E5%BD%B1%E9%9B%86-%E6%AC%A0%E5%A6%B3%E7%9A%84%E9%82%A3%E5%A0%B4%E5%A9%9A%E7%A6%AE-%E4%B8%BB%E9%A1%8C%E6%9B%B2/6780772532?i=6780772534"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E6%B2%92%E6%9C%89%E4%BA%BA%E5%83%8F%E6%88%91%E4%B8%80%E6%A8%A3+%28%E5%BD%B1%E9%9B%86%E3%80%8A%E6%AC%A0%E5%A6%B3%E7%9A%84%E9%82%A3%E5%A0%B4%E5%A9%9A%E7%A6%AE%E3%80%8B%E4%B8%BB%E9%A1%8C%E6%9B%B2%29+%E5%AE%87%E5%AE%99%E4%BA%BA+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 51
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/96/4a/7e/964a7eeb-a490-c146-2776-6fb3de4eab5c/1.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1868862386",
+   "title": "Merry Go Round",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/merry-go-round/1868862375?i=1868862386"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Merry+Go+Round+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 52
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1717034230",
+   "title": "唯一",
+   "artist": "鄧紫棋",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E5%94%AF%E4%B8%80/1717034215?i=1717034230"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E5%94%AF%E4%B8%80+%E9%84%A7%E7%B4%AB%E6%A3%8B+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 53
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/81/62/cb/8162cbd8-5089-39ee-430b-b7e354a0e957/196871644518.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:744963040",
+   "title": "你就不要想起我",
+   "artist": "田馥甄",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E4%BD%A0%E5%B0%B1%E4%B8%8D%E8%A6%81%E6%83%B3%E8%B5%B7%E6%88%91/744962939?i=744963040"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E4%BD%A0%E5%B0%B1%E4%B8%8D%E8%A6%81%E6%83%B3%E8%B5%B7%E6%88%91+%E7%94%B0%E9%A6%A5%E7%94%84+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 54
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Features115/v4/12/31/75/123175fd-d416-da11-ea2f-39a5b113c3f8/dj.zyncqluo.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1868862601",
+   "title": "Please",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/please/1868862375?i=1868862601"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Please+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 55
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/83/cb/bc/83cbbc49-cfad-aeaf-3292-0dd428290d81/198704942365_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6830581290",
+   "title": "我的貓會後空翻",
+   "artist": "陳華",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E6%88%91%E7%9A%84%E8%B2%93%E6%9C%83%E5%BE%8C%E7%A9%BA%E7%BF%BB/6830581155?i=6830581290"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E6%88%91%E7%9A%84%E8%B2%93%E6%9C%83%E5%BE%8C%E7%A9%BA%E7%BF%BB+%E9%99%B3%E8%8F%AF+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 56
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c1/de/24/c1de24e1-45dd-647c-c25b-caae201528c5/4711548172666.png/600x600bb.jpg"
+  },
+  {
+   "id": "am:1655821308",
+   "title": "對等關係 (feat. 張惠妹)",
+   "artist": "李榮浩",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E5%B0%8D%E7%AD%89%E9%97%9C%E4%BF%82-feat-%E5%BC%B5%E6%83%A0%E5%A6%B9/1655820982?i=1655821308"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E5%B0%8D%E7%AD%89%E9%97%9C%E4%BF%82+%28feat.+%E5%BC%B5%E6%83%A0%E5%A6%B9%29+%E6%9D%8E%E6%A6%AE%E6%B5%A9+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 57
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/a4/58/75/a4587565-4551-7778-227b-d8d001dc7efd/5054197465970.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1861431711",
@@ -2734,20 +2061,20 @@
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/71/8c/9b/718c9ba2-9e3f-267d-4f31-c779ca95f0ad/196873949567.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:1655821308",
-   "title": "對等關係 (feat. 張惠妹)",
-   "artist": "李榮浩",
+   "id": "am:536009642",
+   "title": "夜曲",
+   "artist": "周杰倫",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E5%B0%8D%E7%AD%89%E9%97%9C%E4%BF%82-feat-%E5%BC%B5%E6%83%A0%E5%A6%B9/1655820982?i=1655821308"
+     "url": "https://music.apple.com/tw/album/%E5%A4%9C%E6%9B%B2/536009641?i=536009642"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E5%B0%8D%E7%AD%89%E9%97%9C%E4%BF%82+%28feat.+%E5%BC%B5%E6%83%A0%E5%A6%B9%29+%E6%9D%8E%E6%A6%AE%E6%B5%A9+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=%E5%A4%9C%E6%9B%B2+%E5%91%A8%E6%9D%B0%E5%80%AB+dance+practice"
     }
    ],
    "credits": [],
@@ -2758,7 +2085,88 @@
      "rank": 59
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/a4/58/75/a4587565-4551-7778-227b-d8d001dc7efd/5054197465970.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/9e/35/ad/9e35ad1e-749e-75b6-0539-1e80cea1817b/JAY11.jpg/100x109bb.jpg"
+  },
+  {
+   "id": "am:6801365250",
+   "title": "BiiiG",
+   "artist": "BIGBANG",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/biiig/6801365249?i=6801365250"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=BiiiG+BIGBANG+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 61
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c5/d9/3a/c5d93ab5-12ac-3800-c13d-e57b819b6d89/8809519881443_cover.png/600x600bb.jpg"
+  },
+  {
+   "id": "am:1596529383",
+   "title": "Not Today",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/not-today/1596528839?i=1596529383"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Not+Today+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 62
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/ce/fb/eb/cefbebd4-d53b-8d6c-33cf-2ee55408bd79/8804775077494_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1598662129",
+   "title": "Burning Up (FIRE)",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/burning-up-fire/1598661880?i=1598662129"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Burning+Up+%28FIRE%29+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 63
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4c/97/6f/4c976f5c-5196-1221-8517-ddfcb0ba514c/8804775070341_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1462400556",
@@ -2782,172 +2190,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 60
+     "rank": 64
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5a/0d/15/5a0d150d-124a-ed96-abaa-98f57e733938/19UMGIM39997.rgb.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1627575780",
-   "title": "Run BTS",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/run-bts/1627573936?i=1627575780"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Run+BTS+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 61
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/f7/68/9c/f7689ce3-6d41-60cd-62d2-57a91ddf5b9d/196922067341_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:536009642",
-   "title": "夜曲",
-   "artist": "周杰倫",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E5%A4%9C%E6%9B%B2/536009641?i=536009642"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E5%A4%9C%E6%9B%B2+%E5%91%A8%E6%9D%B0%E5%80%AB+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 62
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/9e/35/ad/9e35ad1e-749e-75b6-0539-1e80cea1817b/JAY11.jpg/100x109bb.jpg"
-  },
-  {
-   "id": "am:6815092483",
-   "title": "自由的你",
-   "artist": "鄧紫棋",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E8%87%AA%E7%94%B1%E7%9A%84%E4%BD%A0/6815092481?i=6815092483"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E8%87%AA%E7%94%B1%E7%9A%84%E4%BD%A0+%E9%84%A7%E7%B4%AB%E6%A3%8B+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 63
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/f2/f2/f5/f2f2f569-b29f-eccd-3860-49368ae76525/196874803912.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6830581290",
-   "title": "我的貓會後空翻",
-   "artist": "陳華",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E6%88%91%E7%9A%84%E8%B2%93%E6%9C%83%E5%BE%8C%E7%A9%BA%E7%BF%BB/6830581155?i=6830581290"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E6%88%91%E7%9A%84%E8%B2%93%E6%9C%83%E5%BE%8C%E7%A9%BA%E7%BF%BB+%E9%99%B3%E8%8F%AF+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 65
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c1/de/24/c1de24e1-45dd-647c-c25b-caae201528c5/4711548172666.png/600x600bb.jpg"
-  },
-  {
-   "id": "am:744963040",
-   "title": "你就不要想起我",
-   "artist": "田馥甄",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E4%BD%A0%E5%B0%B1%E4%B8%8D%E8%A6%81%E6%83%B3%E8%B5%B7%E6%88%91/744962939?i=744963040"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E4%BD%A0%E5%B0%B1%E4%B8%8D%E8%A6%81%E6%83%B3%E8%B5%B7%E6%88%91+%E7%94%B0%E9%A6%A5%E7%94%84+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 66
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Features115/v4/12/31/75/123175fd-d416-da11-ea2f-39a5b113c3f8/dj.zyncqluo.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6823611520",
-   "title": "DESERVE",
-   "artist": "BABYMONSTER",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/deserve/6823611519?i=6823611520"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=DESERVE+BABYMONSTER+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 67
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e5/57/b5/e557b507-2668-752b-4260-34af04ea0d7b/8809519881528_cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1734500896",
@@ -2971,13 +2217,7 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 68
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 27,
-     "videoCount": 25197
+     "rank": 65
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/3e/49/1e/3e491e43-4961-21ab-2abe-37fb1c0feb40/196922879227_Cover.jpg/600x600bb.jpg"
@@ -3004,7 +2244,7 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 69
+     "rank": 66
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/7e/e6/82/7ee682bd-1b17-6adc-be63-b5af1bdff369/26UMGIM51126.rgb.jpg/600x600bb.jpg"
@@ -3031,10 +2271,37 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 70
+     "rank": 67
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music/0f/99/a7/mzi.zsimusvk.jpg/100x89bb.jpg"
+  },
+  {
+   "id": "am:6815092483",
+   "title": "自由的你",
+   "artist": "鄧紫棋",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E8%87%AA%E7%94%B1%E7%9A%84%E4%BD%A0/6815092481?i=6815092483"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E8%87%AA%E7%94%B1%E7%9A%84%E4%BD%A0+%E9%84%A7%E7%B4%AB%E6%A3%8B+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 68
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/f2/f2/f5/f2f2f569-b29f-eccd-3860-49368ae76525/196874803912.jpg/600x600bb.jpg"
   },
   {
    "id": "am:535739351",
@@ -3058,26 +2325,80 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 71
+     "rank": 70
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/a4/f2/f0/a4f2f0d4-cc80-d1a0-7f20-a0cc842a523c/JAY.jpg/100x115bb.jpg"
   },
   {
-   "id": "am:6801365250",
-   "title": "BiiiG",
-   "artist": "BIGBANG",
+   "id": "am:1788007696",
+   "title": "可惜沒如果",
+   "artist": "林俊傑",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/biiig/6801365249?i=6801365250"
+     "url": "https://music.apple.com/tw/album/%E5%8F%AF%E6%83%9C%E6%B2%92%E5%A6%82%E6%9E%9C/1788007687?i=1788007696"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=BiiiG+BIGBANG+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=%E5%8F%AF%E6%83%9C%E6%B2%92%E5%A6%82%E6%9E%9C+%E6%9E%97%E4%BF%8A%E5%82%91+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 71
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/57/5a/1b/575a1bc9-ca86-7549-e873-b55663ba6276/4711508105925.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6793277028",
+   "title": "Less than a Lover",
+   "artist": "JENNIE",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/less-than-a-lover/6793277024?i=6793277028"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Less+than+a+Lover+JENNIE+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 72
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8d/ac/90/8dac9090-2a14-20d9-ed97-6a35ad299beb/196874620281.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6812635397",
+   "title": "要去什麼地方",
+   "artist": "田馥甄",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E8%A6%81%E5%8E%BB%E4%BB%80%E9%BA%BC%E5%9C%B0%E6%96%B9/6812635395?i=6812635397"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E8%A6%81%E5%8E%BB%E4%BB%80%E9%BA%BC%E5%9C%B0%E6%96%B9+%E7%94%B0%E9%A6%A5%E7%94%84+dance+practice"
     }
    ],
    "credits": [],
@@ -3088,7 +2409,95 @@
      "rank": 73
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c5/d9/3a/c5d93ab5-12ac-3800-c13d-e57b819b6d89/8809519881443_cover.png/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/64/49/4c/64494cca-8338-c4d2-7225-951b8d183cd3/cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1889992115",
+   "title": "stupid song",
+   "artist": "Olivia Rodrigo",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/stupid-song/1889992111?i=1889992115"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=stupid+song+Olivia+Rodrigo+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 74
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1d/1b/f9/1d1bf9b1-44c6-9a6c-6ffb-c158488c06ce/26UMGIM39303.rgb.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1887671067",
+   "title": "REDRED",
+   "artist": "CORTIS",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/redred/1887671065?i=1887671067"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=REDRED+CORTIS+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 75
+    },
+    {
+     "kind": "dance",
+     "source": "YouTube 舞蹈影片",
+     "rank": 17,
+     "videoCount": 26842,
+     "previousRank": 31
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9b/5f/47/9b5f4711-dc78-2dea-6721-d06709ea5121/198704992810_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6823611520",
+   "title": "DESERVE",
+   "artist": "BABYMONSTER",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/deserve/6823611519?i=6823611520"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=DESERVE+BABYMONSTER+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 76
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e5/57/b5/e557b507-2668-752b-4260-34af04ea0d7b/8809519881528_cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1834199249",
@@ -3112,7 +2521,7 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 74
+     "rank": 77
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/4a/ea/32/4aea3283-2bcf-c075-ad2d-c48bf6e19dcd/cover.jpg/600x600bb.jpg"
@@ -3139,178 +2548,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 75
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/35/d7/2a/35d72a0a-7e0c-fc2d-b2da-4bd030219997/190296501159.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:6793277028",
-   "title": "Less than a Lover",
-   "artist": "JENNIE",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/less-than-a-lover/6793277024?i=6793277028"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Less+than+a+Lover+JENNIE+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 76
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8d/ac/90/8dac9090-2a14-20d9-ed97-6a35ad299beb/196874620281.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1887671067",
-   "title": "REDRED",
-   "artist": "CORTIS",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/redred/1887671065?i=1887671067"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=REDRED+CORTIS+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 77
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 31,
-     "videoCount": 19445
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9b/5f/47/9b5f4711-dc78-2dea-6721-d06709ea5121/198704992810_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1889992115",
-   "title": "stupid song",
-   "artist": "Olivia Rodrigo",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/stupid-song/1889992111?i=1889992115"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=stupid+song+Olivia+Rodrigo+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
      "rank": 78
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1d/1b/f9/1d1bf9b1-44c6-9a6c-6ffb-c158488c06ce/26UMGIM39303.rgb.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1788007696",
-   "title": "可惜沒如果",
-   "artist": "林俊傑",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E5%8F%AF%E6%83%9C%E6%B2%92%E5%A6%82%E6%9E%9C/1788007687?i=1788007696"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E5%8F%AF%E6%83%9C%E6%B2%92%E5%A6%82%E6%9E%9C+%E6%9E%97%E4%BF%8A%E5%82%91+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 79
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/57/5a/1b/575a1bc9-ca86-7549-e873-b55663ba6276/4711508105925.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1596529066",
-   "title": "DNA",
-   "artist": "防彈少年團",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/dna/1596529064?i=1596529066"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=DNA+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 80
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/34/a5/93/34a59372-3ebd-ae5f-269d-4c9506864d3f/8804775083280_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:542922095",
-   "title": "十年",
-   "artist": "陳奕迅",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E5%8D%81%E5%B9%B4/542922079?i=542922095"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E5%8D%81%E5%B9%B4+%E9%99%B3%E5%A5%95%E8%BF%85+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 81
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/56/e6/66/56e6661d-e570-782f-fbc8-e7b12e38f1a7/EEG3035V1-_-.jpg/100x114bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/35/d7/2a/35d72a0a-7e0c-fc2d-b2da-4bd030219997/190296501159.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1616484709",
@@ -3334,10 +2575,37 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 82
+     "rank": 79
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/9d/0c/0e/9d0c0eb2-eb20-d04b-674c-760511409eea/196589007995.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:542922095",
+   "title": "十年",
+   "artist": "陳奕迅",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E5%8D%81%E5%B9%B4/542922079?i=542922095"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E5%8D%81%E5%B9%B4+%E9%99%B3%E5%A5%95%E8%BF%85+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 80
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/56/e6/66/56e6661d-e570-782f-fbc8-e7b12e38f1a7/EEG3035V1-_-.jpg/100x114bb.jpg"
   },
   {
    "id": "am:1440650961",
@@ -3361,26 +2629,80 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 83
+     "rank": 81
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/73/08/1a/73081a96-0f7c-b5f8-2757-5c17fb714323/12UMGIM31899.rgb.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:6812635397",
-   "title": "要去什麼地方",
-   "artist": "田馥甄",
+   "id": "am:1694849138",
+   "title": "修煉愛情",
+   "artist": "林俊傑",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E8%A6%81%E5%8E%BB%E4%BB%80%E9%BA%BC%E5%9C%B0%E6%96%B9/6812635395?i=6812635397"
+     "url": "https://music.apple.com/tw/album/%E4%BF%AE%E7%85%89%E6%84%9B%E6%83%85/1694849133?i=1694849138"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E8%A6%81%E5%8E%BB%E4%BB%80%E9%BA%BC%E5%9C%B0%E6%96%B9+%E7%94%B0%E9%A6%A5%E7%94%84+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=%E4%BF%AE%E7%85%89%E6%84%9B%E6%83%85+%E6%9E%97%E4%BF%8A%E5%82%91+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 82
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/86/80/48/86804834-eb90-62a1-2170-cd96f9963cac/4711099729722.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1497822969",
+   "title": "離開我的依賴",
+   "artist": "王艷薇",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E9%9B%A2%E9%96%8B%E6%88%91%E7%9A%84%E4%BE%9D%E8%B3%B4/1497822968?i=1497822969"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E9%9B%A2%E9%96%8B%E6%88%91%E7%9A%84%E4%BE%9D%E8%B3%B4+%E7%8E%8B%E8%89%B7%E8%96%87+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 83
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/90/11/bf/9011bf46-ff67-d9a7-13be-db630b8804e5/4710679451862_cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6777857413",
+   "title": "Come Over",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/come-over/6777857411?i=6777857413"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Come+Over+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
     }
    ],
    "credits": [],
@@ -3391,7 +2713,7 @@
      "rank": 84
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/64/49/4c/64494cca-8338-c4d2-7225-951b8d183cd3/cover.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b4/a3/50/b4a350d5-4197-6928-eebf-e7e53ae4c2b6/823375205715_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1772644601",
@@ -3421,6 +2743,33 @@
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1a/26/5d/1a265da7-ff45-8df0-ee94-7b79becfc7d9/888735949562.png/600x600bb.jpg"
   },
   {
+   "id": "am:1892154309",
+   "title": "Heavy Serenade",
+   "artist": "NMIXX",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/heavy-serenade/1892154305?i=1892154309"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Heavy+Serenade+NMIXX+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 86
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d4/4b/ad/d44bad0b-9d7b-f68c-f6d7-3eca7036036d/8809928958262_Cover.jpg/600x600bb.jpg"
+  },
+  {
    "id": "am:1712228426",
    "title": "離開的一路上",
    "artist": "理想混蛋",
@@ -3442,53 +2791,26 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 86
+     "rank": 87
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/26/83/d6/2683d6f6-49a4-ad28-b5ca-b2314e7b78d8/cover.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:6763988598",
-   "title": "CHOOM",
-   "artist": "BABYMONSTER",
+   "id": "am:1071506929",
+   "title": "她說",
+   "artist": "林俊傑",
    "officialDance": [],
    "streaming": [
     {
      "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/choom/1895588322?i=6763988598"
+     "url": "https://music.apple.com/tw/album/%E5%A5%B9%E8%AA%AA/1071506928?i=1071506929"
     }
    ],
    "related": [
     {
      "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=CHOOM+BABYMONSTER+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 87
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/01/cb/8f/01cb8f4b-e6da-9898-6c66-c77fa5bc3c48/8809519881283_cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1497822969",
-   "title": "離開我的依賴",
-   "artist": "王艷薇",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E9%9B%A2%E9%96%8B%E6%88%91%E7%9A%84%E4%BE%9D%E8%B3%B4/1497822968?i=1497822969"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E9%9B%A2%E9%96%8B%E6%88%91%E7%9A%84%E4%BE%9D%E8%B3%B4+%E7%8E%8B%E8%89%B7%E8%96%87+dance+practice"
+     "url": "https://www.youtube.com/results?search_query=%E5%A5%B9%E8%AA%AA+%E6%9E%97%E4%BF%8A%E5%82%91+dance+practice"
     }
    ],
    "credits": [],
@@ -3499,7 +2821,34 @@
      "rank": 88
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/90/11/bf/9011bf46-ff67-d9a7-13be-db630b8804e5/4710679451862_cover.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/4f/55/6d/4f556da8-f58c-982d-6dd9-3515d33b354f/mzm.awewpcjt.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1596529066",
+   "title": "DNA",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/dna/1596529064?i=1596529066"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=DNA+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 89
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/34/a5/93/34a59372-3ebd-ae5f-269d-4c9506864d3f/8804775083280_Cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1757799717",
@@ -3523,37 +2872,10 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 89
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c9/54/84/c954844d-079a-4b58-2d5b-8f7877ba979e/5021732443519.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1790602218",
-   "title": "跳樓機",
-   "artist": "LBI利比",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E8%B7%B3%E6%A8%93%E6%A9%9F/1790602217?i=1790602218"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E8%B7%B3%E6%A8%93%E6%A9%9F+LBI%E5%88%A9%E6%AF%94+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
      "rank": 90
     }
    ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/5c/86/27/5c8627d2-719a-07ca-1713-17ad694fc141/196872814286.jpg/600x600bb.jpg"
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c9/54/84/c954844d-079a-4b58-2d5b-8f7877ba979e/5021732443519.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1820264150",
@@ -3583,114 +2905,6 @@
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e1/15/42/e1154273-8ecd-5702-e6e6-597f28001681/25UMGIM82363.rgb.jpg/600x600bb.jpg"
   },
   {
-   "id": "am:1694849138",
-   "title": "修煉愛情",
-   "artist": "林俊傑",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E4%BF%AE%E7%85%89%E6%84%9B%E6%83%85/1694849133?i=1694849138"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E4%BF%AE%E7%85%89%E6%84%9B%E6%83%85+%E6%9E%97%E4%BF%8A%E5%82%91+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 92
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/86/80/48/86804834-eb90-62a1-2170-cd96f9963cac/4711099729722.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1892154309",
-   "title": "Heavy Serenade",
-   "artist": "NMIXX",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/heavy-serenade/1892154305?i=1892154309"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Heavy+Serenade+NMIXX+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 93
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d4/4b/ad/d44bad0b-9d7b-f68c-f6d7-3eca7036036d/8809928958262_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1811528209",
-   "title": "浪人的…",
-   "artist": "張震嶽",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E6%B5%AA%E4%BA%BA%E7%9A%84/1811528208?i=1811528209"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E6%B5%AA%E4%BA%BA%E7%9A%84%E2%80%A6+%E5%BC%B5%E9%9C%87%E5%B6%BD+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 94
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/70/b2/af/70b2af3c-728e-8a63-ea6f-c8c14f7ad03e/4710149715463_cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1071506929",
-   "title": "她說",
-   "artist": "林俊傑",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E5%A5%B9%E8%AA%AA/1071506928?i=1071506929"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E5%A5%B9%E8%AA%AA+%E6%9E%97%E4%BF%8A%E5%82%91+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 95
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/4f/55/6d/4f556da8-f58c-982d-6dd9-3515d33b354f/mzm.awewpcjt.jpg/600x600bb.jpg"
-  },
-  {
    "id": "am:1788007693",
    "title": "手心的薔薇 (feat. 鄧紫棋)",
    "artist": "林俊傑",
@@ -3712,10 +2926,118 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 96
+     "rank": 92
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/57/5a/1b/575a1bc9-ca86-7549-e873-b55663ba6276/4711508105925.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1627575780",
+   "title": "Run BTS",
+   "artist": "防彈少年團",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/run-bts/1627573936?i=1627575780"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=Run+BTS+%E9%98%B2%E5%BD%88%E5%B0%91%E5%B9%B4%E5%9C%98+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 93
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/f7/68/9c/f7689ce3-6d41-60cd-62d2-57a91ddf5b9d/196922067341_Cover.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1790602218",
+   "title": "跳樓機",
+   "artist": "LBI利比",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E8%B7%B3%E6%A8%93%E6%A9%9F/1790602217?i=1790602218"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E8%B7%B3%E6%A8%93%E6%A9%9F+LBI%E5%88%A9%E6%AF%94+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 94
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/5c/86/27/5c8627d2-719a-07ca-1713-17ad694fc141/196872814286.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:547173705",
+   "title": "說謊",
+   "artist": "林宥嘉",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E8%AA%AA%E8%AC%8A/547158777?i=547173705"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E8%AA%AA%E8%AC%8A+%E6%9E%97%E5%AE%A5%E5%98%89+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 95
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/57/e5/9b/57e59bd6-3564-e4c4-1add-e3dbbf4d8ab1/asset.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6763988598",
+   "title": "CHOOM",
+   "artist": "BABYMONSTER",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/choom/1895588322?i=6763988598"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=CHOOM+BABYMONSTER+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 96
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/01/cb/8f/01cb8f4b-e6da-9898-6c66-c77fa5bc3c48/8809519881283_cover.jpg/600x600bb.jpg"
   },
   {
    "id": "am:1443352455",
@@ -3745,66 +3067,6 @@
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/27/cb/d6/27cbd6b4-c991-cd95-49e3-b6019462ff97/00602517338845.rgb.jpg/100x91bb.jpg"
   },
   {
-   "id": "am:6815062086",
-   "title": "Angel Bite",
-   "artist": "TOMORROW X TOGETHER",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/angel-bite/6815062084?i=6815062086"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=Angel+Bite+TOMORROW+X+TOGETHER+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 98
-    },
-    {
-     "kind": "dance",
-     "source": "YouTube 舞蹈影片",
-     "rank": 23,
-     "videoCount": 38398
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a7/8b/7c/a78b7c36-7152-5541-6f0f-5f3182eb7bc1/823375408819_Cover.jpg/600x600bb.jpg"
-  },
-  {
-   "id": "am:1887246591",
-   "title": "那天下雨了",
-   "artist": "周杰倫",
-   "officialDance": [],
-   "streaming": [
-    {
-     "title": "Apple Music",
-     "url": "https://music.apple.com/tw/album/%E9%82%A3%E5%A4%A9%E4%B8%8B%E9%9B%A8%E4%BA%86/1887246588?i=1887246591"
-    }
-   ],
-   "related": [
-    {
-     "title": "在 YouTube 看這首歌的舞蹈影片",
-     "url": "https://www.youtube.com/results?search_query=%E9%82%A3%E5%A4%A9%E4%B8%8B%E9%9B%A8%E4%BA%86+%E5%91%A8%E6%9D%B0%E5%80%AB+dance+practice"
-    }
-   ],
-   "credits": [],
-   "signals": [
-    {
-     "kind": "streaming",
-     "source": "Apple Music 台灣",
-     "rank": 99
-    }
-   ],
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/47/31/e9/4731e94b-a04e-87fd-e7e4-6ab6fd11e17b/4000x4000_fa.jpg/600x600bb.jpg"
-  },
-  {
    "id": "am:1384259396",
    "title": "不愛我就拉倒",
    "artist": "周杰倫",
@@ -3826,10 +3088,64 @@
     {
      "kind": "streaming",
      "source": "Apple Music 台灣",
-     "rank": 100
+     "rank": 98
     }
    ],
    "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/38/1d/34/381d3452-82a8-990b-8741-ff9f6d7c6119/CV05_1_T.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:6775779188",
+   "title": "泡沫",
+   "artist": "鄧紫棋",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E6%B3%A1%E6%B2%AB/6775778892?i=6775779188"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E6%B3%A1%E6%B2%AB+%E9%84%A7%E7%B4%AB%E6%A3%8B+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 99
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/08/81/e6/0881e6e7-a51c-1a5b-bdae-c379f67dce79/887158129650.jpg/600x600bb.jpg"
+  },
+  {
+   "id": "am:1438207200",
+   "title": "有一種悲傷 (電影《比悲傷更悲傷的故事》主題曲)",
+   "artist": "A-Lin",
+   "officialDance": [],
+   "streaming": [
+    {
+     "title": "Apple Music",
+     "url": "https://music.apple.com/tw/album/%E6%9C%89%E4%B8%80%E7%A8%AE%E6%82%B2%E5%82%B7-%E9%9B%BB%E5%BD%B1-%E6%AF%94%E6%82%B2%E5%82%B7%E6%9B%B4%E6%82%B2%E5%82%B7%E7%9A%84%E6%95%85%E4%BA%8B-%E4%B8%BB%E9%A1%8C%E6%9B%B2/1438207199?i=1438207200"
+    }
+   ],
+   "related": [
+    {
+     "title": "在 YouTube 看這首歌的舞蹈影片",
+     "url": "https://www.youtube.com/results?search_query=%E6%9C%89%E4%B8%80%E7%A8%AE%E6%82%B2%E5%82%B7+%28%E9%9B%BB%E5%BD%B1%E3%80%8A%E6%AF%94%E6%82%B2%E5%82%B7%E6%9B%B4%E6%82%B2%E5%82%B7%E7%9A%84%E6%95%85%E4%BA%8B%E3%80%8B%E4%B8%BB%E9%A1%8C%E6%9B%B2%29+A-Lin+dance+practice"
+    }
+   ],
+   "credits": [],
+   "signals": [
+    {
+     "kind": "streaming",
+     "source": "Apple Music 台灣",
+     "rank": 100
+    }
+   ],
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/4d/5f/73/4d5f7322-e657-0eda-7107-cefec377a985/886447347416.jpg/600x600bb.jpg"
   }
  ]
 }
