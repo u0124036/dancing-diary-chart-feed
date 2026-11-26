@@ -1,28 +1,26 @@
-name: 每日更新熱門舞曲
+name: KKBOX 台灣榜單預覽（手動，agy/kkbox-preview 分支專用）
 on:
-  schedule:
-    - cron: "0 22 * * *"   # 台北時間每天 06:00
   workflow_dispatch:
 permissions:
-  contents: write
-concurrency: daily-feed
+  contents: read
 jobs:
-  build:
+  preview:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: 產生 feed.json
+      - name: 抓取 KKBOX 台灣主要排行榜（僅計數摘要）
         env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-        run: python build_feed.py
-      - name: 有變更才提交
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add feed.json
-          git diff --cached --quiet || git commit -m "chore: 更新熱門舞曲 feed $(date -u +%F)"
-          git push
+          KKBOX_CLIENT_ID: ${{ secrets.KKBOX_CLIENT_ID }}
+          KKBOX_CLIENT_SECRET: ${{ secrets.KKBOX_CLIENT_SECRET }}
+          KKBOX_PREVIEW_OUT: kkbox-tw-preview.json
+        run: python kkbox_preview.py
+      - name: 上傳預覽 artifact（保留 1 天）
+        uses: actions/upload-artifact@v4
+        with:
+          name: kkbox-tw-preview-${{ github.run_id }}
+          path: kkbox-tw-preview.json
+          retention-days: 1
