@@ -1,6 +1,12 @@
 """每日產生 DancingDiary 熱門舞曲 feed（feed.json）。
 
-只蒐集訊號，不做最終排名：排名規則（舞蹈優先、多平台溫和交叉加權、同演出者最多 3 首、前 15 名）在 App 端。
+最終排名（舞蹈優先、多平台溫和交叉加權、同演出者最多 3 首、前 15 名）在 App 端；排程端只決定舞蹈訊號名次，
+並依 App 同規則預演榜單以落實季節歌上限（dance-chart-daily#10，2026-11-26 D13＋D14）：
+- 舞蹈／Shorts 名次以「實測影片數 × 加權」排序：韓文／日文舞曲 ×1.20（上限、不疊加），季節歌 ×0.80；videoCount 仍是實測數。
+- 預演 App 前 15 名最多 1 首季節歌，保留預演名次最高者，其餘落在前 15 名內的季節歌當日不輸出。
+- 跨榜同曲：同歌名只在同 artistId／同演出者時合併；合作掛名集合相同或「主唱＝對方合作者」（非常見曲名）也視為同曲。
+- 演唱會 dance break、舞台直拍（fancam／직캠／focus cam／直拍）計入同一首歌舞蹈熱度；只靠直拍字樣判定時，
+  標題若有引號曲名，本曲名須在引號內。
 - 串流與熱門候選：
   1. Apple Music 台灣最多人播放前 100、韓國前 50（公開 RSS，免金鑰）。
      透過 Apple 歌曲 ID、跨店面 artistId＋正規化曲名與 iTunes Lookup 台灣店面名稱合併同曲，
@@ -51,6 +57,22 @@ QUERY_MAX_RESULTS = 50
 MAX_POPULAR_RESULTS = 50
 MAX_POPULAR_LOOKUPS = 25
 YOUTUBE_MUSIC_CATEGORY_ID = "10"
+
+# 〔2026-11-26 使用者決定 D13〕舞蹈名次加權（只影響排程計算的 YouTube 舞蹈／Shorts 名次；videoCount 仍是實測影片數）。
+# 1. 韓文（K-pop）／日文（J-pop）舞曲：排序用影片數 ×1.20，上限 1.20（同時判定韓、日也不疊加）。
+# 2. 季節歌（聖誕、新年、冬季節慶經典）：排序用影片數 ×0.80 溫和降權，且依 App 排名規則預演後，
+#    完整榜單前 15 名最多保留 1 首季節歌；其餘季節歌當日不輸出（不封殺：降權後仍能憑熱度拿下那 1 席）。
+KJ_DANCE_MULTIPLIER = 1.20
+SEASONAL_DANCE_MULTIPLIER = 0.80
+MAX_SEASONAL_IN_TOP = 1
+# 與 App DanceChartSnapshot.rankedEntries 相同的榜單規則（預演季節歌上限與離線對照用）
+APP_MAX_RANKED_SONGS = 15
+APP_MAX_SONGS_PER_ARTIST = 3
+APP_MIN_DANCE_VIDEOS = 5
+APP_MEASURED_DANCE_SOURCES = (YOUTUBE_SOURCE, YOUTUBE_SHORTS_SOURCE)
+APP_CROSS_PLATFORM_BONUS_PER_SOURCE = 0.04
+APP_MAX_CROSS_PLATFORM_BONUS = 0.16
+
 OUT = os.environ.get("FEED_OUT", "feed.json")
 RAW_CACHE_OUT = os.environ.get("RAW_CACHE_OUT", "").strip()
 OFFLINE_RAW_INPUT = os.environ.get("OFFLINE_RAW_INPUT", "").strip()
@@ -155,10 +177,24 @@ STRONG_DANCE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# 〔D14〕演唱會／音樂節目／頒獎典禮的舞台直拍、dance break 與 focus cam 都屬同一首歌的舞蹈版本，計入熱度。
+# 只收明確的直拍用語；單獨的 live／concert／stage 不算（多為演唱片段）。
+FANCAM_RE = re.compile(
+    r"(?:(?<![a-z0-9])(?:fan\s*cam|fancams|face\s*cam|focus\s*cam|full\s*focus|stage\s*cam|vertical\s*cam|"
+    r"dance\s*battle|performance\s*practice|performance\s*video)(?![a-z0-9])"
+    r"|직캠|세로캠|입덕직캠|안무\s*영상|直拍|飯拍|饭拍|ファンカム)",
+    re.IGNORECASE,
+)
+
+# 影片標題中以引號標示的曲名片段（' ' 只在前後非英數時視為引號，避免 It's 的撇號）
+QUOTED_SEGMENT_RE = re.compile(
+    r"(?<![a-z0-9])'([^']{1,80}?)'(?![a-z0-9])|\"([^\"]{1,80})\"|「([^」]{1,80})」|『([^』]{1,80})』|《([^》]{1,80})》|“([^”]{1,80})”"
+)
+
 CHALLENGE_RE = re.compile(r"(?:(?<![a-z0-9])challenge(?![a-z0-9])|challenge\b|챌린지|挑戰)", re.IGNORECASE)
 NON_DANCE_RE = re.compile(
     r"(?:(?<![a-z0-9])(?:vocal|singing|lyrics|lyric|karaoke|piano|guitar|drum|drums|bass|violin|cello|flute|reaction|react|unboxing|vlog|quiz|guess|audio|instrumental)(?![a-z0-9])"
-    r"|歌詞|彈唱|吉他|鋼琴|翻唱|反應|開箱|試吃|伴奏|純音樂)",
+    r"|歌詞|彈唱|吉他|鋼琴|翻唱|反應|開箱|試吃|伴奏|純音樂|리액션|リアクション)",
     re.IGNORECASE,
 )
 
@@ -208,6 +244,26 @@ def clean_title(title: str) -> str:
     text = text.replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"')
     cleaned = TITLE_SUFFIX_RE.sub("", text).strip()
     return cleaned or text
+
+
+def artist_member_keys(artist: str) -> list[str]:
+    """拆出合作曲所有掛名演出者的正規化鍵（主要演出者在第一位），供「同歌名、合作掛名順序不同」辨識同曲。"""
+    trimmed = unicodedata.normalize("NFC", artist or "").strip()
+    if not trimmed:
+        return []
+    out: list[str] = []
+    for part in COLLAB_RE.split(trimmed):
+        name = (part or "").strip(" ()[]（）")
+        name = re.sub(r"^(?:feat\.?|ft\.?|featuring|with)\s+", "", name, flags=re.IGNORECASE).strip()
+        if not name:
+            continue
+        key = norm(ARTIST_CANONICAL_TW.get(norm(name), name))
+        if key and key not in out:
+            out.append(key)
+    primary = canonical_artist_key(artist)
+    if primary in out:
+        out.remove(primary)
+    return ([primary] if primary else []) + out
 
 
 def _has_non_ascii_letter(s: str) -> bool:
@@ -362,17 +418,47 @@ def _localize_item(sf: str, it: dict, tw_artist_by_id: dict, tw_track_lookup: di
     return localized, alt_titles, alt_artists
 
 
-def _dedup_keys(item: dict, alt_titles: list[str]) -> list[tuple]:
+def _dedup_keys(item: dict, alt_titles: list[str], *, for_lookup: bool = False) -> list[tuple]:
+    """跨榜同曲辨識鍵。同歌名只在「同 Apple artistId」或「同（正規化）演出者」時合併，不同歌手的同名歌不併。
+
+    〔D13〕合作曲掛名順序或主唱不同時：掛名集合完全相同（`ROSÉ & Bruno Mars`／`Bruno Mars & ROSÉ`）一律視為同曲；
+    「一方的主要演出者＝另一方的合作掛名者」（`A feat. B`／`B`）也視為同曲，但常見／短曲名（Love、With、BAD…）不套用，避免誤併。
+    for_lookup=False 回傳要登記的鍵；True 回傳要查詢的鍵（主要演出者對照對方的合作掛名，反之亦然）。
+    """
     tid = str(item["id"])
     aid = str(item.get("artistId") or "")
-    artist_key = canonical_artist_key(item["artistName"])
+    members = artist_member_keys(item["artistName"])
+    artist_key = members[0] if members else ""
+    featured = members[1:]
     keys: list[tuple] = [("id", tid)]
     for tv in title_variants(item["name"], *alt_titles):
         if aid:
             keys.append(("aid_title", aid, tv))
         if artist_key:
             keys.append(("artist_title", artist_key, tv))
+        if len(members) >= 2:
+            # 掛名演出者集合完全相同（只是順序不同）時，短曲名也視為同曲（如 APT.）
+            keys.append(("members_title", tuple(sorted(members)), tv))
+        if _is_short_or_common_title(tv):
+            continue
+        if for_lookup:
+            if artist_key:
+                keys.append(("member_title", artist_key, tv))
+            keys.extend(("artist_title", m, tv) for m in featured)
+        else:
+            keys.extend(("member_title", m, tv) for m in featured)
     return keys
+
+
+def _genre_names(item: dict) -> list[str]:
+    """Apple RSS 的 genres（台灣店面為中文，如「韓國流行樂」），用於韓日舞曲辨識；離線快取一併保存。"""
+    out = []
+    for g in item.get("genres") or []:
+        name = (g.get("name") if isinstance(g, dict) else g) or ""
+        name = str(name).strip()
+        if name and name not in out:
+            out.append(name)
+    return out
 
 
 def merge_candidates(lists: dict[str, list[dict]], lookup_fn=itunes_lookup) -> list[dict]:
@@ -401,7 +487,8 @@ def merge_candidates(lists: dict[str, list[dict]], lookup_fn=itunes_lookup) -> l
                 sf, raw, tw_artist_by_id, tw_track_lookup, tw_artist_lookup
             )
             keys = _dedup_keys(loc_item, alt_titles)
-            existing = next((seen[k] for k in keys if k in seen), None)
+            lookup = _dedup_keys(loc_item, alt_titles, for_lookup=True)
+            existing = next((seen[k] for k in lookup if k in seen), None)
 
             if existing is not None:
                 for t in alt_titles:
@@ -410,6 +497,9 @@ def merge_candidates(lists: dict[str, list[dict]], lookup_fn=itunes_lookup) -> l
                 for a in alt_artists:
                     if a and a not in existing["altArtists"]:
                         existing["altArtists"].append(a)
+                for g in _genre_names(raw):
+                    if g not in existing.setdefault("genres", []):
+                        existing["genres"].append(g)
                 if sf == "tw":
                     if existing["twRank"] is None or (i + 1) < existing["twRank"]:
                         existing["twRank"] = i + 1
@@ -432,6 +522,7 @@ def merge_candidates(lists: dict[str, list[dict]], lookup_fn=itunes_lookup) -> l
                 "ytPopularRank": None,
                 "altTitles": list(dict.fromkeys(t for t in alt_titles if t)),
                 "altArtists": list(dict.fromkeys(a for a in alt_artists if a)),
+                "genres": _genre_names(raw),
             }
             for k in keys:
                 seen[k] = entry
@@ -755,7 +846,8 @@ def enrich_pool_with_youtube_popular(
         alt_titles = list(dict.fromkeys(t for t in (chosen["trackName"], title_hint) if t))
         alt_artists = list(dict.fromkeys(a for a in (chosen["artistName"], artist_hint) if a))
         keys = _dedup_keys(loc_item, alt_titles)
-        existing = next((seen[k] for k in keys if k in seen), None)
+        lookup = _dedup_keys(loc_item, alt_titles, for_lookup=True)
+        existing = next((seen[k] for k in lookup if k in seen), None)
         if existing is not None:
             if existing.get("ytPopularRank") is None or rank < existing["ytPopularRank"]:
                 existing["ytPopularRank"] = rank
@@ -777,6 +869,7 @@ def enrich_pool_with_youtube_popular(
             "ytPopularRank": rank,
             "altTitles": alt_titles,
             "altArtists": alt_artists,
+            "genres": [chosen["primaryGenreName"]] if chosen.get("primaryGenreName") else [],
         }
         for k in keys:
             seen[k] = new_entry
@@ -898,6 +991,13 @@ def _artist_match_candidates(artist: str, alt_artists: list[str]) -> list[str]:
 
 def matches_dance_intent(v_title: str, v_desc: str = "") -> bool:
     """確認影片具備明確舞蹈意圖，排除純歌詞、吉他翻唱、開箱反應等非舞蹈影片。"""
+    if _strong_dance_intent(v_title, v_desc):
+        return True
+    # 〔D14〕演唱會／舞台直拍（fancam、직캠、focus cam、dance break）也算同一首歌的舞蹈版本
+    return bool(FANCAM_RE.search(v_title))
+
+
+def _strong_dance_intent(v_title: str, v_desc: str = "") -> bool:
     if STRONG_DANCE_RE.search(v_title):
         return True
     if CHALLENGE_RE.search(v_title) and not NON_DANCE_RE.search(v_title):
@@ -968,6 +1068,12 @@ def evaluate_youtube_items(
         tagged_dance = bool(compact_dance_tags.intersection(title_hashtags))
         if not tagged_dance and not any(p.search(norm_title) for p in title_patterns):
             continue
+        # 1b. 〔D14〕只靠直拍用語判定舞蹈的影片，常以引號標出實際曲名（含 'Intro + 15-LOVE + RUDE!' 這類組曲）：
+        #     標題有引號曲名時，本曲名必須在某個引號內，避免「'15-LOVE' 직캠 (… Focus)」被算成 FOCUS。
+        if not tagged_dance and not _strong_dance_intent(v_title, v_desc):
+            quoted = [next(g for g in m.groups() if g) for m in QUOTED_SEGMENT_RE.finditer(norm_title)]
+            if quoted and not any(p.search(q) for q in quoted for p in title_patterns):
+                continue
 
         # 2. 演出者需出現在標題或頻道；非常見／短曲名才允許退回簡介前段
         artist_hit = any(p.search(norm_title) or p.search(norm_channel) for p in artist_patterns)
@@ -1151,6 +1257,7 @@ def replay_raw_cache(path: str | os.PathLike) -> tuple[dt.datetime, list[dict], 
             "ytPopularRank": rec.get("ytPopularRank"),
             "altTitles": rec.get("altTitles") or [rec["title"]],
             "altArtists": rec.get("altArtists") or [rec["artist"]],
+            "genres": rec.get("genres") or [],
         }
         pool.append(entry)
         queried += 1
@@ -1181,6 +1288,157 @@ def replay_raw_cache(path: str | os.PathLike) -> tuple[dt.datetime, list[dict], 
         )
 
     return now, pool, stats_by_id, failed_ids, queried
+
+
+# ---- 〔D13〕季節歌與韓日舞曲辨識 ----
+
+# 季節歌：只看曲名（含別名），不看演出者。以節慶字詞＋少數冬季節慶經典曲名為準，不用單字 snow／winter 以免誤傷一般歌。
+SEASONAL_TITLE_RE = re.compile(
+    r"(?:(?<![a-z0-9])(?:christmas|xmas|x-mas|santa|mistletoe|jingle\s*bells?|sleigh\s*ride|reindeer|navidad|"
+    r"let\s+it\s+snow|winter\s+wonderland|underneath\s+the\s+tree|happy\s+new\s+year|"
+    r"snowman|first\s+snow|holly\s+jolly|silent\s+night)(?![a-z0-9])"
+    r"|聖誕|圣诞|耶誕|新年快樂|恭喜發財|恭喜恭喜|賀新年|過新年|크리스마스|캐롤|첫\s*눈|クリスマス|サンタ)",
+    re.IGNORECASE,
+)
+
+KPOP_GENRES = {"k-pop", "kpop", "韓國流行樂", "韓國流行音樂", "케이팝", "가요"}
+JPOP_GENRES = {"j-pop", "jpop", "日本流行樂", "日本流行音樂", "動畫", "anime", "アニメ"}
+# 別名表多數為韓團，但 back number 等日團也有韓文譯名，須先判日文
+JPOP_ARTISTS = {
+    norm(a) for a in (
+        "back number", "YOASOBI", "Ado", "Creepy Nuts", "米津玄師", "Kenshi Yonezu", "Mrs. GREEN APPLE",
+        "King Gnu", "Official髭男dism", "Vaundy", "藤井風", "Fujii Kaze", "imase", "Number_i",
+        "ATARASHII GAKKO!", "新しい学校のリーダーズ", "こっちのけんと", "tuki.", "優里",
+    )
+}
+# 別名表外、無韓文別名但屬 K-pop 舞曲的演出者
+KPOP_EXTRA_ARTISTS = {norm("HUNTR/X"), norm("HUNTRX")}
+
+HANGUL_RE = re.compile(r"[가-힣ᄀ-ᇿ㄰-㆏]")
+KANA_RE = re.compile(r"[぀-ゟ゠-ヿㇰ-ㇿ]")
+
+
+def is_seasonal_song(entry: dict) -> bool:
+    it = entry.get("item") or {}
+    titles = [it.get("name") or "", *(entry.get("altTitles") or [])]
+    return any(SEASONAL_TITLE_RE.search(norm(t)) for t in titles if t)
+
+
+def kj_language(entry: dict) -> str | None:
+    """判定韓文（ko）／日文（ja）舞曲：依序看 Apple 曲風、日團名單與假名、韓文字、韓團別名表。判定不出回傳 None。"""
+    it = entry.get("item") or {}
+    genres = {norm(g) for g in entry.get("genres") or []}
+    if genres & KPOP_GENRES:
+        return "ko"
+    if genres & JPOP_GENRES:
+        return "ja"
+    artists = [a for a in (it.get("artistName") or "", *(entry.get("altArtists") or [])) if a]
+    titles = [t for t in (it.get("name") or "", *(entry.get("altTitles") or [])) if t]
+    artist_keys = {k for a in artists for k in artist_member_keys(a)}
+    if artist_keys & JPOP_ARTISTS or any(KANA_RE.search(t) for t in titles + artists):
+        return "ja"
+    if any(HANGUL_RE.search(t) for t in titles + artists) or artist_keys & KPOP_EXTRA_ARTISTS:
+        return "ko"
+    for key in artist_keys:
+        if any(HANGUL_RE.search(alias) for alias in ARTIST_GROUP_BY_NORM.get(key, [])):
+            return "ko"
+    return None
+
+
+def dance_rank_weight(entry: dict) -> float:
+    """舞蹈名次排序權重：韓日 ×1.20（上限，不疊加）、季節歌 ×0.80；兩者同時成立時相乘（0.96）。"""
+    weight = 1.0
+    if kj_language(entry):
+        weight *= KJ_DANCE_MULTIPLIER
+    if is_seasonal_song(entry):
+        weight *= SEASONAL_DANCE_MULTIPLIER
+    return weight
+
+
+# ---- App 排名預演（與 DancingDiary DanceChartSnapshot.rankedEntries 同規則；docs/dance-chart-feed.md「排名規則」）----
+
+def _distinct_by_source(signals: list[dict]) -> list[dict]:
+    seen, out = set(), []
+    for sig in signals:
+        if sig["source"] not in seen:
+            seen.add(sig["source"])
+            out.append(sig)
+    return out
+
+
+def _app_song_scores(song: dict) -> tuple[bool, float, float]:
+    """回傳 (是否入第一層, 舞蹈主分數, 串流參考分數)。"""
+    sigs = song.get("signals") or []
+    dance = _distinct_by_source([
+        s for s in sigs
+        if s.get("kind") == "dance" and (s.get("rank") or 0) > 0
+        and not (s.get("videoCount") is not None and s["videoCount"] < APP_MIN_DANCE_VIDEOS)
+    ])
+    streaming = _distinct_by_source([s for s in sigs if s.get("kind") == "streaming" and (s.get("rank") or 0) > 0])
+    measured = any(s["source"] in APP_MEASURED_DANCE_SOURCES for s in dance)
+    eligible = measured or (bool(song.get("officialDance")) and bool(dance))
+    base = max(
+        (
+            100 / (s["rank"] ** 0.5)
+            + (min(30, s["previousRank"] - s["rank"]) if (s.get("previousRank") or 0) > s["rank"] else 0)
+            for s in dance
+        ),
+        default=0.0,
+    )
+    platforms = len({s["source"].lower() for s in dance + streaming})
+    mult = 1.0 + min(APP_MAX_CROSS_PLATFORM_BONUS, max(0, platforms - 1) * APP_CROSS_PLATFORM_BONUS_PER_SOURCE)
+    streaming_score = sum(1 / (s["rank"] ** 0.5) for s in streaming[:2])
+    return eligible, base * mult, streaming_score
+
+
+def app_rank_preview(songs: list[dict], limit: int = APP_MAX_RANKED_SONGS) -> list[tuple[dict, str]]:
+    """預演 App 完整榜單：回傳 [(song, "dance"|"backfill")]，含同演出者最多 3 首（跨兩層）與 15 首上限。"""
+    scored = [(song, *_app_song_scores(song)) for song in songs]
+    dance_pool = sorted((x for x in scored if x[1]), key=lambda x: (-x[2], -x[3], x[0]["id"]))
+    backfill_pool = sorted(
+        (
+            x for x in scored
+            if not x[1] and any(s.get("kind") == "streaming" and (s.get("rank") or 0) > 0 for s in x[0].get("signals") or [])
+        ),
+        key=lambda x: (-x[3], x[0]["id"]),
+    )
+    result: list[tuple[dict, str]] = []
+    seen: set[str] = set()
+    artist_counts: dict[str, int] = {}
+    for pool_items, tier in ((dance_pool, "dance"), (backfill_pool, "backfill")):
+        for song, *_ in pool_items:
+            if len(result) >= limit:
+                break
+            if song["id"] in seen:
+                continue
+            seen.add(song["id"])
+            akey = primary_artist(song.get("artist") or "").lower()
+            if akey:
+                if artist_counts.get(akey, 0) >= APP_MAX_SONGS_PER_ARTIST:
+                    continue
+                artist_counts[akey] = artist_counts.get(akey, 0) + 1
+            result.append((song, tier))
+    return result
+
+
+def enforce_seasonal_cap(
+    songs: list[dict],
+    seasonal_ids: set[str],
+    max_seasonal: int = MAX_SEASONAL_IN_TOP,
+    limit: int = APP_MAX_RANKED_SONGS,
+) -> tuple[list[dict], list[dict]]:
+    """依 App 排名預演讓前 `limit` 名最多 `max_seasonal` 首季節歌：保留預演名次最高者，
+    其餘落在前 `limit` 名內的季節歌當日不輸出（逐首移除後重算直到符合）。回傳 (保留歌曲, 被移除歌曲)。"""
+    kept = list(songs)
+    removed: list[dict] = []
+    while True:
+        top = app_rank_preview(kept, limit)
+        seasonal_in_top = [song for song, _ in top if song["id"] in seasonal_ids]
+        if len(seasonal_in_top) <= max_seasonal:
+            return kept, removed
+        drop = seasonal_in_top[-1]
+        kept = [s for s in kept if s["id"] != drop["id"]]
+        removed.append(drop)
 
 
 def previous_dance_signals() -> dict[tuple[str, str], dict]:
@@ -1257,6 +1515,7 @@ def main(argv: list[str] | None = None):
                     "artworkUrl100": it.get("artworkUrl100") or "",
                     "altTitles": entry.get("altTitles") or [it["name"]],
                     "altArtists": entry.get("altArtists") or [it["artistName"]],
+                    "genres": entry.get("genres") or [],
                     "query": q_preview,
                     "params": {
                         "regionCode": QUERY_REGION_CODE,
@@ -1325,9 +1584,12 @@ def main(argv: list[str] | None = None):
     if queried and len(failed_ids) * 100 > queried * 30:
         sys.exit(f"YouTube 查詢失敗 {len(failed_ids)}/{queried}，超過 30%，保留上一份 feed")
 
+    # 〔D13〕舞蹈／Shorts 名次以「實測影片數 × 加權」排序（韓日 ×1.20、季節歌 ×0.80）；門檻與 videoCount 仍用實測數
+    weight_by_id = {e["item"]["id"]: dance_rank_weight(e) for e in pool}
     ordered = sorted(
         ((st, tid) for tid, st in stats_by_id.items() if st["verified"] >= MIN_DANCE_VIDEOS),
         key=lambda x: (
+            -round(x[0]["verified"] * weight_by_id.get(x[1], 1.0), 6),
             -x[0]["verified"],
             -x[0]["uniqueChannels"],
             -x[0]["recent7d"],
@@ -1340,6 +1602,7 @@ def main(argv: list[str] | None = None):
     shorts_ordered = sorted(
         ((st, tid) for tid, st in stats_by_id.items() if st.get("shortsVerified", 0) >= MIN_SHORTS_VIDEOS),
         key=lambda x: (
+            -round(x[0].get("shortsVerified", 0) * weight_by_id.get(x[1], 1.0), 6),
             -x[0].get("shortsVerified", 0),
             -x[0].get("shortsUniqueChannels", 0),
             -x[0]["verified"],
@@ -1408,6 +1671,11 @@ def main(argv: list[str] | None = None):
             song["artwork"] = art
         songs.append(song)
 
+    seasonal_ids = {"am:" + e["item"]["id"] for e in pool if is_seasonal_song(e)}
+    songs, capped = enforce_seasonal_cap(songs, seasonal_ids)
+    for song in capped:
+        print(f"季節歌上限：{song['title']} — {song['artist']} 當日不輸出（前 {APP_MAX_RANKED_SONGS} 名最多 {MAX_SEASONAL_IN_TOP} 首）")
+
     feed = {"updatedAt": now.isoformat().replace("+00:00", "Z"), "songs": songs}
     data = json.dumps(feed, ensure_ascii=False, indent=1)
     if len(data.encode()) > 1_000_000:
@@ -1417,7 +1685,7 @@ def main(argv: list[str] | None = None):
     est_units = queried * 100 + popular_units + duration_units
     print(
         f"候選 {len(pool)} 首；YouTube 查詢 {queried} 次（失敗 {len(failed_ids)}）；"
-        f"舞蹈訊號 {len(dance_rank)} 首；Shorts 訊號 {len(shorts_rank)} 首；"
+        f"舞蹈訊號 {len(dance_rank)} 首；Shorts 訊號 {len(shorts_rank)} 首；季節歌移出 {len(capped)} 首；"
         f"估算額度 {est_units} 單位；輸出 {len(songs)} 首"
     )
 
