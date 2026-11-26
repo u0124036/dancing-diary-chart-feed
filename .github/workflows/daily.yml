@@ -3,6 +3,16 @@ on:
   schedule:
     - cron: "0 22 * * *"   # 台北時間每天 06:00
   workflow_dispatch:
+    inputs:
+      max_queries:
+        description: "YouTube 查詢上限（留空為預設 90，測試可填較小值節省額度）"
+        required: false
+        default: ""
+      commit_feed:
+        description: "是否提交 feed.json（非 main 分支固定不提交）"
+        required: false
+        type: boolean
+        default: true
 permissions:
   contents: write
 concurrency: daily-feed
@@ -15,11 +25,26 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: 執行單元測試
+        run: python -m unittest discover -v
       - name: 產生 feed.json
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          MAX_QUERIES: ${{ inputs.max_queries }}
+          RAW_CACHE_OUT: youtube-raw-results.json
         run: python build_feed.py
+      - name: 上傳原始搜尋結果與 feed artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chart-feed-run-${{ github.run_id }}
+          path: |
+            feed.json
+            youtube-raw-results.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: 有變更才提交
+        if: github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.commit_feed != false)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
