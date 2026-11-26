@@ -1,0 +1,26 @@
+name: KKBOX 台灣榜單預覽（手動）
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 抓取 KKBOX 台灣主要排行榜（僅計數摘要）
+        env:
+          KKBOX_CLIENT_ID: ${{ secrets.KKBOX_CLIENT_ID }}
+          KKBOX_CLIENT_SECRET: ${{ secrets.KKBOX_CLIENT_SECRET }}
+          KKBOX_PREVIEW_OUT: kkbox-tw-preview.json
+        run: python kkbox_preview.py
+      - name: 上傳預覽 artifact（保留 1 天）
+        uses: actions/upload-artifact@v4
+        with:
+          name: kkbox-tw-preview-${{ github.run_id }}
+          path: kkbox-tw-preview.json
+          retention-days: 1
