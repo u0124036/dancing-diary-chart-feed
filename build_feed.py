@@ -1,15 +1,21 @@
 """每日產生 DancingDiary 熱門舞曲 feed（feed.json）。
 
-只蒐集訊號，不做最終排名：排名規則（舞蹈優先、同演出者最多 3 首、前 15 名）在 App 端。
-- 串流：Apple Music 台灣最多人播放前 100、韓國前 50（公開 RSS，免金鑰）。
-  透過 Apple 歌曲 ID、跨店面 artistId＋正規化曲名與 iTunes Lookup 台灣店面名稱合併同曲，
-  統一使用台灣店面顯示名稱與連結，避免韓／英文重複上榜或繞過同演出者上限。
-- 舞蹈：YouTube Data API search.list（part=snippet, maxResults=50），近 14 天、地區 TW。
-  以乾淨單分支查詢（歌名＋演出者＋dance，避免多分支 OR 與雙引號鎖死稀釋召回）搭配
-  每演出者第一輪查詢上限分散配額，並對回傳影片標題／頻道逐筆驗證
-  「曲名＋演出者＋舞蹈意圖」，排除常見字造成的誤判與單頻道洗版，
-  單首維持 1 次 search.list（100 單位），最多查 MAX_QUERIES 首，避免超過每日 10,000 單位。
-- 快取與離線調參：設定 RAW_CACHE_OUT 可輸出每首歌原始搜尋結果（查詢字串、影片標題、頻道、計數），
+只蒐集訊號，不做最終排名：排名規則（舞蹈優先、多平台溫和交叉加權、同演出者最多 3 首、前 15 名）在 App 端。
+- 串流與熱門候選：
+  1. Apple Music 台灣最多人播放前 100、韓國前 50（公開 RSS，免金鑰）。
+     透過 Apple 歌曲 ID、跨店面 artistId＋正規化曲名與 iTunes Lookup 台灣店面名稱合併同曲，
+     統一使用台灣店面顯示名稱與連結，同時保留「Apple Music 台灣」與「Apple Music 韓國」訊號。
+  2. YouTube Data API videos.list(chart=mostPopular, videoCategoryId=10, regionCode=TW)（每次 1 單位），
+     將台灣當下熱門音樂影片匹配既有候選或經免金鑰 iTunes Search 反查擴大候選池，
+     輸出「YouTube 台灣熱門」訊號。
+- 舞蹈與 Shorts 熱度：
+  1. YouTube Data API search.list（part=snippet, maxResults=50），近 14 天、地區 TW。
+     以乾淨單分支查詢（歌名＋演出者＋dance）搭配每演出者第一輪查詢上限分散配額，
+     逐筆驗證「曲名＋演出者＋舞蹈意圖」與單頻道上限，輸出「YouTube 舞蹈影片」訊號。
+  2. 對通過舞蹈驗證的影片批次呼叫 videos.list(part=contentDetails)（每 50 支 1 單位），
+     篩出 ≤ 60 秒且達門檻的影片輸出「YouTube Shorts」舞蹈訊號。
+  完整排程 90 首約 9,025 單位（90×100 + 1 + ~24），維持在每日 10,000 單位內。
+- 快取與離線調參：設定 RAW_CACHE_OUT 可輸出每首歌原始搜尋結果、熱門影片與影片時長，
   不含 API 金鑰；設定 OFFLINE_RAW_INPUT 或傳入 --replay <檔路徑> 可離線重算驗證結果與門檻。
 格式與 App 的 DanceChartSnapshot 相同（見 DancingDiary docs/dance-chart-feed.md）。
 """
@@ -29,14 +35,22 @@ import urllib.request
 
 FEEDS = [("tw", 100), ("kr", 50)]
 STREAMING_SOURCE = "Apple Music 台灣"
+KR_STREAMING_SOURCE = "Apple Music 韓國"
 YOUTUBE_SOURCE = "YouTube 舞蹈影片"
+YOUTUBE_POPULAR_SOURCE = "YouTube 台灣熱門"
+YOUTUBE_SHORTS_SOURCE = "YouTube Shorts"
 MIN_DANCE_VIDEOS = 5
+MIN_SHORTS_VIDEOS = 5
+SHORTS_MAX_DURATION_SECONDS = 60
 MAX_PER_CHANNEL = 3
 DEFAULT_MAX_QUERIES = 90
 FIRST_PASS_PER_ARTIST = 3
 QUERY_WINDOW_DAYS = 14
 QUERY_REGION_CODE = "TW"
 QUERY_MAX_RESULTS = 50
+MAX_POPULAR_RESULTS = 50
+MAX_POPULAR_LOOKUPS = 25
+YOUTUBE_MUSIC_CATEGORY_ID = "10"
 OUT = os.environ.get("FEED_OUT", "feed.json")
 RAW_CACHE_OUT = os.environ.get("RAW_CACHE_OUT", "").strip()
 OFFLINE_RAW_INPUT = os.environ.get("OFFLINE_RAW_INPUT", "").strip()
@@ -403,6 +417,9 @@ def merge_candidates(lists: dict[str, list[dict]], lookup_fn=itunes_lookup) -> l
                     if existing["storefront"] != "tw":
                         existing["item"] = loc_item
                         existing["storefront"] = "tw"
+                elif sf == "kr":
+                    if existing.get("krRank") is None or (i + 1) < existing["krRank"]:
+                        existing["krRank"] = i + 1
                 for k in keys:
                     seen[k] = existing
                 continue
@@ -411,6 +428,8 @@ def merge_candidates(lists: dict[str, list[dict]], lookup_fn=itunes_lookup) -> l
                 "item": loc_item,
                 "storefront": sf,
                 "twRank": i + 1 if sf == "tw" else None,
+                "krRank": i + 1 if sf == "kr" else None,
+                "ytPopularRank": None,
                 "altTitles": list(dict.fromkeys(t for t in alt_titles if t)),
                 "altArtists": list(dict.fromkeys(a for a in alt_artists if a)),
             }
@@ -464,7 +483,9 @@ def select_query_entries(
     max_queries: int,
     first_pass_per_artist: int = FIRST_PASS_PER_ARTIST,
 ) -> list[dict]:
-    """分散單演出者查詢配額：第一輪每演出者先取前 N 首，避免單團屠榜擠掉後段其他舞曲，剩餘配額再依序遞補。"""
+    """分散單演出者查詢配額：第一輪每演出者先取前 N 首，避免單團屠榜擠掉後段其他舞曲，剩餘配額再依序遞補。
+    YouTube 台灣熱門新發掘（不在 Apple 榜）的候選曲優先排在第一輪中段，確保有配額查舞蹈量。
+    """
     if max_queries <= 0:
         return []
     primary: list[dict] = []
@@ -479,6 +500,337 @@ def select_query_entries(
         else:
             overflow.append(entry)
     return (primary + overflow)[:max_queries]
+
+
+ISO_DURATION_RE = re.compile(
+    r"^P(?:(?P<days>\d+)D)?(?:T(?:(?P<hours>\d+)H)?(?:(?P<minutes>\d+)M)?(?:(?P<seconds>\d+)S)?)?$"
+)
+
+POPULAR_NOISE_BRACKET_RE = re.compile(
+    r"\s*[\(\[\（【][^)\]\）】]*(?:"
+    r"\bm/?v\b|official|music\s*video|lyric|lyrics|audio|visualizer|performance|"
+    r"live|stage|teaser|trailer|shorts?|ver\.?|version|4k|8k|hd|uhd|full|eng\s*sub|cc|"
+    r"官方|完整版|歌詞版|現場|音樂錄影帶|主題曲|片尾曲|片頭曲|插曲|電影|影集|電視劇"
+    r")[^)\]\）】]*[\)\]\）】]",
+    re.IGNORECASE,
+)
+
+POPULAR_QUOTED_TITLE_RE = re.compile(
+    r"^(?P<artist>.+?)\s*(?:"
+    r"'(?P<sq>(?:[^']|'(?=[A-Za-z])){2,80})'(?![A-Za-z])"
+    r"|\"(?P<dq>[^\"]{2,80})\""
+    r"|「(?P<cj1>[^」]{1,80})」"
+    r"|『(?P<cj2>[^』]{1,80})』"
+    r"|《(?P<cj3>[^》]{1,80})》"
+    r"|“(?P<cj4>[^”]{2,80})”"
+    r")"
+)
+
+AGGREGATOR_CHANNELS = {
+    "hybe labels", "smtown", "jyp entertainment", "starship", "starshiptv",
+    "1thek", "1thek originals", "stone music entertainment", "yg entertainment",
+    "cube entertainment", "theblacklabel", "wakeone", "belift lab", "source music",
+    "ador", "kq entertainment", "rbw", "genie music", "bugs", "melon",
+    "warner music taiwan", "sony music taiwan", "universal music taiwan",
+    "avex taiwan", "rock records", "b'in music", "相信音樂binmusic", "滾石唱片 rock records",
+    "滾石唱片", "華納音樂", "索尼音樂", "環球音樂", "福茂唱片", "杰威爾音樂 jvr music",
+}
+
+
+def parse_iso8601_duration(duration: str) -> int | None:
+    """解析 YouTube videos.list contentDetails.duration（ISO 8601）為秒數。"""
+    if not duration or not isinstance(duration, str):
+        return None
+    m = ISO_DURATION_RE.match(duration.strip())
+    if not m or not any(m.group(k) is not None for k in ("days", "hours", "minutes", "seconds")):
+        return None
+    days = int(m.group("days") or 0)
+    hours = int(m.group("hours") or 0)
+    minutes = int(m.group("minutes") or 0)
+    seconds = int(m.group("seconds") or 0)
+    return days * 86400 + hours * 3600 + minutes * 60 + seconds
+
+
+def parse_popular_video_title(v_title: str, v_channel: str = "") -> tuple[str, str] | None:
+    """從 YouTube 台灣熱門音樂影片標題／頻道解析出 (artist_hint, title_hint) 供 iTunes 反查。"""
+    raw = html.unescape(v_title or "").strip()
+    if not raw:
+        return None
+    cleaned = POPULAR_NOISE_BRACKET_RE.sub(" ", raw)
+    # 去掉 | 或 ｜ 後面的節目／頻道副標（如 "Song - Artist | Official MV"）
+    if "|" in cleaned or "｜" in cleaned:
+        left = re.split(r"\s*[|｜]\s*", cleaned, maxsplit=1)[0].strip()
+        if len(re.sub(r"\W+", "", left)) >= 2:
+            cleaned = left
+    cleaned = re.sub(r"\b(?:official\s*(?:music\s*video|mv|m/v|video|audio)|m/v|mv)\b", " ", cleaned, flags=re.IGNORECASE)
+    cleaned = " ".join(cleaned.split()).strip(" -–—~·•")
+    if not cleaned:
+        return None
+
+    # 1. Artist - Title / Artist – Title / Artist — Title
+    dash_parts = re.split(r"\s+[-–—]\s+", cleaned, maxsplit=1)
+    if len(dash_parts) == 2:
+        left, right = dash_parts[0].strip(" '\"「」『』《》"), dash_parts[1].strip(" '\"「」『』《》")
+        if left and right:
+            return left, right
+
+    # 2. Artist 'Title' / Artist 「Title」 / Artist 《Title》
+    m = POPULAR_QUOTED_TITLE_RE.match(cleaned)
+    if m:
+        artist_part = m.group("artist").strip(" -–—:")
+        title_part = next(
+            (m.group(k).strip() for k in ("sq", "dq", "cj1", "cj2", "cj3", "cj4") if m.group(k)),
+            "",
+        )
+        if artist_part and title_part:
+            return artist_part, title_part
+
+    # 3. 退回：以非聚合型頻道名作為演出者，清理後標題作為曲名
+    ch = html.unescape(v_channel or "").strip()
+    ch = re.sub(r"\s*-\s*Topic$", "", ch, flags=re.IGNORECASE).strip()
+    ch = re.sub(r"\s*Official(?:\s+Channel)?$", "", ch, flags=re.IGNORECASE).strip()
+    if ch and norm(ch) not in AGGREGATOR_CHANNELS:
+        return ch, cleaned
+
+    return None
+
+
+def itunes_search_song(term: str, country: str = "tw", limit: int = 5) -> list[dict]:
+    """免金鑰查詢 iTunes Search API，將 YouTube 台灣熱門音樂影片反查為台灣 Apple Music 歌曲。"""
+    q = (term or "").strip()
+    if not q:
+        return []
+    url = "https://itunes.apple.com/search?" + urllib.parse.urlencode(
+        {"term": q, "country": country, "entity": "song", "limit": str(limit)}
+    )
+    try:
+        data = get_json(url, attempts=2)
+        return [r for r in data.get("results", []) if r.get("trackId") and r.get("trackName") and r.get("artistName")]
+    except Exception as exc:
+        print(f"iTunes Search 失敗（略過 {q}）：{exc}", file=sys.stderr)
+        return []
+
+
+def fetch_youtube_popular_music(key: str, max_results: int = MAX_POPULAR_RESULTS) -> list[dict]:
+    """呼叫 YouTube Data API videos.list(chart=mostPopular, regionCode=TW, videoCategoryId=10)，每次僅 1 單位。"""
+    params = {
+        "part": "snippet,contentDetails",
+        "chart": "mostPopular",
+        "videoCategoryId": YOUTUBE_MUSIC_CATEGORY_ID,
+        "regionCode": QUERY_REGION_CODE,
+        "maxResults": str(max_results),
+        "key": key,
+    }
+    url = "https://www.googleapis.com/youtube/v3/videos?" + urllib.parse.urlencode(params)
+    try:
+        resp = get_json(url, attempts=2)
+        return resp.get("items", [])
+    except Exception as exc:
+        print(f"YouTube 台灣熱門音樂查詢失敗（略過）：{exc}", file=sys.stderr)
+        return []
+
+
+def compact_popular_items(items: list[dict]) -> list[dict]:
+    """精簡保存 videos.list(chart=mostPopular) 回傳影片（不含金鑰），供離線重播。"""
+    out = []
+    for item in items:
+        vid = item.get("id")
+        if not isinstance(vid, str):
+            continue
+        snippet = item.get("snippet") or {}
+        content = item.get("contentDetails") or {}
+        out.append(
+            {
+                "id": vid,
+                "snippet": {
+                    "title": html.unescape(snippet.get("title") or ""),
+                    "channelTitle": html.unescape(snippet.get("channelTitle") or ""),
+                    "channelId": snippet.get("channelId") or "",
+                    "publishedAt": snippet.get("publishedAt") or "",
+                },
+                "contentDetails": {
+                    "duration": content.get("duration") or "",
+                },
+            }
+        )
+    return out
+
+
+def _video_matches_song(v_title: str, v_channel: str, title: str, artist: str, alt_titles=(), alt_artists=()) -> bool:
+    """檢查 YouTube 影片標題／頻道是否確實對應指定歌曲（供台灣熱門音樂反查與既有池比對）。"""
+    norm_v_title = norm(html.unescape(v_title or ""))
+    norm_v_channel = norm(html.unescape(v_channel or ""))
+    if not norm_v_title:
+        return False
+
+    t_variants = title_variants(title, *(alt_titles or []), include_subtitle_head=True)
+    title_patterns = [
+        p
+        for tv in t_variants
+        if (p := _compile_phrase_pattern(tv, allow_spaceless=not _is_short_or_common_title(tv))) is not None
+    ]
+    if not any(p.search(norm_v_title) for p in title_patterns):
+        return False
+
+    a_names = _artist_match_candidates(artist, list(alt_artists or []))
+    artist_patterns = [
+        p
+        for an in a_names
+        if (p := _compile_phrase_pattern(an, allow_spaceless=True)) is not None
+    ]
+    return any(p.search(norm_v_title) or p.search(norm_v_channel) for p in artist_patterns)
+
+
+def enrich_pool_with_youtube_popular(
+    pool: list[dict],
+    popular_items: list[dict],
+    search_fn=itunes_search_song,
+    max_lookups: int = MAX_POPULAR_LOOKUPS,
+) -> list[dict]:
+    """用 YouTube 台灣熱門音樂影片補齊候選池與 ytPopularRank：
+    1. 先匹配既有 Apple 候選池中的歌曲，補上 ytPopularRank（1-based 最高名次）。
+    2. 未匹配者以 iTunes Search 反查台灣曲目，確認曲名＋演出者吻合後合併或新增為候選歌。
+    """
+    if not popular_items:
+        return pool
+
+    seen: dict[tuple, dict] = {}
+    for entry in pool:
+        for k in _dedup_keys(entry["item"], entry.get("altTitles") or []):
+            seen[k] = entry
+
+    new_entries: list[dict] = []
+    lookups = 0
+
+    for rank, video in enumerate(popular_items, start=1):
+        snippet = video.get("snippet") or {}
+        v_title = html.unescape(snippet.get("title") or "")
+        v_channel = html.unescape(snippet.get("channelTitle") or "")
+        if not v_title:
+            continue
+
+        matched_entry = None
+        for entry in pool:
+            it = entry["item"]
+            if _video_matches_song(
+                v_title, v_channel, it["name"], it["artistName"],
+                alt_titles=entry.get("altTitles") or [],
+                alt_artists=entry.get("altArtists") or [],
+            ):
+                matched_entry = entry
+                break
+
+        if matched_entry is not None:
+            if matched_entry.get("ytPopularRank") is None or rank < matched_entry["ytPopularRank"]:
+                matched_entry["ytPopularRank"] = rank
+            continue
+
+        if lookups >= max_lookups or search_fn is None:
+            continue
+        parsed = parse_popular_video_title(v_title, v_channel)
+        if not parsed:
+            continue
+        artist_hint, title_hint = parsed
+        lookups += 1
+        results = search_fn(f"{title_hint} {artist_hint}", "tw", 5)
+
+        chosen = None
+        for rec in results:
+            rec_title = rec.get("trackName") or ""
+            rec_artist = rec.get("artistName") or ""
+            if _video_matches_song(v_title, v_channel, rec_title, rec_artist):
+                chosen = rec
+                break
+        if chosen is None:
+            continue
+
+        loc_item = {
+            "id": str(chosen["trackId"]),
+            "name": chosen["trackName"],
+            "artistName": chosen["artistName"],
+            "artistId": str(chosen.get("artistId") or ""),
+            "url": chosen.get("trackViewUrl") or f"https://music.apple.com/tw/song/{chosen['trackId']}",
+            "artworkUrl100": chosen.get("artworkUrl100") or "",
+        }
+        alt_titles = list(dict.fromkeys(t for t in (chosen["trackName"], title_hint) if t))
+        alt_artists = list(dict.fromkeys(a for a in (chosen["artistName"], artist_hint) if a))
+        keys = _dedup_keys(loc_item, alt_titles)
+        existing = next((seen[k] for k in keys if k in seen), None)
+        if existing is not None:
+            if existing.get("ytPopularRank") is None or rank < existing["ytPopularRank"]:
+                existing["ytPopularRank"] = rank
+            for t in alt_titles:
+                if t not in existing["altTitles"]:
+                    existing["altTitles"].append(t)
+            for a in alt_artists:
+                if a not in existing["altArtists"]:
+                    existing["altArtists"].append(a)
+            for k in keys:
+                seen[k] = existing
+            continue
+
+        new_entry = {
+            "item": loc_item,
+            "storefront": "yt_popular",
+            "twRank": None,
+            "krRank": None,
+            "ytPopularRank": rank,
+            "altTitles": alt_titles,
+            "altArtists": alt_artists,
+        }
+        for k in keys:
+            seen[k] = new_entry
+        new_entries.append(new_entry)
+
+    if not new_entries:
+        return pool
+
+    # 將 YouTube 台灣熱門新發掘的歌曲插入候選池前中段（第 40 位之後），確保能進當日查詢配額而不擠掉台／韓前段強曲
+    insert_at = min(40, len(pool))
+    return pool[:insert_at] + new_entries + pool[insert_at:]
+
+
+def fetch_video_durations(video_ids: list[str], key: str) -> dict[str, int]:
+    """批次查詢 YouTube videos.list(part=contentDetails) 取得每支影片秒數（每 50 支僅 1 單位）。"""
+    unique_ids = [vid for vid in dict.fromkeys(video_ids) if vid]
+    durations: dict[str, int] = {}
+    for start in range(0, len(unique_ids), 50):
+        batch = unique_ids[start : start + 50]
+        params = {
+            "part": "contentDetails",
+            "id": ",".join(batch),
+            "key": key,
+        }
+        url = "https://www.googleapis.com/youtube/v3/videos?" + urllib.parse.urlencode(params)
+        try:
+            resp = get_json(url, attempts=2)
+            for item in resp.get("items", []):
+                vid = item.get("id")
+                dur = parse_iso8601_duration((item.get("contentDetails") or {}).get("duration") or "")
+                if isinstance(vid, str) and vid and dur is not None:
+                    durations[vid] = dur
+        except Exception as exc:
+            print(f"YouTube videos.list 時長查詢失敗（略過批次 {start // 50 + 1}）：{exc}", file=sys.stderr)
+    return durations
+
+
+def evaluate_shorts_from_verified(
+    verified_videos: list[tuple[str, str]],
+    durations: dict[str, int],
+    max_seconds: int = SHORTS_MAX_DURATION_SECONDS,
+) -> dict:
+    """從已通過舞蹈驗證與頻道節流的影片清單中，計算 ≤ 60 秒的 Shorts 舞蹈影片數與頻道數。"""
+    shorts_verified = 0
+    shorts_channels: set[str] = set()
+    for vid, ch_key in verified_videos:
+        sec = durations.get(vid)
+        if sec is not None and 0 < sec <= max_seconds:
+            shorts_verified += 1
+            shorts_channels.add(ch_key)
+    return {
+        "shortsVerified": shorts_verified,
+        "shortsUniqueChannels": len(shorts_channels),
+    }
 
 
 def _is_short_or_common_title(norm_title: str) -> bool:
@@ -591,6 +943,7 @@ def evaluate_youtube_items(
     seven_days_ago = now - dt.timedelta(days=7)
     seen_videos = set()
     channel_counts: dict[str, int] = {}
+    verified_videos: list[tuple[str, str]] = []
     matched_raw = 0
     verified = 0
     recent_7d = 0
@@ -634,6 +987,8 @@ def evaluate_youtube_items(
             continue
         channel_counts[ch_key] = used + 1
         verified += 1
+        if vid:
+            verified_videos.append((vid, ch_key))
 
         pub = snippet.get("publishedAt") or ""
         try:
@@ -653,6 +1008,7 @@ def evaluate_youtube_items(
         "recent7d": recent_7d,
         "precision": precision,
         "strictTitle": strict_title,
+        "verifiedVideos": verified_videos,
     }
 
 
@@ -709,7 +1065,10 @@ def dance_signal(entry: dict, key: str, since: str, now: dt.datetime) -> dict:
 def _stat_summary(st: dict) -> dict:
     return {
         k: st[k]
-        for k in ("verified", "matchedRaw", "fetched", "uniqueChannels", "recent7d", "precision", "strictTitle")
+        for k in (
+            "verified", "matchedRaw", "fetched", "uniqueChannels", "recent7d",
+            "precision", "strictTitle", "shortsVerified", "shortsUniqueChannels",
+        )
         if k in st
     }
 
@@ -724,6 +1083,8 @@ def write_raw_cache(
     failed: int,
     since: str,
     records: list[dict],
+    popular_videos: list[dict] | None = None,
+    video_durations: dict[str, int] | None = None,
 ) -> None:
     """輸出每首歌原始搜尋結果快取（絕不含 API 金鑰），供 Actions artifact 下載與離線調參。"""
     parent = os.path.dirname(os.fspath(path))
@@ -739,11 +1100,15 @@ def write_raw_cache(
             "maxResults": QUERY_MAX_RESULTS,
             "publishedAfter": since,
             "minDanceVideos": MIN_DANCE_VIDEOS,
+            "minShortsVideos": MIN_SHORTS_VIDEOS,
+            "shortsMaxSeconds": SHORTS_MAX_DURATION_SECONDS,
             "maxPerChannel": MAX_PER_CHANNEL,
         },
         "poolSize": pool_size,
         "queried": queried,
         "failed": failed,
+        "popularVideos": popular_videos or [],
+        "videoDurations": video_durations or {},
         "entries": records,
     }
     with open(path, "w", encoding="utf-8") as f:
@@ -752,7 +1117,7 @@ def write_raw_cache(
 
 
 def replay_raw_cache(path: str | os.PathLike) -> tuple[dt.datetime, list[dict], dict[str, dict], set[str], int]:
-    """從原始搜尋快取檔離線重算每首驗證統計（零網路與 YouTube 額度消耗）。"""
+    """從原始搜尋快取檔離線重算每首驗證統計與 Shorts 數量（零網路與 YouTube 額度消耗）。"""
     with open(path, encoding="utf-8") as f:
         raw = json.load(f)
     gen_at = raw.get("generatedAt") or ""
@@ -761,6 +1126,9 @@ def replay_raw_cache(path: str | os.PathLike) -> tuple[dt.datetime, list[dict], 
     except ValueError:
         now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
 
+    durations: dict[str, int] = {
+        str(k): int(v) for k, v in (raw.get("videoDurations") or {}).items() if isinstance(v, (int, float))
+    }
     pool: list[dict] = []
     stats_by_id: dict[str, dict] = {}
     failed_ids: set[str] = set()
@@ -779,6 +1147,8 @@ def replay_raw_cache(path: str | os.PathLike) -> tuple[dt.datetime, list[dict], 
             "item": item,
             "storefront": rec.get("storefront") or "tw",
             "twRank": rec.get("twRank"),
+            "krRank": rec.get("krRank"),
+            "ytPopularRank": rec.get("ytPopularRank"),
             "altTitles": rec.get("altTitles") or [rec["title"]],
             "altArtists": rec.get("altArtists") or [rec["artist"]],
         }
@@ -796,6 +1166,8 @@ def replay_raw_cache(path: str | os.PathLike) -> tuple[dt.datetime, list[dict], 
             alt_titles=entry["altTitles"],
             alt_artists=entry["altArtists"],
         )
+        shorts_st = evaluate_shorts_from_verified(st.get("verifiedVideos") or [], durations)
+        st.update(shorts_st)
         st["rawTotal"] = int(rec.get("rawTotal") or 0)
         st["query"] = rec.get("query") or ""
         stats_by_id[tid] = st
@@ -803,7 +1175,7 @@ def replay_raw_cache(path: str | os.PathLike) -> tuple[dt.datetime, list[dict], 
             f"YT(replay) | {item['name']} — {item['artistName']} | "
             f"rawTotal={st['rawTotal']} fetched={st['fetched']} "
             f"matched={st['matchedRaw']} verified={st['verified']} "
-            f"ch={st['uniqueChannels']} r7d={st['recent7d']} "
+            f"shorts={st['shortsVerified']} ch={st['uniqueChannels']} r7d={st['recent7d']} "
             f"prec={st['precision']:.0%}",
             flush=True,
         )
@@ -811,17 +1183,17 @@ def replay_raw_cache(path: str | os.PathLike) -> tuple[dt.datetime, list[dict], 
     return now, pool, stats_by_id, failed_ids, queried
 
 
-def previous_dance_signals() -> dict[str, dict]:
+def previous_dance_signals() -> dict[tuple[str, str], dict]:
     try:
         with open(OUT, encoding="utf-8") as f:
             old = json.load(f)
     except (OSError, ValueError):
         return {}
     return {
-        s["id"]: sig
+        (s["id"], sig["source"]): sig
         for s in old.get("songs", [])
         for sig in s.get("signals", [])
-        if sig.get("kind") == "dance" and sig.get("source") == YOUTUBE_SOURCE
+        if sig.get("kind") == "dance" and sig.get("source") in (YOUTUBE_SOURCE, YOUTUBE_SHORTS_SOURCE)
     }
 
 
@@ -837,6 +1209,8 @@ def _resolve_replay_path(argv: list[str] | None = None) -> str:
 
 def main(argv: list[str] | None = None):
     replay_path = _resolve_replay_path(argv)
+    popular_units = 0
+    duration_units = 0
     if replay_path:
         now, pool, stats_by_id, failed_ids, queried = replay_raw_cache(replay_path)
     else:
@@ -848,10 +1222,24 @@ def main(argv: list[str] | None = None):
         stats_by_id = {}
         failed_ids = set()
         raw_records: list[dict] = []
+        popular_items: list[dict] = []
+        video_durations: dict[str, int] = {}
         queried = 0
         since = (now - dt.timedelta(days=QUERY_WINDOW_DAYS)).isoformat().replace("+00:00", "Z")
 
         if key:
+            popular_items = fetch_youtube_popular_music(key)
+            popular_units = 1
+            if popular_items:
+                before_len = len(pool)
+                pool = enrich_pool_with_youtube_popular(pool, popular_items)
+                added = len(pool) - before_len
+                matched_pop = sum(1 for e in pool if e.get("ytPopularRank") is not None)
+                print(
+                    f"YouTube 台灣熱門音樂：取得 {len(popular_items)} 支，對應 {matched_pop} 首（新增候選 {added} 首）",
+                    flush=True,
+                )
+
             for entry in select_query_entries(pool, max_queries):
                 it = entry["item"]
                 q_preview = build_youtube_query(
@@ -863,6 +1251,8 @@ def main(argv: list[str] | None = None):
                     "artist": it["artistName"],
                     "storefront": entry.get("storefront"),
                     "twRank": entry.get("twRank"),
+                    "krRank": entry.get("krRank"),
+                    "ytPopularRank": entry.get("ytPopularRank"),
                     "url": it.get("url") or "",
                     "artworkUrl100": it.get("artworkUrl100") or "",
                     "altTitles": entry.get("altTitles") or [it["name"]],
@@ -900,6 +1290,24 @@ def main(argv: list[str] | None = None):
                 raw_records.append(rec)
                 queried += 1
 
+            # 批次查詢所有通過舞蹈驗證的影片時長（每 50 支 1 單位），計算近 14 天 Shorts（≤ 60 秒）舞蹈影片量
+            all_verified_vids = [
+                vid
+                for st in stats_by_id.values()
+                for vid, _ in (st.get("verifiedVideos") or [])
+            ]
+            unique_vids = list(dict.fromkeys(v for v in all_verified_vids if v))
+            if unique_vids:
+                duration_units = (len(unique_vids) + 49) // 50
+                video_durations = fetch_video_durations(unique_vids, key)
+            for rec in raw_records:
+                tid = rec["id"]
+                st = stats_by_id.get(tid)
+                if st is not None:
+                    shorts_st = evaluate_shorts_from_verified(st.get("verifiedVideos") or [], video_durations)
+                    st.update(shorts_st)
+                    rec["stats"] = _stat_summary(st)
+
         if raw_cache_out:
             write_raw_cache(
                 raw_cache_out,
@@ -910,6 +1318,8 @@ def main(argv: list[str] | None = None):
                 failed=len(failed_ids),
                 since=since,
                 records=raw_records,
+                popular_videos=compact_popular_items(popular_items),
+                video_durations=video_durations,
             )
 
     if queried and len(failed_ids) * 100 > queried * 30:
@@ -926,6 +1336,17 @@ def main(argv: list[str] | None = None):
         ),
     )
     dance_rank = {tid: r + 1 for r, (_, tid) in enumerate(ordered)}
+
+    shorts_ordered = sorted(
+        ((st, tid) for tid, st in stats_by_id.items() if st.get("shortsVerified", 0) >= MIN_SHORTS_VIDEOS),
+        key=lambda x: (
+            -x[0].get("shortsVerified", 0),
+            -x[0].get("shortsUniqueChannels", 0),
+            -x[0]["verified"],
+            x[1],
+        ),
+    )
+    shorts_rank = {tid: r + 1 for r, (_, tid) in enumerate(shorts_ordered)}
     prev = previous_dance_signals()
 
     songs = []
@@ -934,8 +1355,12 @@ def main(argv: list[str] | None = None):
         tid = it["id"]
         sid = "am:" + tid
         signals = []
-        if entry["twRank"]:
+        if entry.get("twRank"):
             signals.append({"kind": "streaming", "source": STREAMING_SOURCE, "rank": entry["twRank"]})
+        if entry.get("krRank"):
+            signals.append({"kind": "streaming", "source": KR_STREAMING_SOURCE, "rank": entry["krRank"]})
+        if entry.get("ytPopularRank"):
+            signals.append({"kind": "streaming", "source": YOUTUBE_POPULAR_SOURCE, "rank": entry["ytPopularRank"]})
         if tid in dance_rank:
             sig = {
                 "kind": "dance",
@@ -943,23 +1368,38 @@ def main(argv: list[str] | None = None):
                 "rank": dance_rank[tid],
                 "videoCount": stats_by_id[tid]["verified"],
             }
-            if sid in prev:
-                sig["previousRank"] = prev[sid]["rank"]
+            if (sid, YOUTUBE_SOURCE) in prev:
+                sig["previousRank"] = prev[(sid, YOUTUBE_SOURCE)]["rank"]
             signals.append(sig)
-        elif tid in failed_ids and sid in prev:
-            signals.append(prev[sid])
+        elif tid in failed_ids and (sid, YOUTUBE_SOURCE) in prev:
+            signals.append(prev[(sid, YOUTUBE_SOURCE)])
+        if tid in shorts_rank:
+            sig = {
+                "kind": "dance",
+                "source": YOUTUBE_SHORTS_SOURCE,
+                "rank": shorts_rank[tid],
+                "videoCount": stats_by_id[tid]["shortsVerified"],
+            }
+            if (sid, YOUTUBE_SHORTS_SOURCE) in prev:
+                sig["previousRank"] = prev[(sid, YOUTUBE_SHORTS_SOURCE)]["rank"]
+            signals.append(sig)
+        elif tid in failed_ids and (sid, YOUTUBE_SHORTS_SOURCE) in prev:
+            signals.append(prev[(sid, YOUTUBE_SHORTS_SOURCE)])
         if not signals:
             continue
         art = (it.get("artworkUrl100") or "").replace("100x100bb", "600x600bb")
         yt = "https://www.youtube.com/results?" + urllib.parse.urlencode(
             {"search_query": f"{clean_title(it['name'])} {search_artist_name(it['artistName'])} dance practice"}
         )
+        streaming_links = []
+        if (it.get("url") or "").startswith("https://"):
+            streaming_links.append({"title": "Apple Music", "url": it["url"]})
         song = {
             "id": sid,
             "title": it["name"],
             "artist": it["artistName"],
             "officialDance": [],
-            "streaming": [{"title": "Apple Music", "url": it["url"]}],
+            "streaming": streaming_links,
             "related": [{"title": "在 YouTube 看這首歌的舞蹈影片", "url": yt}],
             "credits": [],
             "signals": signals,
@@ -974,9 +1414,11 @@ def main(argv: list[str] | None = None):
         sys.exit("feed 超過 1 MB，App 會拒收")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write(data + "\n")
+    est_units = queried * 100 + popular_units + duration_units
     print(
         f"候選 {len(pool)} 首；YouTube 查詢 {queried} 次（失敗 {len(failed_ids)}）；"
-        f"新測得舞蹈訊號 {len(dance_rank)} 首；輸出 {len(songs)} 首"
+        f"舞蹈訊號 {len(dance_rank)} 首；Shorts 訊號 {len(shorts_rank)} 首；"
+        f"估算額度 {est_units} 單位；輸出 {len(songs)} 首"
     )
 
 

@@ -442,5 +442,186 @@ class CalibrationAndFailureTests(unittest.TestCase):
         self.assertEqual(dance_sigs[0]["videoCount"], 6)
 
 
+class YouTubePopularAndShortsTests(unittest.TestCase):
+    def test_parse_iso8601_duration(self):
+        self.assertEqual(bf.parse_iso8601_duration("PT45S"), 45)
+        self.assertEqual(bf.parse_iso8601_duration("PT1M"), 60)
+        self.assertEqual(bf.parse_iso8601_duration("PT1M1S"), 61)
+        self.assertEqual(bf.parse_iso8601_duration("PT3M22S"), 202)
+        self.assertEqual(bf.parse_iso8601_duration("PT1H2M3S"), 3723)
+        self.assertEqual(bf.parse_iso8601_duration("P0D"), 0)
+        self.assertIsNone(bf.parse_iso8601_duration(""))
+        self.assertIsNone(bf.parse_iso8601_duration("invalid"))
+
+    def test_parse_popular_video_title_handles_common_mv_formats(self):
+        self.assertEqual(
+            bf.parse_popular_video_title("[MV] IVE - Looks Can Kill (Official Music Video)", "STARSHIP"),
+            ("IVE", "Looks Can Kill"),
+        )
+        self.assertEqual(
+            bf.parse_popular_video_title("ILLIT (아일릿) 'You're Under Arrest' Official MV", "HYBE LABELS"),
+            ("ILLIT (아일릿)", "You're Under Arrest"),
+        )
+        self.assertEqual(
+            bf.parse_popular_video_title("周杰倫「晴天」官方完整版 MV", "周杰倫 Jay Chou"),
+            ("周杰倫", "晴天"),
+        )
+        self.assertEqual(
+            bf.parse_popular_video_title("APT. (Official Video)", "ROSÉ Official"),
+            ("ROSÉ", "APT."),
+        )
+        # 聚合頻道無法拆分時不誤把唱片公司當演出者
+        self.assertIsNone(bf.parse_popular_video_title("Special Stage Teaser", "HYBE LABELS"))
+
+    def test_merge_candidates_preserves_kr_rank_alongside_tw_rank(self):
+        tw = [_apple_item("100", "Looks Can Kill", "IVE", "1594159996", "tw")]
+        kr = [
+            _apple_item("200", "Looks Can Kill", "아이브", "1594159996", "kr"),
+            _apple_item("300", "Inside Out", "RESCENE", "1732658659", "kr"),
+        ]
+        merged = bf.merge_candidates({"tw": tw, "kr": kr}, lookup_fn=lambda ids, c: [])
+        by_id = {e["item"]["id"]: e for e in merged}
+        self.assertEqual(by_id["100"]["twRank"], 1)
+        self.assertEqual(by_id["100"]["krRank"], 1)
+        self.assertIsNone(by_id["300"]["twRank"])
+        self.assertEqual(by_id["300"]["krRank"], 2)
+
+    def test_enrich_pool_with_youtube_popular_matches_existing_and_adds_new_song(self):
+        pool = [
+            {
+                "item": _apple_item("100", "Looks Can Kill", "IVE", "1594159996", "tw"),
+                "storefront": "tw",
+                "twRank": 5,
+                "krRank": 3,
+                "ytPopularRank": None,
+                "altTitles": ["Looks Can Kill"],
+                "altArtists": ["IVE", "아이브"],
+            }
+        ]
+        popular = [
+            {
+                "id": "yt1",
+                "snippet": {
+                    "title": "IVE 아이브 'Looks Can Kill' MV",
+                    "channelTitle": "STARSHIP",
+                },
+                "contentDetails": {"duration": "PT3M15S"},
+            },
+            {
+                "id": "yt2",
+                "snippet": {
+                    "title": "ROSÉ - APT. (Official Music Video)",
+                    "channelTitle": "ROSÉ",
+                },
+                "contentDetails": {"duration": "PT2M53S"},
+            },
+        ]
+
+        def fake_itunes_search(term, country="tw", limit=5):
+            if "APT." in term:
+                return [{
+                    "trackId": 999001,
+                    "trackName": "APT.",
+                    "artistName": "ROSÉ & Bruno Mars",
+                    "artistId": 12345,
+                    "trackViewUrl": "https://music.apple.com/tw/album/apt/1?i=999001",
+                    "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/apt/100x100bb.jpg",
+                }]
+            return []
+
+        enriched = bf.enrich_pool_with_youtube_popular(pool, popular, search_fn=fake_itunes_search)
+        self.assertEqual(len(enriched), 2)
+        by_id = {e["item"]["id"]: e for e in enriched}
+        self.assertEqual(by_id["100"]["ytPopularRank"], 1)
+        self.assertEqual(by_id["999001"]["ytPopularRank"], 2)
+        self.assertEqual(by_id["999001"]["storefront"], "yt_popular")
+        self.assertIsNone(by_id["999001"]["twRank"])
+
+    def test_shorts_signal_and_popular_signal_output_and_offline_replay(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out_path = Path(tmp) / "feed.json"
+            raw_path = Path(tmp) / "youtube-raw-results.json"
+            replay_out = Path(tmp) / "replay-feed.json"
+
+            pool = [
+                {
+                    "item": _apple_item("6818511627", "You’re Under Arrest", "ILLIT", "1734551937", "tw"),
+                    "storefront": "tw",
+                    "twRank": 10,
+                    "krRank": 4,
+                    "ytPopularRank": None,
+                    "altTitles": ["체포하겠어", "You’re Under Arrest"],
+                    "altArtists": ["아일릿", "ILLIT"],
+                },
+            ]
+
+            def fake_get_json(url, *args, **kwargs):
+                if "chart=mostPopular" in url:
+                    return {
+                        "items": [
+                            {
+                                "id": "pop1",
+                                "snippet": {
+                                    "title": "ILLIT (아일릿) 'You're Under Arrest' Official MV",
+                                    "channelTitle": "HYBE LABELS",
+                                },
+                                "contentDetails": {"duration": "PT3M05S"},
+                            }
+                        ]
+                    }
+                if "/youtube/v3/search?" in url:
+                    return {
+                        "pageInfo": {"totalResults": 10},
+                        "items": [
+                            _yt_item(f"s{i}", f"ILLIT You're Under Arrest Dance Challenge #{i}",
+                                     channel=f"Ch{i}", channel_id=f"ch{i}", published_at="2026-11-24T10:00:00Z")
+                            for i in range(6)
+                        ] + [
+                            _yt_item("long1", "ILLIT You're Under Arrest Full Dance Practice",
+                                     channel="ILLIT", channel_id="ch_long", published_at="2026-11-24T10:00:00Z")
+                        ],
+                    }
+                if "/youtube/v3/videos?" in url and "part=contentDetails" in url:
+                    return {
+                        "items": [
+                            {"id": f"s{i}", "contentDetails": {"duration": "PT42S"}} for i in range(5)
+                        ] + [
+                            {"id": "s5", "contentDetails": {"duration": "PT1M01S"}},  # 61 秒不算 Shorts
+                            {"id": "long1", "contentDetails": {"duration": "PT3M12S"}},
+                        ]
+                    }
+                return {"items": []}
+
+            with patch.object(bf, "OUT", out_path), \
+                 patch.object(bf, "candidates", return_value=pool), \
+                 patch.object(bf, "get_json", side_effect=fake_get_json), \
+                 patch.dict(bf.os.environ, {
+                     "YOUTUBE_API_KEY": "secret-key-8",
+                     "MAX_QUERIES": "5",
+                     "RAW_CACHE_OUT": str(raw_path),
+                 }):
+                bf.main([])
+
+            live_feed = json.loads(out_path.read_text(encoding="utf-8"))
+            self.assertEqual(len(live_feed["songs"]), 1)
+            sigs = {(s["kind"], s["source"]): s for s in live_feed["songs"][0]["signals"]}
+            self.assertEqual(sigs[("streaming", bf.STREAMING_SOURCE)]["rank"], 10)
+            self.assertEqual(sigs[("streaming", bf.KR_STREAMING_SOURCE)]["rank"], 4)
+            self.assertEqual(sigs[("streaming", bf.YOUTUBE_POPULAR_SOURCE)]["rank"], 1)
+            self.assertEqual(sigs[("dance", bf.YOUTUBE_SOURCE)]["videoCount"], 7)
+            self.assertEqual(sigs[("dance", bf.YOUTUBE_SHORTS_SOURCE)]["videoCount"], 5)
+
+            raw_text = raw_path.read_text(encoding="utf-8")
+            self.assertNotIn("secret-key-8", raw_text)
+
+            with patch.object(bf, "OUT", replay_out), \
+                 patch.object(bf, "candidates", side_effect=AssertionError("offline replay must not hit Apple RSS")), \
+                 patch.object(bf, "get_json", side_effect=AssertionError("offline replay must not hit YouTube API")):
+                bf.main(["--replay", str(raw_path)])
+
+            replay_feed = json.loads(replay_out.read_text(encoding="utf-8"))
+            self.assertEqual(replay_feed["songs"], live_feed["songs"])
+
+
 if __name__ == "__main__":
     unittest.main()
