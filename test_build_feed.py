@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 import datetime as dt
+import io
 import json
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 import build_feed as bf
 
@@ -33,6 +35,48 @@ def _yt_item(vid, title, channel="Dancer", channel_id="ch1", desc="", published_
             "publishedAt": published_at,
         },
     }
+
+
+class YouTubeRateLimitTests(unittest.TestCase):
+    def error(self, code, headers=None):
+        return urllib.error.HTTPError("https://www.googleapis.com/youtube/v3/search", code, "error", headers, None)
+
+    def test_search_retries_rate_limit_then_succeeds(self):
+        entry = {"item": _apple_item("1", "Song", "Artist")}
+        response = io.BytesIO(b'{"items": [], "pageInfo": {"totalResults": 0}}')
+        with patch.object(bf.urllib.request, "urlopen", side_effect=[self.error(429), self.error(429), response]) as request, \
+             patch.object(bf.time, "sleep") as sleep:
+            stats = bf.dance_signal(entry, "key", "2026-11-01T00:00:00Z", dt.datetime.now(dt.timezone.utc))
+        self.assertEqual(stats["rawTotal"], 0)
+        self.assertEqual(request.call_count, 3)
+        self.assertEqual(sleep.call_args_list, [call(2), call(4)])
+
+    def test_rate_limit_retry_is_bounded_and_respects_retry_after(self):
+        url = "https://www.googleapis.com/youtube/v3/search"
+        with patch.object(bf.urllib.request, "urlopen", side_effect=self.error(429, {"Retry-After": "30"})) as request, \
+             patch.object(bf.time, "sleep") as sleep:
+            with self.assertRaises(urllib.error.HTTPError):
+                bf.get_json(url, attempts=3, retry_rate_limit=True)
+        self.assertEqual(request.call_count, 1)
+        sleep.assert_not_called()
+
+        with patch.object(bf.urllib.request, "urlopen", side_effect=self.error(429, {"Retry-After": "3"})) as request, \
+             patch.object(bf.time, "sleep") as sleep:
+            with self.assertRaises(urllib.error.HTTPError):
+                bf.get_json(url, attempts=3, retry_rate_limit=True)
+        self.assertEqual(request.call_count, 3)
+        self.assertEqual(sleep.call_args_list, [call(3), call(4)])
+
+    def test_other_errors_and_default_rate_limit_are_not_retried(self):
+        url = "https://www.googleapis.com/youtube/v3/search"
+        for code, retry_rate_limit in ((403, True), (500, True), (429, False)):
+            with self.subTest(code=code), \
+                 patch.object(bf.urllib.request, "urlopen", side_effect=self.error(code)) as request, \
+                 patch.object(bf.time, "sleep") as sleep:
+                with self.assertRaises(urllib.error.HTTPError):
+                    bf.get_json(url, attempts=3, retry_rate_limit=retry_rate_limit)
+                self.assertEqual(request.call_count, 1)
+                sleep.assert_not_called()
 
 
 class CrossChartDedupeTests(unittest.TestCase):
