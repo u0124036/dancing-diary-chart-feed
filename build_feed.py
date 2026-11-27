@@ -28,6 +28,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import email.utils
 import html
 import json
 import os
@@ -310,8 +311,8 @@ def title_variants(*titles: str, include_subtitle_head: bool = False) -> list[st
     return out
 
 
-def get_json(url: str, headers=None, attempts: int = 1):
-    """attempts > 1 時，逾時、連線錯誤或 5xx 會等待後重試（GitHub runner 連 Apple RSS 偶爾逾時）。"""
+def get_json(url: str, headers=None, attempts: int = 1, retry_rate_limit: bool = False):
+    """預設重試逾時、連線錯誤或 5xx；YouTube 搜尋只重試 429。"""
     req = urllib.request.Request(
         url,
         headers=headers or {"User-Agent": "chart-feed-bot", "Accept": "application/json"},
@@ -321,6 +322,27 @@ def get_json(url: str, headers=None, attempts: int = 1):
             with urllib.request.urlopen(req, timeout=45) as r:
                 return json.load(r)
         except (OSError, ValueError) as exc:  # URLError、TimeoutError 皆為 OSError
+            if retry_rate_limit and isinstance(exc, urllib.error.HTTPError) and exc.code == 429:
+                if i == attempts - 1:
+                    raise
+                delay = 2 ** (i + 1)
+                retry_after = exc.headers.get("Retry-After") if exc.headers else None
+                if retry_after:
+                    try:
+                        if retry_after.isdigit():
+                            delay = max(delay, int(retry_after))
+                        else:
+                            retry_at = email.utils.parsedate_to_datetime(retry_after)
+                            delay = max(delay, (retry_at - dt.datetime.now(dt.timezone.utc)).total_seconds())
+                    except (TypeError, ValueError, OverflowError):
+                        pass
+                if delay > 4:
+                    raise
+                print(f"重試 {i + 1}/{attempts - 1}：{url.split('?')[0]}：{exc}", file=sys.stderr)
+                time.sleep(delay)
+                continue
+            if retry_rate_limit:
+                raise
             if i == attempts - 1 or (isinstance(exc, urllib.error.HTTPError) and exc.code < 500):
                 raise
             print(f"重試 {i + 1}/{attempts - 1}：{url.split('?')[0]}：{exc}", file=sys.stderr)
@@ -1157,7 +1179,7 @@ def dance_signal(entry: dict, key: str, since: str, now: dt.datetime) -> dict:
         "q": query,
     }
     q = urllib.parse.urlencode({**params, "key": key})
-    resp = get_json("https://www.googleapis.com/youtube/v3/search?" + q)
+    resp = get_json("https://www.googleapis.com/youtube/v3/search?" + q, attempts=3, retry_rate_limit=True)
     items = resp.get("items", [])
     raw_total = int((resp.get("pageInfo") or {}).get("totalResults", 0) or 0)
     stats = evaluate_youtube_items(
